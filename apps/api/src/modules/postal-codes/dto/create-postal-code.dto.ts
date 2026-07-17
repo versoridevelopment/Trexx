@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, IsBoolean } from 'class-validator';
-import { PostalCode } from '@repo/types';
+import { createZodDto } from 'nestjs-zod';
+import { PostalCodeSchema } from '@repo/types';
 
-export class CreatePostalCodeDto implements Omit<PostalCode, 'id' | 'is_active'> {
-  @IsNotEmpty()
-  @IsString()
-  code: string;
-}
+export class CreatePostalCodeDto extends createZodDto(
+  PostalCodeSchema.omit({ id: true, is_active: true })
+) {}

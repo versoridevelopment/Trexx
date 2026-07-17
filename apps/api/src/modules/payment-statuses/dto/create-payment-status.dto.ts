@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, IsBoolean } from 'class-validator';
-import { PaymentStatus } from '@repo/types';
+import { createZodDto } from 'nestjs-zod';
+import { PaymentStatusSchema } from '@repo/types';
 
-export class CreatePaymentStatusDto implements Omit<PaymentStatus, 'id' | 'is_active'> {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-}
+export class CreatePaymentStatusDto extends createZodDto(
+  PaymentStatusSchema.omit({ id: true, is_active: true })
+) {}

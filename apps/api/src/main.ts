@@ -2,9 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
-import { DomainExceptionFilter } from './common/filters/domain-exception.filter';
 import { ZodValidationPipe } from 'nestjs-zod';
+import { DomainExceptionFilter } from './common/filters/domain-exception.filter';
 import { writeFileSync } from 'fs';
 
 async function bootstrap() {
@@ -17,10 +16,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ZodValidationPipe(),
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-    }),
   );
   
   app.useGlobalFilters(new DomainExceptionFilter());

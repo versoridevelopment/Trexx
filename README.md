@@ -50,32 +50,84 @@ my-monorepo/
 
 ---
 
-## ⚙️ Primeros Pasos
+## ⚙️ Primeros Pasos (Levantar desde Cero)
 
-### Prerrequisitos
-- [Node.js](https://nodejs.org/) v20+
-- [pnpm](https://pnpm.io/) v9+
+### 📋 Prerrequisitos
+- [Node.js](https://nodejs.org/) v20+ (Recomendado v24+ o v25+)
+- [pnpm](https://pnpm.io/) v9+ o superior
+- Un proyecto creado en [Supabase](https://supabase.com/) listo.
 
+---
 
-### Instalación
+### 🛠️ Guía de Configuración Paso a Paso
+
+Sigue estos pasos en orden para levantar todo el entorno de desarrollo de forma local:
+
+#### 1. Clonar el repositorio e instalar dependencias
 ```bash
-# Clonar e instalar
 git clone https://github.com/IvanRomeroMaurin/Trabajo-Campo-Ing-II.git
 cd Trabajo-Campo-Ing-II
 pnpm install
 ```
 
-### Desarrollo
-Para levantar todo el entorno (Web + API) en paralelo:
+#### 2. Configurar las variables de entorno (`.env`)
+Debes crear los archivos de variables de entorno para que el frontend y el backend puedan comunicarse con Supabase.
+
+##### A. Configurar el Frontend
+Crea el archivo [apps/web/.env](file:///home/ivan-romero-maurin/projects/versori/test-eccomers-turborepo/apps/web/.env):
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-de-supabase
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+API_URL=http://localhost:3001
+```
+
+##### B. Configurar el Backend
+Crea el archivo [apps/api/.env](file:///home/ivan-romero-maurin/projects/versori/test-eccomers-turborepo/apps/api/.env):
+```env
+PORT=3001
+NODE_ENV=development
+
+SUPABASE_URL=https://tu-proyecto.supabase.co
+SUPABASE_ANON_KEY=tu-anon-key-de-supabase
+SUPABASE_JWT_SECRET=tu-jwt-secret-de-supabase
+
+# NOTA: Consigue estas cadenas de conexión URI en la sección Settings > Database de tu panel de Supabase
+# DATABASE_URL: Usa el puerto del concentrador de conexiones (generalmente 6543)
+DATABASE_URL="postgresql://postgres.tu-proyecto:tu-contrasena@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+# DIRECT_URL: Se conecta de forma directa (puerto 5432) para las migraciones y schema push de Prisma
+DIRECT_URL="postgresql://postgres.tu-proyecto:tu-contrasena@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
+```
+
+#### 3. Compilar los paquetes internos compartidos
+Compila los paquetes compartidos del monorepo (como `@repo/types`) para evitar errores de módulos faltantes durante el inicio:
+```bash
+pnpm --filter @repo/types build
+```
+
+#### 4. Sincronizar el esquema con tu Base de Datos de Supabase
+Empuja el esquema de base de datos relacional definido en Prisma a tu nueva instancia de Supabase:
+```bash
+pnpm --filter @repo/api exec prisma db push
+```
+
+#### 5. Generar el cliente de Prisma
+Genera los tipos y el cliente de Prisma adaptados a tu backend:
+```bash
+pnpm --filter @repo/api exec prisma generate
+```
+
+#### 6. Levantar los servidores en desarrollo
+Ahora puedes iniciar tanto la web como el servidor NestJS en paralelo:
 ```bash
 pnpm dev
 ```
 
-| App | URL |
+| Aplicación | Dirección Local |
 |---|---|
-| **Frontend** | [http://localhost:3000](http://localhost:3000) |
-| **Backend** | [http://localhost:3001/api](http://localhost:3001/api) |
-| **API Docs (Swagger)** | [http://localhost:3001/docs](http://localhost:3001/docs) |
+| **Frontend (Next.js)** | [http://localhost:3000](http://localhost:3000) |
+| **Backend (NestJS)** | [http://localhost:3001/api](http://localhost:3001/api) |
+| **Documentación (Swagger)** | [http://localhost:3001/docs](http://localhost:3001/docs) |
 
 ---
 

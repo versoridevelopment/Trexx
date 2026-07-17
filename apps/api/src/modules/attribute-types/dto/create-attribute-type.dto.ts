@@ -1,17 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional } from 'class-validator';
+import { createZodDto } from 'nestjs-zod';
+import { AttributeTypeSchema } from '@repo/types';
 
-export class CreateAttributeTypeDto {
-  @ApiProperty({ example: 'Color' })
-  name: string;
-
-  @ApiProperty({ example: 'color' })
-  slug: string;
-
-  @ApiProperty({ example: 'products', required: false })
-  applies_to?: string;
-
-  @IsOptional()
-  @ApiProperty({ example: true, required: false })
-  is_active?: boolean;
-}
+export class CreateAttributeTypeDto extends createZodDto(
+  AttributeTypeSchema.omit({ id: true, created_at: true, is_active: true })
+) {}

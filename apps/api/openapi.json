@@ -2682,10 +2682,28 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           },
           "phone": {
-            "type": "string"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           }
         }
       },
@@ -2872,7 +2890,51 @@
       },
       "CreateProductDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "x-nestjs_zod-has-null": true
+          },
+          "price": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "x-nestjs_zod-has-null": true
+          },
+          "image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "category_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          }
+        },
+        "required": [
+          "name",
+          "price",
+          "category_id"
+        ]
       },
       "UpdateProductDto": {
         "type": "object",
@@ -2880,7 +2942,15 @@
       },
       "CreateProvinceDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "UpdateProvinceDto": {
         "type": "object",
@@ -2888,7 +2958,19 @@
       },
       "CreateCityDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "province_id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "province_id",
+          "name"
+        ]
       },
       "UpdateCityDto": {
         "type": "object",
@@ -2896,7 +2978,35 @@
       },
       "CreateOrderDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "total": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "x-nestjs_zod-has-null": true
+          },
+          "status_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          }
+        },
+        "required": [
+          "total",
+          "status_id"
+        ]
       },
       "UpdateOrderDto": {
         "type": "object",
@@ -2904,7 +3014,53 @@
       },
       "CreateOrderItemDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "order_id": {
+            "type": "",
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "product_id": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "quantity": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991,
+            "x-nestjs_zod-has-null": true
+          },
+          "price": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "x-nestjs_zod-has-null": true
+          },
+          "product_variant_id": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          }
+        },
+        "required": [
+          "order_id",
+          "quantity",
+          "price"
+        ]
       },
       "UpdateOrderItemDto": {
         "type": "object",
@@ -2912,7 +3068,39 @@
       },
       "CreateOrderShippingDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "order_id": {
+            "type": "",
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "recipient_name": {
+            "type": "string",
+            "minLength": 1,
+            "x-nestjs_zod-has-null": true
+          },
+          "address_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          }
+        },
+        "required": [
+          "order_id",
+          "recipient_name",
+          "address_id"
+        ]
       },
       "UpdateOrderShippingDto": {
         "type": "object",
@@ -2920,7 +3108,44 @@
       },
       "CreatePaymentDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "order_id": {
+            "type": "",
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "method_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          },
+          "status_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          },
+          "amount": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "x-nestjs_zod-has-null": true
+          }
+        },
+        "required": [
+          "order_id",
+          "method_id",
+          "status_id",
+          "amount"
+        ]
       },
       "UpdatePaymentDto": {
         "type": "object",
@@ -3004,17 +3229,25 @@
         "properties": {
           "product_id": {
             "type": "number",
-            "example": 1
+            "x-nestjs_zod-has-null": true
           },
           "rating": {
-            "type": "number",
-            "example": 5,
+            "type": "integer",
             "minimum": 1,
-            "maximum": 5
+            "maximum": 5,
+            "x-nestjs_zod-has-null": true
           },
           "comment": {
-            "type": "string",
-            "example": "Excelente producto"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           }
         },
         "required": [
@@ -3024,7 +3257,45 @@
       },
       "CreateAddressDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "x-nestjs_zod-has-null": true
+          },
+          "address_line": {
+            "type": "string",
+            "minLength": 1,
+            "x-nestjs_zod-has-null": true
+          },
+          "city_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          },
+          "postal_code_id": {
+            "type": "number",
+            "x-nestjs_zod-has-null": true
+          },
+          "is_default": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
+          }
+        },
+        "required": [
+          "user_id",
+          "address_line",
+          "city_id",
+          "postal_code_id"
+        ]
       },
       "UpdateAddressDto": {
         "type": "object",
@@ -3032,7 +3303,15 @@
       },
       "CreatePostalCodeDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "code"
+        ]
       },
       "UpdatePostalCodeDto": {
         "type": "object",
@@ -3040,7 +3319,15 @@
       },
       "CreatePaymentMethodDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "UpdatePaymentMethodDto": {
         "type": "object",
@@ -3048,7 +3335,15 @@
       },
       "CreatePaymentStatusDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "UpdatePaymentStatusDto": {
         "type": "object",
@@ -3056,7 +3351,15 @@
       },
       "CreateOrderStatusDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name"
+        ]
       },
       "UpdateOrderStatusDto": {
         "type": "object",
@@ -3139,23 +3442,49 @@
         "properties": {
           "product_id": {
             "type": "number",
-            "example": 1
+            "x-nestjs_zod-has-null": true
           },
           "sku": {
-            "type": "string",
-            "example": "SKU-001"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           },
           "price_modifier": {
-            "type": "number",
-            "example": 0
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           },
           "stock": {
-            "type": "number",
-            "example": 10
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "x-nestjs_zod-has-null": true
           },
           "is_active": {
-            "type": "boolean",
-            "example": true
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           }
         },
         "required": [
@@ -3168,23 +3497,49 @@
         "properties": {
           "product_id": {
             "type": "number",
-            "example": 1
+            "x-nestjs_zod-has-null": true
           },
           "sku": {
-            "type": "string",
-            "example": "SKU-001"
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           },
           "price_modifier": {
-            "type": "number",
-            "example": 0
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           },
           "stock": {
-            "type": "number",
-            "example": 10
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991,
+            "x-nestjs_zod-has-null": true
           },
           "is_active": {
-            "type": "boolean",
-            "example": true
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "x-nestjs_zod-has-null": true,
+            "x-nestjs_zod-empty-type": true
           }
         }
       },
@@ -3193,19 +3548,15 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "Color"
+            "minLength": 1
           },
           "slug": {
             "type": "string",
-            "example": "color"
+            "minLength": 1
           },
           "applies_to": {
-            "type": "string",
-            "example": "products"
-          },
-          "is_active": {
-            "type": "boolean",
-            "example": true
+            "default": "all",
+            "type": "string"
           }
         },
         "required": [
@@ -3218,19 +3569,15 @@
         "properties": {
           "name": {
             "type": "string",
-            "example": "Color"
+            "minLength": 1
           },
           "slug": {
             "type": "string",
-            "example": "color"
+            "minLength": 1
           },
           "applies_to": {
-            "type": "string",
-            "example": "products"
-          },
-          "is_active": {
-            "type": "boolean",
-            "example": true
+            "default": "all",
+            "type": "string"
           }
         }
       }

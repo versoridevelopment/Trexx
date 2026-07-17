@@ -1,14 +1,6 @@
-import { IsString, IsOptional } from 'class-validator';
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { createZodDto } from 'nestjs-zod';
+import { UserSchema } from '@repo/types';
 
-export class UpdateUserDto {
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  name?: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  phone?: string;
-}
+export class UpdateUserDto extends createZodDto(
+  UserSchema.pick({ name: true, phone: true }).partial()
+) {}

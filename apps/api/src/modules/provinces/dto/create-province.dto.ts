@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsString } from 'class-validator';
-import { Province } from '@repo/types';
+import { createZodDto } from 'nestjs-zod';
+import { ProvinceSchema } from '@repo/types';
 
-export class CreateProvinceDto implements Omit<Province, 'id' | 'is_active'> {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-}
+export class CreateProvinceDto extends createZodDto(
+  ProvinceSchema.omit({ id: true, is_active: true })
+) {}

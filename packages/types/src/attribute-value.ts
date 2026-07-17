@@ -1,7 +1,11 @@
-export interface AttributeValue {
-  id: number;
-  attribute_type_id: number;
-  value: string;
-  display_order: number | null;
-  is_active: boolean
-}
+import { z } from 'zod';
+
+export const AttributeValueSchema = z.object({
+  id: z.number(),
+  attribute_type_id: z.number(),
+  value: z.string().min(1, 'Value is required'),
+  display_order: z.number().nullable().optional(),
+  is_active: z.boolean().default(true),
+});
+
+export type AttributeValue = z.infer<typeof AttributeValueSchema>;

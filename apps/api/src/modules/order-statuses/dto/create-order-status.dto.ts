@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsString } from 'class-validator';
-import { OrderStatus } from '@repo/types';
+import { createZodDto } from 'nestjs-zod';
+import { OrderStatusSchema } from '@repo/types';
 
-export class CreateOrderStatusDto implements Omit<OrderStatus, 'id' | 'is_active'> {
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-}
+export class CreateOrderStatusDto extends createZodDto(
+  OrderStatusSchema.omit({ id: true, is_active: true })
+) {}

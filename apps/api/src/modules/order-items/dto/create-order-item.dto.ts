@@ -1,24 +1,6 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { OrderItem } from '@repo/types';
+import { createZodDto } from 'nestjs-zod';
+import { OrderItemSchema } from '@repo/types';
 
-export class CreateOrderItemDto implements Omit<OrderItem, 'id' | 'is_active'> {
-  @IsNotEmpty()
-  order_id: bigint;
-
-  @IsOptional()
-  @IsNumber()
-  product_id: number | null;
-
-  @IsNotEmpty()
-  @IsNumber()
-  quantity: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  price: number;
-
-  @IsOptional()
-  @IsNumber()
-  product_variant_id: number | null;
-}
-
+export class CreateOrderItemDto extends createZodDto(
+  OrderItemSchema.omit({ id: true, is_active: true })
+) {}
