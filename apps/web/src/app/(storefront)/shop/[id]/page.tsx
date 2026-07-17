@@ -157,7 +157,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     id: product.id,
                     name: product.name,
                     price: Number(product.price),
-                    image: product.image
+                    image: product.product_images?.find((img) => img.is_primary)?.url || product.product_images?.[0]?.url || (product as { image?: string | null }).image || null
                   }}
                   disabled={stockDisponible.length === 0 && product.categories?.slug !== 'accesorios'}
                 />
