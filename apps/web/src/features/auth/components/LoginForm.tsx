@@ -2,94 +2,153 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { login } from '../actions/login'
+import { createClient } from '@/shared/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Eye, EyeOff } from 'lucide-react'
 
 export function LoginForm() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get('redirectTo') || '/'
+  const supabase = createClient()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
     const formData = new FormData(e.currentTarget)
-    const res = await login({
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-    })
+    const res = await login(
+      {
+        email: formData.get('email') as string,
+        password: formData.get('password') as string,
+      },
+      redirectTo
+    )
     if (res?.error) setError(res.error)
     setLoading(false)
   }
 
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({ 
+      provider: 'google', 
+      options: { 
+        redirectTo: `${window.location.origin}/auth/callback?next=${redirectTo}` 
+      } 
+    })
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <Card className="w-full max-w-sm border-border">
-        <CardHeader className="space-y-1 pb-6">
-          <CardTitle className="text-xl font-light tracking-wide">
-            Iniciar sesión
-          </CardTitle>
-          <CardDescription className="text-xs tracking-wide">
-            Ingresá tus credenciales para continuar
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {error && (
-            <p className="text-xs text-destructive border border-destructive/20 bg-destructive/5 px-3 py-2">
+    <div className="w-full">
+      <div className="space-y-2 mb-10">
+        <h1 className="text-4xl font-black italic tracking-tighter uppercase text-white">
+          Iniciar sesión
+        </h1>
+        <p className="text-[11px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+          Ingresá a tu cuenta
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {error && (
+          <div className="border border-trexx-red/50 bg-trexx-red/10 px-4 py-3 rounded-sm">
+            <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-trexx-red">
               {error}
             </p>
-          )}
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-xs tracking-widest uppercase">
-              Email
+          </div>
+        )}
+        
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">
+              Correo Electrónico
             </Label>
             <Input
               id="email"
               name="email"
               type="email"
               required
-              placeholder="nombre@ejemplo.com"
+              placeholder="TUNOMBRE@EMAIL.COM"
+              className="h-12 bg-black border-border rounded-sm text-[11px] font-bold tracking-[0.1em] text-white focus:border-trexx-volt focus:ring-1 focus:ring-trexx-volt transition-all placeholder:text-muted-foreground/50"
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="password" className="text-xs tracking-widest uppercase">
-              Contraseña
-            </Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              required
-              placeholder="••••••••"
-            />
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password" className="text-[10px] font-bold tracking-[0.2em] uppercase text-white">
+                Contraseña
+              </Label>
+              <Link href="/forgot-password" className="text-[9px] font-bold tracking-[0.2em] uppercase text-trexx-volt hover:text-white transition-colors">
+                ¿OLVIDASTE TU CLAVE?
+              </Link>
+            </div>
+            <div className="relative">
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                required
+                placeholder="••••••••"
+                className="h-12 bg-black border-border rounded-sm text-[11px] font-bold tracking-[0.1em] text-white focus:border-trexx-volt focus:ring-1 focus:ring-trexx-volt transition-all placeholder:text-muted-foreground/50 pr-10"
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-trexx-volt transition-colors">
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4 pt-2">
-          <Button
-            type="submit"
-            className="w-full text-xs tracking-widest uppercase"
-            disabled={loading}
-          >
-            {loading ? 'Ingresando...' : 'Iniciar sesión'}
-          </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            ¿No tenés cuenta?{' '}
-            <Link href="/register" className="text-foreground hover:underline underline-offset-4">
-              Registrate
+        </div>
+
+        <Button
+          type="submit"
+          className="w-full h-14 bg-trexx-volt text-black hover:bg-trexx-red hover:text-white hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] text-[12px] font-black italic tracking-[0.2em] uppercase transition-all duration-300 rounded-sm"
+          disabled={loading}
+        >
+          {loading ? 'INGRESANDO...' : 'INICIAR SESIÓN'}
+        </Button>
+      </form>
+
+      {/* OAuth & Guest Options */}
+      <div className="mt-8 space-y-6">
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-border" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-[#050505] px-4 text-[9px] font-bold tracking-[0.3em] text-muted-foreground">
+              O INGRESÁ CON
+            </span>
+          </div>
+        </div>
+
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={handleGoogleLogin}
+          className="w-full h-12 bg-black border-border hover:border-trexx-volt hover:bg-black text-white text-[10px] font-bold tracking-[0.2em] uppercase rounded-sm transition-colors flex items-center justify-center gap-3"
+        >
+          <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          GOOGLE
+        </Button>
+
+        <div className="pt-4 flex flex-col items-center gap-4">
+          <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-muted-foreground">
+            ¿NO SOS DEL CLUB?{' '}
+            <Link href="/register" className="text-white hover:text-trexx-volt transition-colors">
+              SUMATE ACÁ
             </Link>
           </p>
-        </CardFooter>
-      </Card>
-    </form>
+        </div>
+      </div>
+    </div>
   )
 }

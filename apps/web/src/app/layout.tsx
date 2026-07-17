@@ -1,14 +1,17 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import { Navbar } from '@/shared/components/layout'
 import { Footer } from '@/shared/components/layout'
+import { Preloader } from '@/shared/components/ui/Preloader'
+import { CartProvider } from '@/features/cart/context/CartContext'
+import { Toaster } from 'sonner'
 import './globals.css'
 
-const geist = Geist({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'ALEXANDRIA',
-  description: 'Diseño de autor & Perfumería fina',
+  title: 'Trexx Padel Store',
+  description: 'Tienda oficial de productos deportivos y equipamiento Trexx',
 }
 
 export default function RootLayout({
@@ -18,14 +21,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark">
-      <body className={`${geist.className} bg-background text-foreground antialiased`}>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1">
+      <body className={`${inter.variable} bg-background text-foreground antialiased`}>
+        <Preloader />
+        <CartProvider>
+          <div className="flex flex-col min-h-screen">
             {children}
-          </main>
-          <Footer />
-        </div>
+          </div>
+          <Toaster theme="dark" position="bottom-right" richColors closeButton />
+        </CartProvider>
       </body>
     </html>
   )

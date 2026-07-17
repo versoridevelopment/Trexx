@@ -11,9 +11,19 @@ export class ProductsService {
     private readonly storageService: StorageService
   ) {}
 
+  // Mapeador auxiliar para inyectar la propiedad `image` retrocompatible
+  private mapProduct(record: any) {
+    if (!record) return record
+    return {
+      ...record,
+      image: record.product_images?.[0]?.url || null,
+    }
+  }
+
   // Endpoint público: solo productos activos
-  public findAll(categorySlug?: string) {
-    return this.repository.findAll(categorySlug)
+  public async findAll(categorySlug?: string) {
+    const records = await this.repository.findAll(categorySlug)
+    return records.map((r) => this.mapProduct(r))
   }
 
   // Endpoint público: lanza 404 si no existe o está inactivo
@@ -22,19 +32,20 @@ export class ProductsService {
     if (!record || !record.is_active) {
       throw new NotFoundException(`Producto #${id} no encontrado`)
     }
-    return record
+    return this.mapProduct(record)
   }
 
   // Admin: ve todos, activos e inactivos
-  public findAllAdmin(includeInactive = false) {
-    return this.repository.findAllAdmin(includeInactive)
+  public async findAllAdmin(includeInactive = false) {
+    const records = await this.repository.findAllAdmin(includeInactive)
+    return records.map((r) => this.mapProduct(r))
   }
 
   // Admin: ve el producto aunque esté inactivo
   public async findOneAdmin(id: number) {
     const record = await this.repository.findOneAdmin(id)
     if (!record) throw new NotFoundException(`Producto #${id} no encontrado`)
-    return record
+    return this.mapProduct(record)
   }
 
   public async create(input: {
@@ -98,7 +109,8 @@ export class ProductsService {
       },
     }
 
-    return this.repository.create(productData)
+    const created = await this.repository.create(productData)
+    return this.mapProduct(created)
   }
 
   public async update(
@@ -172,13 +184,15 @@ export class ProductsService {
       }
     }
 
-    return this.repository.update(id, dataToUpdate)
+    const updated = await this.repository.update(id, dataToUpdate)
+    return this.mapProduct(updated)
   }
 
   // Borrado lógico
   public async remove(id: number) {
     await this.findOneAdmin(id)
-    return this.repository.updateActiveStatus(id, false)
+    const record = await this.repository.updateActiveStatus(id, false)
+    return this.mapProduct(record)
   }
 
   // Reactivar
@@ -186,6 +200,7 @@ export class ProductsService {
     const record = await this.repository.findOneAdmin(id)
     if (!record) throw new NotFoundException(`Producto #${id} no encontrado`)
     if (record.is_active) throw new BadRequestException(`El producto #${id} ya está activo`)
-    return this.repository.updateActiveStatus(id, true)
+    const restored = await this.repository.updateActiveStatus(id, true)
+    return this.mapProduct(restored)
   }
 }

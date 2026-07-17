@@ -13,48 +13,41 @@ export function CategoryFilter({ categories, selected }: CategoryFilterProps) {
 
   const handleFilter = (slug?: string) => {
     if (slug) {
-      router.push(`/products?category=${slug}`)
+      router.push(`/shop?category=${slug}`)
     } else {
-      router.push('/products')
+      router.push('/shop')
     }
   }
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-[10px] tracking-[0.2em] font-semibold uppercase text-foreground mb-6">
-        Categorías
-      </h3>
-      <div className="flex flex-col gap-4">
-        <button
-          onClick={() => handleFilter()}
-          className={`text-left text-xs tracking-[0.1em] transition-all duration-300 flex items-center justify-between group ${
-            !selected
-              ? 'text-foreground font-medium'
-              : 'text-muted-foreground hover:text-foreground'
-          }`}
-        >
-          <span className="relative">
-            Todos
-            <span className={`absolute -bottom-1 left-0 h-[1px] bg-foreground transition-all duration-300 ${!selected ? 'w-full' : 'w-0 group-hover:w-full'}`} />
-          </span>
-        </button>
-        {categories.map((cat) => (
+    <div className="w-full flex flex-wrap items-center gap-3 animate-enter">
+      <button
+        onClick={() => handleFilter()}
+        className={`px-6 py-2 text-[11px] font-bold tracking-[0.2em] uppercase rounded-full transition-all duration-300 border ${
+          !selected
+            ? 'border-trexx-volt bg-trexx-volt text-black shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+            : 'border-border bg-transparent text-muted-foreground hover:border-white/40 hover:text-white'
+        }`}
+      >
+        Todo el Catálogo
+      </button>
+      
+      {categories.map((cat) => {
+        const isActive = selected === cat.slug
+        return (
           <button
             key={cat.id}
             onClick={() => handleFilter(cat.slug)}
-            className={`text-left text-xs tracking-[0.1em] transition-all duration-300 flex items-center justify-between group ${
-              selected === cat.slug
-                ? 'text-foreground font-medium'
-                : 'text-muted-foreground hover:text-foreground'
+            className={`px-6 py-2 text-[11px] font-bold tracking-[0.2em] uppercase rounded-full transition-all duration-300 border ${
+              isActive
+                ? 'border-trexx-volt bg-trexx-volt text-black shadow-[0_0_15px_rgba(204,255,0,0.3)]'
+                : 'border-border bg-transparent text-muted-foreground hover:border-white/40 hover:text-white'
             }`}
           >
-            <span className="relative">
-              {cat.name}
-              <span className={`absolute -bottom-1 left-0 h-[1px] bg-foreground transition-all duration-300 ${selected === cat.slug ? 'w-full' : 'w-0 group-hover:w-full'}`} />
-            </span>
+            {cat.name}
           </button>
-        ))}
-      </div>
+        )
+      })}
     </div>
   )
 }

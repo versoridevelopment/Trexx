@@ -1,13 +1,18 @@
 import { LoginForm } from '@/features/auth/components/LoginForm'
+import { LoginToast } from '@/features/auth/components/LoginToast'
+import { Suspense } from 'react'
 
 export const metadata = {
-  title: 'Sign In | Our App',
-  description: 'Sign in to your account',
+  title: 'Iniciar sesión | Trexx Padel',
+  description: 'Ingresá a tu cuenta',
 }
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-1 items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
+    <div className="w-full">
+      <Suspense fallback={null}>
+        <LoginToast />
+      </Suspense>
       <LoginForm />
     </div>
   )
