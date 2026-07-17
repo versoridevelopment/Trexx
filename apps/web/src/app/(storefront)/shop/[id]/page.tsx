@@ -8,6 +8,7 @@ import { ReviewList } from '@/features/reviews/components/ReviewList'
 import { ReviewForm } from '@/features/reviews/components/ReviewForm'
 import { StarRating } from '@/features/reviews/components/StarRating'
 import { RecommendedCarousel } from '@/features/products/components/RecommendedCarousel'
+import { ProductGallery } from '@/features/products/components/ProductGallery'
 import { AddToCartButton } from '@/features/cart/components/AddToCartButton'
 import { ArrowLeft } from 'lucide-react'
 
@@ -70,26 +71,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
         {/* Product Main Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
           
-          {/* Left Column: Image (7/12) */}
-          <div className="lg:col-span-7 space-y-8 animate-enter" style={{ animationDelay: '150ms' }}>
-            <div className="relative aspect-[4/5] overflow-hidden group flex items-center justify-center">
-              {/* Neon Glow behind the product */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-trexx-volt/20 rounded-full blur-[100px] pointer-events-none transition-opacity duration-700 group-hover:opacity-60" />
-              
-              {product.image ? (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="relative z-10 w-full h-full object-contain p-8 drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)]"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center relative z-10">
-                  <span className="text-xs text-muted-foreground tracking-[0.2em] uppercase font-bold">
-                    Sin foto disponible
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* Left Column: Image Gallery (7/12) */}
+          <div className="lg:col-span-7 animate-enter" style={{ animationDelay: '150ms' }}>
+            <ProductGallery
+              images={product.product_images}
+              fallbackImage={product.image}
+              name={product.name}
+            />
           </div>
 
           {/* Right Column: Info & Actions (5/12) - Sticky */}
