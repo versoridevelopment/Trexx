@@ -8,10 +8,22 @@ import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
+import { CheckoutOrderDto } from './dto/checkout-order.dto';
+
 @ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly service: OrdersService) {}
+
+  @UseGuards(SupabaseAuthGuard)
+  @ApiBearerAuth()
+  @Post('checkout')
+  checkout(@Body() dto: CheckoutOrderDto, @CurrentUser() user: any) {
+    if (!user || !user.sub) {
+      throw new Error('User not found');
+    }
+    return this.service.checkout(user.sub, dto);
+  }
 
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()

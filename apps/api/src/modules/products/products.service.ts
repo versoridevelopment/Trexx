@@ -7,15 +7,27 @@ import { UpdateProductDto } from './dto/update-product.dto'
 export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  // Mapeador auxiliar para inyectar la propiedad `image`
+  private mapProduct(record: any) {
+    if (!record) return record
+    return {
+      ...record,
+      image: record.product_images?.[0]?.url || null,
+      // Opcional: removemos product_images para no ensuciar el payload si no se usa
+      // product_images: undefined 
+    }
+  }
+
   // Endpoint público: solo productos activos
-  findAll(categorySlug?: string) {
-    return this.prisma.products.findMany({
+  async findAll(categorySlug?: string) {
+    const records = await this.prisma.products.findMany({
       where: {
         is_active: true,
         ...(categorySlug ? { categories: { slug: categorySlug } } : {})
       },
       include: {
         categories: true,
+        product_images: true, // Incluimos las imágenes
         product_variants: {
           where: { is_active: true },
           include: {
@@ -29,6 +41,7 @@ export class ProductsService {
       },
       orderBy: { created_at: 'desc' }
     })
+    return records.map(this.mapProduct)
   }
 
   // Endpoint público: lanza 404 si no existe o está inactivo
@@ -37,6 +50,7 @@ export class ProductsService {
       where: { id },
       include: {
         categories: true,
+        product_images: true,
         product_variants: {
           where: { is_active: true },
           include: {
@@ -52,15 +66,16 @@ export class ProductsService {
     if (!record || !record.is_active) {
       throw new NotFoundException(`Product #${id} not found`)
     }
-    return record
+    return this.mapProduct(record)
   }
 
   // Admin: ve todos, activos e inactivos
-  findAllAdmin(includeInactive = false) {
-    return this.prisma.products.findMany({
+  async findAllAdmin(includeInactive = false) {
+    const records = await this.prisma.products.findMany({
       where: includeInactive ? {} : { is_active: true },
       include: {
         categories: true,
+        product_images: true,
         product_variants: {
           include: {
             variant_attributes: {
@@ -73,6 +88,7 @@ export class ProductsService {
       },
       orderBy: { created_at: 'desc' }
     })
+    return records.map(this.mapProduct)
   }
 
   // Admin: ve el producto aunque esté inactivo
@@ -81,6 +97,7 @@ export class ProductsService {
       where: { id },
       include: {
         categories: true,
+        product_images: true,
         product_variants: {
           include: {
             variant_attributes: {
@@ -93,7 +110,7 @@ export class ProductsService {
       }
     })
     if (!record) throw new NotFoundException(`Product #${id} not found`)
-    return record
+    return this.mapProduct(record)
   }
 
   create(dto: CreateProductDto) {
