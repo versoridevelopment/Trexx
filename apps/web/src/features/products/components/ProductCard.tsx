@@ -9,7 +9,7 @@ export function ProductCard({ product }: ProductCardProps) {
   const coverImage =
     product.product_images?.find((img) => img.is_primary)?.url ||
     product.product_images?.[0]?.url ||
-    product.image ||
+    (product as { image?: string | null }).image ||
     null
 
   return (
