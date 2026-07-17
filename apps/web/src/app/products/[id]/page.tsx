@@ -9,6 +9,7 @@ import { ReviewList } from '@/features/reviews/components/ReviewList'
 import { ReviewForm } from '@/features/reviews/components/ReviewForm'
 import { StarRating } from '@/features/reviews/components/StarRating'
 import { RecommendedCarousel } from '@/features/products/components/RecommendedCarousel'
+import { ProductGallery } from '@/features/products/components/ProductGallery'
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -69,21 +70,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
         
         {/* Left Column: Image (7/12) */}
         <div className="lg:col-span-7 space-y-8">
-          <div className="aspect-[4/5] bg-[#F5F5F5] overflow-hidden">
-            {product.image ? (
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <span className="text-xs text-muted-foreground tracking-[0.2em] uppercase font-light">
-                  Sin imagen disponible
-                </span>
-              </div>
-            )}
-          </div>
+          <ProductGallery
+            images={product.product_images ?? []}
+            name={product.name}
+          />
           
           {/* Mobile Info (Visible only on small screens) */}
           <div className="lg:hidden space-y-6">

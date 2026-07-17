@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { Card, CardContent } from '@/components/ui/card'
 import type { Product } from '../types/product.types'
 
 interface ProductCardProps {
@@ -7,14 +6,18 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const coverImage = product.product_images?.find(img => img.is_primary)?.url
+    || product.product_images?.[0]?.url
+    || null
+
   return (
     <Link href={`/products/${product.id}`} className="group block">
       <div className="space-y-4">
         {/* Image Container */}
         <div className="relative aspect-[3/4] bg-[#F5F5F5] overflow-hidden">
-          {product.image ? (
+          {coverImage ? (
             <img
-              src={product.image}
+              src={coverImage}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />

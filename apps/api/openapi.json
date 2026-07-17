@@ -198,9 +198,41 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/CreateProductDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nombre del producto"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Precio del producto"
+                  },
+                  "category_id": {
+                    "type": "integer",
+                    "description": "ID de la categoría"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descripción opcional del producto"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Archivos de imagen del producto"
+                  }
+                },
+                "required": [
+                  "name",
+                  "price",
+                  "category_id",
+                  "images"
+                ]
               }
             }
           }
@@ -264,9 +296,35 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateProductDto"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nuevo nombre del producto"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Nuevo precio del producto"
+                  },
+                  "category_id": {
+                    "type": "integer",
+                    "description": "Nuevo ID de la categoría"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Nueva descripción opcional del producto"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "description": "Nuevos archivos de imagen del producto a reemplazar"
+                  }
+                }
               }
             }
           }
@@ -2822,6 +2880,39 @@
           "variant_attributes"
         ]
       },
+      "ProductImage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "product_id": {
+            "type": "number",
+            "example": 1
+          },
+          "url": {
+            "type": "string",
+            "example": "https://example.com/image.png"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "example": false
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2026-04-10T00:00:00.000Z",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "product_id",
+          "url",
+          "is_primary",
+          "created_at"
+        ]
+      },
       "Product": {
         "type": "object",
         "properties": {
@@ -2836,11 +2927,6 @@
           "price": {
             "type": "number",
             "example": 25.99
-          },
-          "image": {
-            "type": "string",
-            "example": "https://example.com/image.png",
-            "nullable": true
           },
           "description": {
             "type": "string",
@@ -2873,72 +2959,26 @@
             "items": {
               "$ref": "#/components/schemas/ProductVariant"
             }
+          },
+          "product_images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductImage"
+            }
           }
         },
         "required": [
           "id",
           "name",
           "price",
-          "image",
           "description",
           "category_id",
           "created_at",
           "is_active",
           "categories",
-          "product_variants"
+          "product_variants",
+          "product_images"
         ]
-      },
-      "CreateProductDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "x-nestjs_zod-has-null": true
-          },
-          "price": {
-            "type": "number",
-            "exclusiveMinimum": 0,
-            "x-nestjs_zod-has-null": true
-          },
-          "image": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "x-nestjs_zod-has-null": true,
-            "x-nestjs_zod-empty-type": true
-          },
-          "description": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "x-nestjs_zod-has-null": true,
-            "x-nestjs_zod-empty-type": true
-          },
-          "category_id": {
-            "type": "number",
-            "x-nestjs_zod-has-null": true
-          }
-        },
-        "required": [
-          "name",
-          "price",
-          "category_id"
-        ]
-      },
-      "UpdateProductDto": {
-        "type": "object",
-        "properties": {}
       },
       "CreateProvinceDto": {
         "type": "object",

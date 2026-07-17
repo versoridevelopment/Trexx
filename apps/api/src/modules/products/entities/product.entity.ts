@@ -59,6 +59,23 @@ export class ProductCategory {
   slug: string
 }
 
+export class ProductImage {
+  @ApiProperty({ example: 1 })
+  id: number
+
+  @ApiProperty({ example: 1 })
+  product_id: number
+
+  @ApiProperty({ example: 'https://example.com/image.png' })
+  url: string
+
+  @ApiProperty({ example: false })
+  is_primary: boolean
+
+  @ApiProperty({ example: '2026-04-10T00:00:00.000Z', nullable: true, type: () => String })
+  created_at: Date | null
+}
+
 export class Product implements ProductInterface {
   @ApiProperty({ example: 1 })
   id: number
@@ -68,9 +85,6 @@ export class Product implements ProductInterface {
 
   @ApiProperty({ example: 25.99 })
   price: number
-
-  @ApiProperty({ example: 'https://example.com/image.png', nullable: true, type: () => String })
-  image: string | null
 
   @ApiProperty({ example: 'Descripción del producto', nullable: true, type: () => String })
   description: string | null
@@ -89,5 +103,8 @@ export class Product implements ProductInterface {
 
   @ApiProperty({ type: () => [ProductVariant] })
   product_variants?: ProductVariant[]
+
+  @ApiProperty({ type: () => [ProductImage] })
+  product_images: ProductImage[]
 }
 

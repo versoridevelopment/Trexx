@@ -5,12 +5,15 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { DomainExceptionFilter } from './common/filters/domain-exception.filter';
 import { writeFileSync } from 'fs';
+import contentParser from '@fastify/multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter()
   );
+
+  await app.register(contentParser);
 
   app.setGlobalPrefix('api');
 

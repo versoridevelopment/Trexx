@@ -621,7 +621,6 @@ model products {
   id               Int                @id @default(autoincrement())
   name             String
   price            Decimal            @db.Decimal(10, 2)
-  image            String?
   description      String?
   created_at       DateTime?          @default(now()) @db.Timestamptz(6)
   category_id      Int                @default(1)
@@ -630,6 +629,19 @@ model products {
   product_variants product_variants[]
   categories       categories         @relation(fields: [category_id], references: [id], onUpdate: NoAction)
   reviews          reviews[]
+  product_images   product_images[]
+
+  @@schema("public")
+}
+
+model product_images {
+  id         Int      @id @default(autoincrement())
+  product_id Int
+  url        String
+  is_primary Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade)
 
   @@schema("public")
 }

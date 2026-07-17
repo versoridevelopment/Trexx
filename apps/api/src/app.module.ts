@@ -10,6 +10,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './modules/users/users.module';
 import { ProductsModule } from './modules/products/products.module';
 import { ProvincesModule } from './modules/provinces/provinces.module';
+import { StorageModule } from './modules/storage/storage.module';
 
 import { CitysModule } from './modules/cities/cities.module';
 import { OrdersModule } from './modules/orders/orders.module';
@@ -39,6 +40,7 @@ import { AttributeTypesModule } from './modules/attribute-types/attribute-types.
     UsersModule,
     ProductsModule,
     ProvincesModule,
+    StorageModule,
 
     CitysModule,
     OrdersModule,

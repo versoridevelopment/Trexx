@@ -36,6 +36,54 @@ export interface paths {
         patch: operations["UsersController_updateMe"];
         trace?: never;
     };
+    "/api/users/admin/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UsersController_findAllAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["UsersController_remove"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["UsersController_restore"];
+        trace?: never;
+    };
     "/api/products": {
         parameters: {
             query?: never;
@@ -66,6 +114,54 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["ProductsController_update"];
+        trace?: never;
+    };
+    "/api/products/admin/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_findAllAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/admin/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_findOneAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ProductsController_restore"];
         trace?: never;
     };
     "/api/provinces": {
@@ -132,22 +228,6 @@ export interface paths {
         patch: operations["CitysController_update"];
         trace?: never;
     };
-    "/api/orders/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["OrdersController_findMe"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/orders": {
         parameters: {
             query?: never;
@@ -178,6 +258,38 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["OrdersController_update"];
+        trace?: never;
+    };
+    "/api/orders/admin/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["OrdersController_findAllAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/orders/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["OrdersController_restore"];
         trace?: never;
     };
     "/api/order_items": {
@@ -276,7 +388,7 @@ export interface paths {
         patch: operations["PaymentsController_update"];
         trace?: never;
     };
-    "/api/reviews": {
+    "/api/reviews/product/{productId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -284,6 +396,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["ReviewsController_findByProduct"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
         put?: never;
         post: operations["ReviewsController_create"];
         delete?: never;
@@ -306,6 +434,38 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/admin/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ReviewsController_findAllAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/reviews/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ReviewsController_restore"];
         trace?: never;
     };
     "/api/addresses/me": {
@@ -507,7 +667,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["CategoriesController_findOne"];
+        get: operations["CategoriesController_findBySlug"];
         put?: never;
         post?: never;
         delete?: never;
@@ -530,6 +690,38 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["CategoriesController_update"];
+        trace?: never;
+    };
+    "/api/categories/admin/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["CategoriesController_findAllAdmin"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/categories/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["CategoriesController_restore"];
         trace?: never;
     };
     "/api/product-variants": {
@@ -564,6 +756,22 @@ export interface paths {
         patch: operations["ProductVariantsController_update"];
         trace?: never;
     };
+    "/api/product-variants/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ProductVariantsController_restore"];
+        trace?: never;
+    };
     "/api/attribute-types": {
         parameters: {
             query?: never;
@@ -596,6 +804,22 @@ export interface paths {
         patch: operations["AttributeTypesController_update"];
         trace?: never;
     };
+    "/api/attribute-types/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["AttributeTypesController_restore"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -620,11 +844,13 @@ export interface components {
             phone?: string | null;
             /** @example 2026-04-10T05:27:56.077Z */
             createdAt?: string | null;
+            /** @example true */
+            is_active: boolean;
             user_roles?: components["schemas"]["UserRoleEntity"][];
         };
         UpdateUserDto: {
-            name?: string;
-            phone?: string;
+            name?: string | null;
+            phone?: string | null;
         };
         ProductCategory: {
             /** @example 1 */
@@ -661,7 +887,21 @@ export interface components {
             price_modifier: Record<string, never>;
             /** @example 10 */
             stock: number;
+            /** @example true */
+            is_active: boolean;
             variant_attributes: components["schemas"]["VariantAttribute"][];
+        };
+        ProductImage: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            product_id: number;
+            /** @example https://example.com/image.png */
+            url: string;
+            /** @example false */
+            is_primary: boolean;
+            /** @example 2026-04-10T00:00:00.000Z */
+            created_at: string | null;
         };
         Product: {
             /** @example 1 */
@@ -670,30 +910,55 @@ export interface components {
             name: string;
             /** @example 25.99 */
             price: number;
-            /** @example https://example.com/image.png */
-            image: string | null;
             /** @example Descripción del producto */
             description: string | null;
             /** @example 1 */
             category_id: number;
             /** @example 2026-04-10T00:00:00.000Z */
             created_at: string | null;
+            /** @example true */
+            is_active: boolean;
             categories: components["schemas"]["ProductCategory"] | null;
             product_variants: components["schemas"]["ProductVariant"][];
+            product_images: components["schemas"]["ProductImage"][];
         };
-        CreateProductDto: Record<string, never>;
-        UpdateProductDto: Record<string, never>;
-        CreateProvinceDto: Record<string, never>;
+        CreateProvinceDto: {
+            name: string;
+        };
         UpdateProvinceDto: Record<string, never>;
-        CreateCityDto: Record<string, never>;
+        CreateCityDto: {
+            province_id: number;
+            name: string;
+        };
         UpdateCityDto: Record<string, never>;
-        CreateOrderDto: Record<string, never>;
+        CreateOrderDto: {
+            user_id?: string | null;
+            total: number;
+            status_id: number;
+        };
         UpdateOrderDto: Record<string, never>;
-        CreateOrderItemDto: Record<string, never>;
+        CreateOrderItemDto: {
+            order_id: Record<string, never>;
+            product_id?: number | null;
+            quantity: number;
+            price: number;
+            product_variant_id?: number | null;
+        };
         UpdateOrderItemDto: Record<string, never>;
-        CreateOrderShippingDto: Record<string, never>;
+        CreateOrderShippingDto: {
+            order_id: Record<string, never>;
+            recipient_name: string;
+            address_id: number;
+            notes?: string | null;
+        };
         UpdateOrderShippingDto: Record<string, never>;
-        CreatePaymentDto: Record<string, never>;
+        CreatePaymentDto: {
+            order_id: Record<string, never>;
+            method_id: number;
+            status_id: number;
+            external_id?: string | null;
+            amount: number;
+        };
         UpdatePaymentDto: Record<string, never>;
         ReviewUser: {
             /** @example 4539152d-031b-41c4-8ef8-c419e8b5f84a */
@@ -714,93 +979,80 @@ export interface components {
             comment: string | null;
             /** @example 2026-04-10T00:00:00.000Z */
             created_at: string | null;
+            /** @example true */
+            is_active: boolean;
             users: components["schemas"]["ReviewUser"] | null;
         };
         CreateReviewDto: {
-            /** @example 1 */
             product_id: number;
-            /** @example 5 */
             rating: number;
-            /** @example Excelente producto */
-            comment?: Record<string, never>;
+            comment?: string | null;
         };
-        CreateAddressDto: Record<string, never>;
+        CreateAddressDto: {
+            /** Format: uuid */
+            user_id: string;
+            address_line: string;
+            city_id: number;
+            postal_code_id: number;
+            is_default?: boolean | null;
+        };
         UpdateAddressDto: Record<string, never>;
-        CreatePostalCodeDto: Record<string, never>;
-        UpdatePostalCodeDto: Record<string, never>;
-        CreatePaymentMethodDto: Record<string, never>;
-        UpdatePaymentMethodDto: Record<string, never>;
-        CreatePaymentStatusDto: Record<string, never>;
-        UpdatePaymentStatusDto: Record<string, never>;
-        CreateOrderStatusDto: Record<string, never>;
-        UpdateOrderStatusDto: Record<string, never>;
-        Category: {
-            /** @example 1 */
-            id: number;
-            /** @example Remeras */
-            name: string;
-            /** @example remeras */
-            slug: string;
-            /** @example Remeras y camisetas */
-            description: string | null;
-            /** @example 2026-04-10T00:00:00.000Z */
-            created_at: string | null;
+        CreatePostalCodeDto: {
+            code: string;
         };
-        CreateCategoryDto: {
-            /** @example Electronics */
+        UpdatePostalCodeDto: Record<string, never>;
+        CreatePaymentMethodDto: {
             name: string;
-            /** @example electronics */
+        };
+        UpdatePaymentMethodDto: Record<string, never>;
+        CreatePaymentStatusDto: {
+            name: string;
+        };
+        UpdatePaymentStatusDto: Record<string, never>;
+        CreateOrderStatusDto: {
+            name: string;
+        };
+        UpdateOrderStatusDto: Record<string, never>;
+        Category: Record<string, never>;
+        CreateCategoryDto: {
+            name: string;
             slug: string;
-            /** @example Electronic gadgets and devices */
-            description?: string;
+            description?: string | null;
+            /** @default true */
+            is_active: boolean;
         };
         UpdateCategoryDto: {
-            /** @example Electronics */
             name?: string;
-            /** @example electronics */
             slug?: string;
-            /** @example Electronic gadgets and devices */
-            description?: string;
+            description?: string | null;
+            /** @default true */
+            is_active: boolean;
         };
         CreateProductVariantDto: {
-            /** @example 1 */
             product_id: number;
-            /** @example SKU-001 */
-            sku?: string;
-            /** @example 0 */
-            price_modifier?: number;
-            /** @example 10 */
+            sku?: string | null;
+            price_modifier?: number | null;
             stock: number;
-            /** @example true */
-            is_active?: boolean;
+            is_active?: boolean | null;
         };
         UpdateProductVariantDto: {
-            /** @example 1 */
             product_id?: number;
-            /** @example SKU-001 */
-            sku?: string;
-            /** @example 0 */
-            price_modifier?: number;
-            /** @example 10 */
+            sku?: string | null;
+            price_modifier?: number | null;
             stock?: number;
-            /** @example true */
-            is_active?: boolean;
+            is_active?: boolean | null;
         };
         CreateAttributeTypeDto: {
-            /** @example Color */
             name: string;
-            /** @example color */
             slug: string;
-            /** @example products */
-            applies_to?: string;
+            /** @default all */
+            applies_to: string;
         };
         UpdateAttributeTypeDto: {
-            /** @example Color */
             name?: string;
-            /** @example color */
             slug?: string;
-            /** @example products */
-            applies_to?: string;
+            /** @default all */
+            applies_to: string;
         };
     };
     responses: never;
@@ -870,6 +1122,63 @@ export interface operations {
             };
         };
     };
+    UsersController_findAllAdmin: {
+        parameters: {
+            query?: {
+                includeInactive?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    UsersController_remove: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    UsersController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     ProductsController_findAll: {
         parameters: {
             query?: {
@@ -901,7 +1210,18 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateProductDto"];
+                "multipart/form-data": {
+                    /** @description Nombre del producto */
+                    name: string;
+                    /** @description Precio del producto */
+                    price: number;
+                    /** @description ID de la categoría */
+                    category_id: number;
+                    /** @description Descripción opcional del producto */
+                    description?: string;
+                    /** @description Archivos de imagen del producto */
+                    images: string[];
+                };
             };
         };
         responses: {
@@ -918,7 +1238,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -939,7 +1259,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -958,15 +1278,83 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateProductDto"];
+                "multipart/form-data": {
+                    /** @description Nuevo nombre del producto */
+                    name?: string;
+                    /** @description Nuevo precio del producto */
+                    price?: number;
+                    /** @description Nuevo ID de la categoría */
+                    category_id?: number;
+                    /** @description Nueva descripción opcional del producto */
+                    description?: string;
+                    /** @description Nuevos archivos de imagen del producto a reemplazar */
+                    images?: string[];
+                };
             };
         };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findAllAdmin: {
+        parameters: {
+            query: {
+                includeInactive: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findOneAdmin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
@@ -1174,23 +1562,6 @@ export interface operations {
             };
         };
     };
-    OrdersController_findMe: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     OrdersController_findAll: {
         parameters: {
             query?: never;
@@ -1281,6 +1652,44 @@ export interface operations {
                 "application/json": components["schemas"]["UpdateOrderDto"];
             };
         };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_findAllAdmin: {
+        parameters: {
+            query?: {
+                includeInactive?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
@@ -1591,7 +2000,7 @@ export interface operations {
         parameters: {
             query: {
                 /** @description ID del producto */
-                productId: string;
+                productId: number;
             };
             header?: never;
             path?: never;
@@ -1637,7 +2046,45 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ReviewsController_findAllAdmin: {
+        parameters: {
+            query: {
+                includeInactive: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ReviewsController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
             };
             cookie?: never;
         };
@@ -2205,7 +2652,7 @@ export interface operations {
             };
         };
     };
-    CategoriesController_findOne: {
+    CategoriesController_findBySlug: {
         parameters: {
             query?: never;
             header?: never;
@@ -2231,7 +2678,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2250,7 +2697,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2267,6 +2714,44 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Category"];
                 };
+            };
+        };
+    };
+    CategoriesController_findAllAdmin: {
+        parameters: {
+            query: {
+                includeInactive: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    CategoriesController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -2313,7 +2798,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2332,7 +2817,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2351,7 +2836,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2360,6 +2845,25 @@ export interface operations {
                 "application/json": components["schemas"]["UpdateProductVariantDto"];
             };
         };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductVariantsController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
@@ -2412,7 +2916,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2431,7 +2935,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2450,7 +2954,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -2459,6 +2963,25 @@ export interface operations {
                 "application/json": components["schemas"]["UpdateAttributeTypeDto"];
             };
         };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    AttributeTypesController_restore: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {
