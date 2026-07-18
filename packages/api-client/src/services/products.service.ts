@@ -19,16 +19,6 @@ export const productsService = {
     apiFetch<Product>(`/api/products/slug/${slug}`),
 
   // Admin endpoints
-  getAllAdmin: (accessToken: string) =>
-    apiFetch<Product[]>('/api/products/admin/all', {
-      accessToken
-    }),
-
-  getByIdAdmin: (id: number, accessToken: string) =>
-    apiFetch<Product>(`/api/products/admin/${id}`, {
-      accessToken
-    }),
-
   create: (data: FormData, accessToken: string) =>
     apiFetch<any>('/api/products', {
       method: 'POST',
