@@ -2,6 +2,8 @@ import { categoriesService } from '@repo/api-client'
 import { CategoryTable } from '@/features/admin/categories/components/CategoryTable'
 import { CategoryCreateDialog } from '@/features/admin/categories/components/CategoryCreateDialog'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminCategoriesPage() {
   let categories: any[] = []
   try {

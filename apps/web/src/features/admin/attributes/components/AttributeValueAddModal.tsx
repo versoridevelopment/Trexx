@@ -6,6 +6,7 @@ import { createClient } from '@/shared/lib/supabase/client'
 import { Plus, Loader2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { attributeValuesService } from '@repo/api-client'
 
 interface AttributeValueAddModalProps {
   attributeTypeId: number
@@ -30,23 +31,13 @@ export function AttributeValueAddModal({ attributeTypeId, attributeTypeName }: A
       const supabase = createClient()
       const { data: { session } } = await (supabase.auth as any).getSession()
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-      const response = await fetch(`${apiUrl}/api/attribute-values`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.access_token || ''}`,
-        },
-        body: JSON.stringify({
+      await attributeValuesService.create(
+        {
           attribute_type_id: attributeTypeId,
           value,
-        }),
-      })
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}))
-        throw new Error(err.message || 'Error al agregar valor')
-      }
+        },
+        session?.access_token
+      )
 
       toast.success(`¡Valor "${value}" agregado a ${attributeTypeName}!`)
       setValue('')

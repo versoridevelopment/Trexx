@@ -9,4 +9,11 @@ export const categoriesService = {
 
   getBySlug: (slug: string) =>
     apiFetch<Category>(`/api/categories/${slug}`),
+
+  create: (data: { name: string; slug: string; description?: string }, accessToken?: string) =>
+    apiFetch<Category>('/api/categories', {
+      method: 'POST',
+      body: data,
+      accessToken,
+    }),
 }

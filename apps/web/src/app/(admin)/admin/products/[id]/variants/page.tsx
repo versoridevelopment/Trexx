@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { ArrowLeft, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ProductVariantsTable } from '@/features/admin/products/components/ProductVariantsTable'
+import { productsService } from '@repo/api-client'
 
 import { createClient } from '@/shared/lib/supabase/server'
 
@@ -13,15 +14,8 @@ async function fetchProductAdmin(id: string) {
   const { data: { session } } = await supabase.auth.getSession()
   const token = session?.access_token || ''
 
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-  const res = await fetch(`${apiUrl}/api/products/admin/${id}`, {
-    cache: 'no-store',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-  })
-  if (!res.ok) return null
-  return res.json()
+  if (!token) return null
+  return await productsService.getByIdAdmin(Number(id), token)
 }
 
 export default async function ProductVariantsPage({
@@ -34,12 +28,21 @@ export default async function ProductVariantsPage({
   if (!product) notFound()
 
   // Las variantes del producto vienen embebidas en el producto admin
-  const variants = product.product_variants || []
+  const variants = (product.product_variants || []).map((variant: any) => ({
+    ...variant,
+    sku: typeof variant.sku === 'string' ? variant.sku : null,
+    price_modifier: typeof variant.price_modifier === 'number' ? variant.price_modifier : null,
+  }))
 
   const primaryImage =
     product.product_images?.find((img: any) => img.is_primary)?.url ||
     product.product_images?.[0]?.url ||
     null
+
+  const productColor = (product as any).color as {
+    hex_code?: string
+    name?: string
+  } | undefined
 
   return (
     <div className="space-y-8 animate-enter">
@@ -69,14 +72,14 @@ export default async function ProductVariantsPage({
             <p className="text-xs text-trexx-volt font-bold tracking-[0.2em] uppercase mt-0.5">
               Gestión de variantes · {variants.length} variantes totales
             </p>
-            {product.color && (
+            {productColor && (
               <span className="inline-flex items-center gap-1.5 mt-1">
                 <span
                   className="w-3 h-3 rounded-full border border-white/20 flex-shrink-0"
-                  style={{ backgroundColor: product.color.hex_code || '#888' }}
+                  style={{ backgroundColor: productColor.hex_code || '#888' }}
                 />
                 <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                  {product.color.name}
+                  {productColor.name}
                 </span>
               </span>
             )}

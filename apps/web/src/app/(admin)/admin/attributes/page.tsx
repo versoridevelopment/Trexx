@@ -1,6 +1,8 @@
 import { attributeTypesService } from '@repo/api-client'
 import { AttributeTypeList } from '@/features/admin/attributes/components/AttributeTypeList'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminAttributesPage() {
   let attributeTypes: any[] = []
   try {

@@ -5,6 +5,7 @@ import { createClient } from '@/shared/lib/supabase/client'
 import { toast } from 'sonner'
 import { Loader2, Save, Trash2, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { productVariantsService } from '@repo/api-client'
 
 interface VariantAttribute {
   attribute_values: {
@@ -159,42 +160,36 @@ export function ProductVariantsTable({ productId, initialVariants }: ProductVari
 
   const handleUpdate = async (id: number, sku: string, stock: number, priceModifier: number) => {
     const token = await getToken()
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+    const updated = await productVariantsService.update(
+      id,
+      { sku, stock, price_modifier: priceModifier },
+      token
+    )
 
-    const res = await fetch(`${apiUrl}/api/product-variants/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ sku, stock, price_modifier: priceModifier }),
-    })
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      throw new Error(err.message || 'Error al actualizar variante')
-    }
-
-    const updated = await res.json()
-    setVariants((prev) => prev.map((v) => (v.id === id ? { ...v, ...updated } : v)))
+    setVariants((prev) =>
+      prev.map((v) =>
+        v.id === id
+          ? {
+              ...v,
+              ...updated,
+              sku: typeof updated.sku === 'string' ? updated.sku : v.sku,
+              price_modifier:
+                typeof updated.price_modifier === 'number'
+                  ? updated.price_modifier
+                  : v.price_modifier,
+            }
+          : v
+      )
+    )
   }
 
   const handleToggleActive = async (id: number, isActive: boolean) => {
     const token = await getToken()
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
 
-    const endpoint = isActive
-      ? `${apiUrl}/api/product-variants/${id}/restore`
-      : `${apiUrl}/api/product-variants/${id}`
-
-    const res = await fetch(endpoint, {
-      method: isActive ? 'PATCH' : 'DELETE',
-      headers: { 'Authorization': `Bearer ${token}` },
-    })
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      throw new Error(err.message || 'Error al cambiar estado de variante')
+    if (isActive) {
+      await productVariantsService.restore(id, token)
+    } else {
+      await productVariantsService.remove(id, token)
     }
 
     setVariants((prev) =>

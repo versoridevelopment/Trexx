@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/shared/lib/supabase/client'
+import { productsAdminService, attributeTypesService } from '@repo/api-client'
 import { Button } from '@/components/ui/button'
 import { Loader2, CheckCircle2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -87,83 +88,64 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
         const { data: { session } } = await (supabase.auth as any).getSession()
         if (!session) return
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-
         // 1. Fetch active colors
-        const colorsRes = await fetch(`${apiUrl}/api/products/admin/colors`, {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-        })
-        if (colorsRes.ok) {
-          const colorsData = await colorsRes.json()
-          setColors(colorsData)
-        }
+        const colorsData = await productsAdminService.getColors(session.access_token)
+        setColors(colorsData)
 
         // 2. Fetch attribute types
-        const attributeTypesRes = await fetch(`${apiUrl}/api/attribute-types`)
-        if (attributeTypesRes.ok) {
-          const attrData = await attributeTypesRes.json()
-          // Filtrar tipo 'color' si existiera para que no se mezcle en variables (Opción B)
-          const filteredAttrData = attrData.filter((a: any) => a.slug !== 'color')
-          setAttributeTypes(filteredAttrData)
-        }
+        const attrData = await attributeTypesService.getAll()
+        const filteredAttrData = attrData.filter((a: any) => a.slug !== 'color')
+        setAttributeTypes(filteredAttrData)
 
         // 3. Fetch products to select parent (only parent_id = null)
-        const productsRes = await fetch(`${apiUrl}/api/products/admin/all`, {
-          headers: { Authorization: `Bearer ${session.access_token}` },
-        })
-        if (productsRes.ok) {
-          const productsData = await productsRes.json()
-          const parents = productsData.filter(
-            (p: any) => p.parent_id === null || p.parent_id === undefined
-          )
-          setParentProducts(parents)
-        }
+        const productsData = await productsAdminService.getAllProducts(session.access_token)
+        const parents = productsData.filter(
+          (p: any) => p.parent_id === null || p.parent_id === undefined
+        )
+        setParentProducts(parents)
 
         // 4. Handle duplication if duplicate_from parameter is present
         if (duplicateFromId) {
-          const sourceRes = await fetch(`${apiUrl}/api/products/admin/${duplicateFromId}`, {
-            headers: { Authorization: `Bearer ${session.access_token}` },
-          })
-          if (sourceRes.ok) {
-            const source = await sourceRes.json()
-            setName(source.name)
-            setPrice(source.price?.toString() || '')
-            setCategoryId(source.category_id?.toString() || '1')
-            setDescription(source.description || '')
-            // Si el clonado ya es hijo, heredamos su parent_id. Si es padre, lo asignamos como padre.
-            const targetParentId = source.parent_id || source.id
-            setParentId(targetParentId.toString())
+          const source = await productsAdminService.getProductById(Number(duplicateFromId), session.access_token) as any
 
-            // Copiar los atributos marcados en el original
-            if (source.product_variants && source.product_variants.length > 0) {
-              const copiedValues: SelectedAttrValue[] = []
-              source.product_variants.forEach((v: any) => {
-                v.variant_attributes.forEach((va: any) => {
-                  const val = va.attribute_values
-                  const type = val.attribute_types
-                  // Excluir color de los atributos copiados
-                  if (type.slug !== 'color') {
-                    const isAlreadyCopied = copiedValues.some((cv) => cv.id === val.id)
-                    if (!isAlreadyCopied) {
-                      copiedValues.push({
-                        id: val.id,
-                        value: val.value,
-                        typeId: type.id,
-                        typeName: type.name,
-                        typeSlug: type.slug,
-                      })
-                    }
+          setName(source.name)
+          setPrice(source.price?.toString() || '')
+          setCategoryId(source.category_id?.toString() || '1')
+          setDescription(source.description || '')
+          // Si el clonado ya es hijo, heredamos su parent_id. Si es padre, lo asignamos como padre.
+          const targetParentId = source.parent_id || source.id
+          setParentId(targetParentId.toString())
+
+          // Copiar los atributos marcados en el original
+          if (source.product_variants && source.product_variants.length > 0) {
+            const copiedValues: SelectedAttrValue[] = []
+            source.product_variants.forEach((v: any) => {
+              v.variant_attributes.forEach((va: any) => {
+                const val = va.attribute_values
+                const type = val.attribute_types
+                // Excluir color de los atributos copiados
+                if (type.slug !== 'color') {
+                  const isAlreadyCopied = copiedValues.some((cv) => cv.id === val.id)
+                  if (!isAlreadyCopied) {
+                    copiedValues.push({
+                      id: val.id,
+                      value: val.value,
+                      typeId: type.id,
+                      typeName: type.name,
+                      typeSlug: type.slug,
+                    })
                   }
-                })
+                }
               })
+            })
 
-              if (copiedValues.length > 0) {
-                setVariantMode('variable')
-                setSelectedAttrValues(copiedValues)
-              }
+            if (copiedValues.length > 0) {
+              setVariantMode('variable')
+              setSelectedAttrValues(copiedValues)
             }
-            toast.success('Información básica y variantes del producto base precargadas.')
           }
+
+          toast.success('Información básica y variantes del producto base precargadas.')
         }
       } catch (e) {
         console.error('Error fetching admin metadata:', e)
@@ -275,8 +257,6 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
         return
       }
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-
       // 1. Prepare Form Data
       const formData = new FormData()
       formData.append('name', name)
@@ -313,18 +293,7 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
       })
 
       // 2. Submit everything in ONE atomic request
-      const productRes = await fetch(`${apiUrl}/api/products`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: formData,
-      })
-
-      if (!productRes.ok) {
-        const errorData = await productRes.json().catch(() => ({}))
-        throw new Error(errorData.message || 'Error al crear el producto')
-      }
+      await productsAdminService.create(formData, session.access_token)
 
       toast.success('¡Producto y variantes creados de forma atómica y exitosa!')
       router.push('/admin/products')

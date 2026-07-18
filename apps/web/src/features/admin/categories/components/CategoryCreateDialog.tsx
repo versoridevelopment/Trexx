@@ -6,6 +6,7 @@ import { createClient } from '@/shared/lib/supabase/client'
 import { Plus, Loader2, CheckCircle2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { categoriesService } from '@repo/api-client'
 
 export function CategoryCreateDialog() {
   const router = useRouter()
@@ -33,20 +34,10 @@ export function CategoryCreateDialog() {
       const supabase = createClient()
       const { data: { session } } = await (supabase.auth as any).getSession()
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-      const response = await fetch(`${apiUrl}/api/categories`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.access_token || ''}`,
-        },
-        body: JSON.stringify({ name, slug, description }),
-      })
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({}))
-        throw new Error(err.message || 'Error al crear la categoría')
-      }
+      await categoriesService.create(
+        { name, slug, description },
+        session?.access_token
+      )
 
       toast.success('¡Categoría creada exitosamente!')
       setName('')
