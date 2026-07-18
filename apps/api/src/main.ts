@@ -13,6 +13,11 @@ async function bootstrap() {
     new FastifyAdapter()
   );
 
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
+
   await app.register(contentParser);
 
   app.setGlobalPrefix('api');

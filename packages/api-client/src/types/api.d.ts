@@ -228,6 +228,22 @@ export interface paths {
         patch: operations["CitysController_update"];
         trace?: never;
     };
+    "/api/orders/checkout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["OrdersController_checkout"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/orders": {
         parameters: {
             query?: never;
@@ -931,6 +947,18 @@ export interface components {
             name: string;
         };
         UpdateCityDto: Record<string, never>;
+        CheckoutOrderDto: {
+            items: {
+                productId: number;
+                variantId?: number;
+                quantity: number;
+                price: number;
+            }[];
+            addressId: number;
+            paymentMethodId: number;
+            recipientName: string;
+            notes?: string;
+        };
         CreateOrderDto: {
             user_id?: string | null;
             total: number;
@@ -1034,6 +1062,7 @@ export interface components {
             price_modifier?: number | null;
             stock: number;
             is_active?: boolean | null;
+            attribute_value_ids?: number[];
         };
         UpdateProductVariantDto: {
             product_id?: number;
@@ -1041,6 +1070,7 @@ export interface components {
             price_modifier?: number | null;
             stock?: number;
             is_active?: boolean | null;
+            attribute_value_ids?: number[];
         };
         CreateAttributeTypeDto: {
             name: string;
@@ -1555,6 +1585,27 @@ export interface operations {
         };
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    OrdersController_checkout: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CheckoutOrderDto"];
+            };
+        };
+        responses: {
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };

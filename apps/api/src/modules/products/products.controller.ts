@@ -29,6 +29,12 @@ export class ProductsController {
     return this.service.findOne(id)
   }
 
+  @Get('slug/:slug')
+  @ApiResponse({ status: 200, type: Product })
+  public findOneBySlug(@Param('slug') slug: string) {
+    return this.service.findOneBySlug(slug)
+  }
+
   @Post()
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
@@ -42,6 +48,10 @@ export class ProductsController {
         price: { type: 'number', description: 'Precio del producto' },
         category_id: { type: 'integer', description: 'ID de la categoría' },
         description: { type: 'string', description: 'Descripción opcional del producto' },
+        parent_id: { type: 'integer', description: 'ID del producto padre' },
+        color_id: { type: 'integer', description: 'ID del color principal' },
+        slug: { type: 'string', description: 'Slug para SEO' },
+        variants: { type: 'string', description: 'Variantes serializadas en JSON' },
         images: {
           type: 'array',
           items: { type: 'string', format: 'binary' },
@@ -59,6 +69,10 @@ export class ProductsController {
       priceStr: fields.price,
       categoryIdStr: fields.category_id,
       description: fields.description,
+      parentIdStr: fields.parent_id,
+      colorIdStr: fields.color_id,
+      slug: fields.slug,
+      variantsStr: fields.variants,
       files,
     })
   }
@@ -76,6 +90,10 @@ export class ProductsController {
         price: { type: 'number', description: 'Nuevo precio del producto' },
         category_id: { type: 'integer', description: 'Nuevo ID de la categoría' },
         description: { type: 'string', description: 'Nueva descripción opcional del producto' },
+        parent_id: { type: 'integer', description: 'Nuevo ID del producto padre' },
+        color_id: { type: 'integer', description: 'Nuevo ID del color principal' },
+        slug: { type: 'string', description: 'Nuevo slug' },
+        variants: { type: 'string', description: 'Nuevas variantes serializadas en JSON' },
         images: {
           type: 'array',
           items: { type: 'string', format: 'binary' },
@@ -95,6 +113,9 @@ export class ProductsController {
       priceStr: fields.price,
       categoryIdStr: fields.category_id,
       description: fields.description,
+      parentIdStr: fields.parent_id,
+      colorIdStr: fields.color_id,
+      slug: fields.slug,
       files,
     })
   }
@@ -105,6 +126,15 @@ export class ProductsController {
   @ApiBearerAuth()
   public remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id)
+  }
+
+  // GET /products/admin/colors
+  @Get('admin/colors')
+  @UseGuards(SupabaseAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
+  public findAllColors() {
+    return this.service.findAllColors()
   }
 
   // GET /products/admin?includeInactive=true

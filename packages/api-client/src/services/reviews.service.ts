@@ -6,7 +6,7 @@ type CreateReviewDto = components['schemas']['CreateReviewDto']
 
 export const reviewsService = {
   getByProduct: (productId: number) =>
-    apiFetch<Review[]>(`/api/reviews?productId=${productId}`),
+    apiFetch<Review[]>(`/api/reviews/product/${productId}`),
 
   create: (accessToken: string, data: CreateReviewDto) =>
     apiFetch<Review>('/api/reviews', {

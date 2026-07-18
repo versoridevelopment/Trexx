@@ -218,6 +218,22 @@
                     "type": "string",
                     "description": "Descripción opcional del producto"
                   },
+                  "parent_id": {
+                    "type": "integer",
+                    "description": "ID del producto padre"
+                  },
+                  "color_id": {
+                    "type": "integer",
+                    "description": "ID del color principal"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "Slug para SEO"
+                  },
+                  "variants": {
+                    "type": "string",
+                    "description": "Variantes serializadas en JSON"
+                  },
                   "images": {
                     "type": "array",
                     "items": {
@@ -316,6 +332,22 @@
                     "type": "string",
                     "description": "Nueva descripción opcional del producto"
                   },
+                  "parent_id": {
+                    "type": "integer",
+                    "description": "Nuevo ID del producto padre"
+                  },
+                  "color_id": {
+                    "type": "integer",
+                    "description": "Nuevo ID del color principal"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "description": "Nuevo slug"
+                  },
+                  "variants": {
+                    "type": "string",
+                    "description": "Nuevas variantes serializadas en JSON"
+                  },
                   "images": {
                     "type": "array",
                     "items": {
@@ -355,6 +387,55 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/products/slug/{slug}": {
+      "get": {
+        "operationId": "ProductsController_findOneBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/products/admin/colors": {
+      "get": {
+        "operationId": "ProductsController_findAllColors",
+        "parameters": [],
         "responses": {
           "200": {
             "description": ""
@@ -3615,6 +3696,13 @@
             ],
             "x-nestjs_zod-has-null": true,
             "x-nestjs_zod-empty-type": true
+          },
+          "attribute_value_ids": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "x-nestjs_zod-has-null": true
           }
         },
         "required": [
@@ -3670,6 +3758,13 @@
             ],
             "x-nestjs_zod-has-null": true,
             "x-nestjs_zod-empty-type": true
+          },
+          "attribute_value_ids": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "x-nestjs_zod-has-null": true
           }
         }
       },

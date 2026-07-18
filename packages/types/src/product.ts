@@ -17,7 +17,11 @@ export const ProductSchema = z.object({
   description: z.string().nullable().optional(),
   category_id: z.number(),
   created_at: z.union([z.string(), z.date()]).nullable().optional(),
+  updated_at: z.union([z.string(), z.date()]).nullable().optional(),
   is_active: z.boolean().default(true),
+  slug: z.string().nullable().optional(),
+  parent_id: z.number().nullable().optional(),
+  color_id: z.number().nullable().optional(),
   product_images: z.array(ProductImageSchema).default([]),
 });
 

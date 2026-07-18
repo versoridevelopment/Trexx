@@ -12,8 +12,8 @@ export default function LoginPage() {
     <div className="w-full">
       <Suspense fallback={null}>
         <LoginToast />
+        <LoginForm />
       </Suspense>
-      <LoginForm />
     </div>
   )
 }

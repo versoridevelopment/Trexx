@@ -7,6 +7,9 @@ export const categoriesService = {
   getAll: () =>
     apiFetch<Category[]>('/api/categories'),
 
+  getAllAdmin: (includeInactive = true) =>
+    apiFetch<Category[]>(`/api/categories/admin/all?includeInactive=${includeInactive}`),
+
   getBySlug: (slug: string) =>
     apiFetch<Category>(`/api/categories/${slug}`),
 }

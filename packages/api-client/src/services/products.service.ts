@@ -15,6 +15,9 @@ export const productsService = {
   getById: (id: number) =>
     apiFetch<Product>(`/api/products/${id}`),
 
+  getBySlug: (slug: string) =>
+    apiFetch<Product>(`/api/products/slug/${slug}`),
+
   // Admin endpoints
   getAllAdmin: (accessToken: string) =>
     apiFetch<Product[]>('/api/products/admin/all', {

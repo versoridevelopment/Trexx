@@ -95,16 +95,55 @@ export class ProductVariantsService {
   }
 
   create(dto: CreateProductVariantDto) {
+    const { attribute_value_ids, ...rest } = dto as any;
     return this.prisma.product_variants.create({
-      data: dto as any,
+      data: {
+        ...rest,
+        variant_attributes: attribute_value_ids && attribute_value_ids.length > 0 ? {
+          create: attribute_value_ids.map((id: number) => ({
+            attribute_value_id: id,
+          })),
+        } : undefined,
+      },
+      include: {
+        variant_attributes: {
+          include: {
+            attribute_values: {
+              include: {
+                attribute_types: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
   async update(id: number, dto: UpdateProductVariantDto) {
     await this.findOneAdmin(id);
+    const { attribute_value_ids, ...rest } = dto as any;
     return this.prisma.product_variants.update({
       where: { id },
-      data: dto as any,
+      data: {
+        ...rest,
+        variant_attributes: attribute_value_ids !== undefined ? {
+          deleteMany: {},
+          create: attribute_value_ids.map((valId: number) => ({
+            attribute_value_id: valId,
+          })),
+        } : undefined,
+      },
+      include: {
+        variant_attributes: {
+          include: {
+            attribute_values: {
+              include: {
+                attribute_types: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
