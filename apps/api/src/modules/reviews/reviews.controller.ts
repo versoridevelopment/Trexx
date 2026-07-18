@@ -9,12 +9,25 @@ import { ReviewsService } from './reviews.service'
 import { CreateReviewDto } from './dto/create-review.dto'
 import { Review } from './entities/review.entity'
 
+/**
+ * Controlador REST del módulo "reviews".
+ * Administra las reseñas (calificación + comentario) que los usuarios dejan
+ * sobre los productos.
+ * Ruta base: /reviews
+ */
 @ApiTags('reviews')
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly service: ReviewsService) {}
 
   // PÚBLICO — reseñas de un producto
+  /**
+   * Lista las reseñas de un producto puntual.
+   * @route GET /reviews/product/:productId
+   * @auth Público.
+   * @param productId ID del producto (ParseIntPipe).
+   * @returns Arreglo de Review pertenecientes al producto.
+   */
   @Get('product/:productId')
   @ApiQuery({ name: 'productId', required: true, description: 'ID del producto' })
   @ApiResponse({ status: 200, type: Review, isArray: true })
@@ -23,6 +36,14 @@ export class ReviewsController {
   }
 
   // PROTEGIDO — crear reseña
+  /**
+   * Crea una reseña para el usuario autenticado.
+   * @route POST /reviews
+   * @auth Requiere JWT de Supabase.
+   * @param dto Datos de la reseña (CreateReviewDto: producto, rating, comentario).
+   * @param user Usuario autenticado inyectado por @CurrentUser(); se usa user.sub como autor.
+   * @returns La reseña creada (201).
+   */
   @Post()
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()
@@ -35,6 +56,15 @@ export class ReviewsController {
   }
 
   // PROTEGIDO — eliminar reseña propia
+  /**
+   * Elimina una reseña. El propio autor puede eliminar su reseña; un admin
+   * puede eliminar cualquiera (se le pasa el flag isAdmin al servicio).
+   * @route DELETE /reviews/:id
+   * @auth Requiere JWT de Supabase.
+   * @param id ID de la reseña (ParseIntPipe).
+   * @param user Usuario autenticado inyectado por @CurrentUser().
+   * @returns Resultado de la operación de borrado.
+   */
   @Delete(':id')
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()
@@ -48,6 +78,14 @@ export class ReviewsController {
     return this.service.remove(id, user.sub, isAdmin)
   }
 
+  /**
+   * Lista todas las reseñas para administración, incluyendo opcionalmente
+   * las inactivas/eliminadas.
+   * @route GET /reviews/admin/all?includeInactive=true|false
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param includeInactive Query param string ('true'/'false') para incluir inactivas.
+   * @returns Arreglo de reseñas.
+   */
   @Get('admin/all')
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
@@ -56,6 +94,13 @@ export class ReviewsController {
     return this.service.findAllAdmin(includeInactive === 'true')
   }
 
+  /**
+   * Restaura una reseña previamente eliminada (soft delete).
+   * @route PATCH /reviews/:id/restore
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param id ID de la reseña a restaurar (ParseIntPipe).
+   * @returns La reseña restaurada.
+   */
   @Patch(':id/restore')
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')

@@ -10,11 +10,26 @@ import { UpdateOrderDto } from './dto/update-order.dto';
 
 import { CheckoutOrderDto } from './dto/checkout-order.dto';
 
+/**
+ * Controlador REST del módulo "orders".
+ * Administra la creación y ciclo de vida de las órdenes de compra.
+ * Ruta base: /orders
+ */
 @ApiTags('orders')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly service: OrdersService) {}
 
+  /**
+   * Procesa el checkout de una compra: crea la orden a partir del carrito/datos
+   * enviados para el usuario autenticado.
+   * @route POST /orders/checkout
+   * @auth Requiere JWT de Supabase.
+   * @param dto Datos del checkout (CheckoutOrderDto: items, dirección, método de pago, etc).
+   * @param user Usuario autenticado inyectado por @CurrentUser(); se usa user.sub como ID.
+   * @throws Error si no se pudo resolver el usuario autenticado (falta user.sub).
+   * @returns La orden generada tras el checkout.
+   */
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()
   @Post('checkout')
@@ -25,6 +40,13 @@ export class OrdersController {
     return this.service.checkout(user.sub, dto);
   }
 
+  /**
+   * Crea una orden directamente (uso administrativo/interno, sin flujo de checkout).
+   * @route POST /orders
+   * @auth Requiere JWT de Supabase.
+   * @param dto Datos de la orden (CreateOrderDto).
+   * @returns La orden creada.
+   */
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()
   @Post()
@@ -32,6 +54,12 @@ export class OrdersController {
     return this.service.create(dto);
   }
 
+  /**
+   * Lista todas las órdenes.
+   * @route GET /orders
+   * @auth Requiere JWT de Supabase.
+   * @returns Arreglo de órdenes.
+   */
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()
   @Get()
@@ -39,6 +67,16 @@ export class OrdersController {
     return this.service.findAll();
   }
 
+  /**
+   * Obtiene una orden por su ID.
+   * Si el usuario autenticado no tiene rol "admin", la búsqueda se restringe
+   * a las órdenes de ese mismo usuario (filtrado por userId).
+   * @route GET /orders/:id
+   * @auth Requiere JWT de Supabase.
+   * @param id ID de la orden (convertido a BigInt).
+   * @param user Usuario autenticado inyectado por @CurrentUser().
+   * @returns La orden encontrada (propia, o cualquiera si es admin).
+   */
   @UseGuards(SupabaseAuthGuard)
   @ApiBearerAuth()
   @Get(':id')
@@ -48,6 +86,14 @@ export class OrdersController {
     return this.service.findOne(BigInt(id), userId);
   }
 
+  /**
+   * Actualiza parcialmente una orden.
+   * @route PATCH /orders/:id
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param id ID de la orden (convertido a BigInt).
+   * @param dto Campos a modificar (UpdateOrderDto).
+   * @returns La orden actualizada.
+   */
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
   @ApiBearerAuth()
@@ -56,6 +102,13 @@ export class OrdersController {
     return this.service.update(BigInt(id), dto);
   }
 
+  /**
+   * Elimina (soft delete) una orden.
+   * @route DELETE /orders/:id
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param id ID de la orden (convertido a BigInt).
+   * @returns Resultado de la operación de borrado.
+   */
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
   @ApiBearerAuth()
@@ -64,6 +117,14 @@ export class OrdersController {
     return this.service.remove(BigInt(id));
   }
 
+  /**
+   * Lista todas las órdenes para administración, incluyendo opcionalmente
+   * las inactivas/eliminadas.
+   * @route GET /orders/admin/all?includeInactive=true|false
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param includeInactive Query param string ('true'/'false') para incluir inactivas.
+   * @returns Arreglo de órdenes (todas o solo activas según el flag).
+   */
   @Get('admin/all')
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
@@ -73,6 +134,13 @@ export class OrdersController {
     return this.service.findAllAdmin(includeInactive === 'true');
   }
 
+  /**
+   * Restaura una orden previamente eliminada (soft delete).
+   * @route PATCH /orders/:id/restore
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param id ID de la orden a restaurar (convertido a BigInt).
+   * @returns La orden restaurada.
+   */
   @Patch(':id/restore')
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
