@@ -22,7 +22,7 @@ export default async function HomePage() {
   const featured = products.slice(0, 4)
 
   return (
-    <div className="pb-20 bg-background text-foreground">
+    <div className="bg-background text-foreground">
       {/* Hero Section (NewReleaseHero) */}
       <section className="relative h-[calc(100vh)] w-full flex items-center justify-center overflow-hidden bg-black border-b border-border">
         {/* Banner image or video container */}
@@ -170,13 +170,13 @@ export default async function HomePage() {
             </span>
           </h2>
           <p className="text-[14px] text-white/70 max-w-2xl mx-auto font-light leading-relaxed">
-            Estamos acá para ayudarte a elegir tu próximo equipamiento. Escribinos por WhatsApp y recibí asesoramiento personalizado de inmediato.
+            Estamos acá para ayudarte a elegir tu próximo equipamiento. Escribinos por nuestras redes y recibí asesoramiento personalizado de inmediato.
           </p>
-          <div className="flex justify-center pt-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-6 pt-4">
             <MovingBorderButton
               borderRadius="2rem"
-              containerClassName="w-80 h-16"
-              className="bg-black hover:bg-neutral-900 transition-colors border-0"
+              containerClassName="w-64 h-16"
+              className="bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors border-0"
               borderClassName="bg-[radial-gradient(#25D366_40%,transparent_60%)]"
             >
               <a
@@ -185,7 +185,23 @@ export default async function HomePage() {
                 rel="noopener noreferrer"
                 className="w-full h-full flex justify-center items-center gap-3 text-[12px] font-bold tracking-[0.2em] uppercase text-[#25D366]"
               >
-                Contactar por WhatsApp
+                WhatsApp
+              </a>
+            </MovingBorderButton>
+            
+            <MovingBorderButton
+              borderRadius="2rem"
+              containerClassName="w-64 h-16"
+              className="bg-[#E1306C]/10 hover:bg-[#E1306C]/20 transition-colors border-0"
+              borderClassName="bg-[radial-gradient(#E1306C_40%,transparent_60%)]"
+            >
+              <a
+                href="https://www.instagram.com/trexxpadel"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full h-full flex justify-center items-center gap-3 text-[12px] font-bold tracking-[0.2em] uppercase text-[#E1306C]"
+              >
+                Instagram
               </a>
             </MovingBorderButton>
           </div>
