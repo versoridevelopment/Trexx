@@ -1,92 +1,52 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { IAttributeTypesRepository } from './attribute-types.repository.interface';
 import { CreateAttributeTypeDto } from './dto/create-attribute-type.dto';
 import { UpdateAttributeTypeDto } from './dto/update-attribute-type.dto';
 
 @Injectable()
 export class AttributeTypesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly repository: IAttributeTypesRepository) {}
 
-  // Público
   findAll() {
-    return this.prisma.attribute_types.findMany({
-      where: { is_active: true },
-      include: {
-        attribute_values: {
-          where: { is_active: true },
-          orderBy: { display_order: 'asc' }
-        }
-      },
-      orderBy: { name: 'asc' }
-    })
+    return this.repository.findAll();
   }
 
   async findOne(id: number) {
-    const record = await this.prisma.attribute_types.findUnique({
-      where: { id },
-      include: {
-        attribute_values: {
-          where: { is_active: true },
-        },
-      },
-    });
+    const record = await this.repository.findOne(id);
     if (!record || !record.is_active) {
       throw new NotFoundException(`AttributeType #${id} not found`);
     }
     return record;
   }
 
-  // Admin: todos los tipos con todos sus valores
   findAllAdmin(includeInactive = false) {
-    return this.prisma.attribute_types.findMany({
-      where: includeInactive ? {} : { is_active: true },
-      include: {
-        attribute_values: { orderBy: { display_order: 'asc' } }
-      },
-      orderBy: { name: 'asc' }
-    })
+    return this.repository.findAllAdmin(includeInactive);
   }
 
   async findOneAdmin(id: number) {
-    const record = await this.prisma.attribute_types.findUnique({
-      where: { id },
-      include: {
-        attribute_values: true,
-      },
-    });
+    const record = await this.repository.findOneAdmin(id);
     if (!record) throw new NotFoundException(`AttributeType #${id} not found`);
     return record;
   }
 
   create(dto: CreateAttributeTypeDto) {
-    return this.prisma.attribute_types.create({
-      data: dto as any,
-    });
+    return this.repository.create(dto);
   }
 
   async update(id: number, dto: UpdateAttributeTypeDto) {
     await this.findOneAdmin(id);
-    return this.prisma.attribute_types.update({
-      where: { id },
-      data: dto as any,
-    });
+    return this.repository.update(id, dto);
   }
 
   async remove(id: number) {
     await this.findOneAdmin(id);
-    return this.prisma.attribute_types.update({
-      where: { id },
-      data: { is_active: false }
-    })
+    return this.repository.updateActiveStatus(id, false);
   }
 
   async restore(id: number) {
-    const record = await this.prisma.attribute_types.findUnique({ where: { id } })
-    if (!record) throw new NotFoundException(`AttributeType #${id} not found`)
-    if (record.is_active) throw new BadRequestException(`AttributeType #${id} is already active`)
-    return this.prisma.attribute_types.update({
-      where: { id },
-      data: { is_active: true }
-    })
+    const record = await this.repository.findOneAdmin(id);
+    if (!record) throw new NotFoundException(`AttributeType #${id} not found`);
+    if (record.is_active) throw new BadRequestException(`AttributeType #${id} is already active`);
+    return this.repository.updateActiveStatus(id, true);
   }
 }

@@ -1,53 +1,45 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { IOrderItemsRepository } from './order-items.repository.interface';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
 
 @Injectable()
 export class OrderItemsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly repository: IOrderItemsRepository) {}
 
   findAll(includeInactive = false) {
-    return this.prisma.order_items.findMany({
-      where: includeInactive ? {} : { is_active: true }
-    });
+    return this.repository.findAll(includeInactive);
   }
 
   async findOne(id: number) {
-    const record = await this.prisma.order_items.findUnique({ where: { id } });
+    const record = await this.repository.findOne(id);
     if (!record || !record.is_active) throw new NotFoundException(`OrderItem #${id} not found`);
     return record;
   }
 
   async findOneAdmin(id: number) {
-    const record = await this.prisma.order_items.findUnique({ where: { id } });
+    const record = await this.repository.findOne(id);
     if (!record) throw new NotFoundException(`OrderItem #${id} not found`);
     return record;
   }
 
   create(dto: CreateOrderItemDto) {
-    return this.prisma.order_items.create({ data: { ...dto, is_active: true } as any });
+    return this.repository.create({ ...dto, is_active: true });
   }
 
   async update(id: number, dto: UpdateOrderItemDto) {
     await this.findOneAdmin(id);
-    return this.prisma.order_items.update({ where: { id }, data: dto as any });
+    return this.repository.update(id, dto);
   }
 
   async remove(id: number) {
     await this.findOneAdmin(id);
-    return this.prisma.order_items.update({
-      where: { id },
-      data: { is_active: false }
-    });
+    return this.repository.updateActiveStatus(id, false);
   }
 
   async restore(id: number) {
-    const record = await this.prisma.order_items.findUnique({ where: { id } });
+    const record = await this.repository.findOne(id);
     if (!record) throw new NotFoundException(`OrderItem #${id} not found`);
-    return this.prisma.order_items.update({
-      where: { id },
-      data: { is_active: true }
-    });
+    return this.repository.updateActiveStatus(id, true);
   }
 }

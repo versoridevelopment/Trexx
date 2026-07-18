@@ -1,7 +1,7 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
 import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { OrderStatusesModule as OrderStatusesService } from './order-statuses.service';
+import { OrderStatusesService } from './order-statuses.service';
 import { CreateOrderStatusDto } from './dto/create-order-status.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 

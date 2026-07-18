@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { IProductsRepository } from './products.repository.interface';
 
 const productIncludes = {
   categories: true,
@@ -67,7 +68,7 @@ const productIncludesAdmin = {
 };
 
 @Injectable()
-export class ProductsRepository {
+export class ProductsRepository implements IProductsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   public findAll(categorySlug?: string) {

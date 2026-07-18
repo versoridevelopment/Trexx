@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { ProductsService } from './products.service'
-import { ProductsRepository } from './products.repository'
+import { IProductsRepository } from './products.repository.interface'
 import { StorageService } from '../storage/storage.service'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
 
 describe('ProductsService', () => {
   let service: ProductsService
-  let repository: ProductsRepository
+  let repository: IProductsRepository
   let storageService: StorageService
 
   const mockProductsRepository = {
@@ -25,7 +25,7 @@ describe('ProductsService', () => {
       providers: [
         ProductsService,
         {
-          provide: ProductsRepository,
+          provide: IProductsRepository,
           useValue: mockProductsRepository,
         },
         {
@@ -36,7 +36,7 @@ describe('ProductsService', () => {
     }).compile()
 
     service = module.get<ProductsService>(ProductsService)
-    repository = module.get<ProductsRepository>(ProductsRepository)
+    repository = module.get<IProductsRepository>(IProductsRepository)
     storageService = module.get<StorageService>(StorageService)
 
     jest.clearAllMocks()

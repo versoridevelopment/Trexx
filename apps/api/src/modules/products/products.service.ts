@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
-import { ProductsRepository } from './products.repository'
+import { IProductsRepository } from './products.repository.interface'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { StorageService } from '../storage/storage.service'
@@ -7,7 +7,7 @@ import { StorageService } from '../storage/storage.service'
 @Injectable()
 export class ProductsService {
   constructor(
-    private readonly repository: ProductsRepository,
+    private readonly repository: IProductsRepository,
     private readonly storageService: StorageService
   ) {}
 
