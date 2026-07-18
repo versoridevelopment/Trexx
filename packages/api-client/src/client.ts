@@ -12,8 +12,12 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const { accessToken, method = 'GET', body } = options
 
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+  const isFormData = typeof FormData !== 'undefined' && body instanceof FormData
+
+  const headers: Record<string, string> = {}
+  
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json'
   }
 
   if (accessToken) {
@@ -23,7 +27,7 @@ export async function apiFetch<T>(
   const res = await fetch(`${API_URL}${endpoint}`, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    body: isFormData ? (body as FormData) : body ? JSON.stringify(body) : undefined,
     cache: 'no-store',
   })
 

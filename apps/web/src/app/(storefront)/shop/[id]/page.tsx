@@ -75,7 +75,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="lg:col-span-7 animate-enter" style={{ animationDelay: '150ms' }}>
             <ProductGallery
               images={product.product_images}
-              fallbackImage={product.image}
+              fallbackImage={(product as { image?: string | null }).image || null}
               name={product.name}
             />
           </div>

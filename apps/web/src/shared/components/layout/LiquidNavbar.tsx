@@ -59,13 +59,13 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
               </Link>
               <Link href="/shop?category=palas" title="Palas" className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all flex items-center justify-center">
                 <div 
-                  className="w-8 h-8 bg-current" 
+                  className="w-[26px] h-[26px] bg-current" 
                   style={{ 
-                    WebkitMaskImage: 'url(/navbar/padel2.svg)', 
+                    WebkitMaskImage: 'url(/navbar/paleta.png)', 
                     WebkitMaskSize: 'contain', 
                     WebkitMaskRepeat: 'no-repeat',
                     WebkitMaskPosition: 'center',
-                    maskImage: 'url(/navbar/padel2.svg)',
+                    maskImage: 'url(/navbar/paleta.png)',
                     maskSize: 'contain',
                     maskRepeat: 'no-repeat',
                     maskPosition: 'center'
@@ -138,13 +138,13 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
           </Link>
           <Link href="/shop?category=palas" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 text-3xl font-black italic uppercase text-white hover:text-trexx-volt transition-colors">
             <div 
-              className="w-10 h-10 bg-current -ml-1" 
+              className="w-9 h-9 bg-current -ml-1" 
               style={{ 
-                WebkitMaskImage: 'url(/navbar/padel2.svg)', 
+                WebkitMaskImage: 'url(/navbar/paleta.png)', 
                 WebkitMaskSize: 'contain', 
                 WebkitMaskRepeat: 'no-repeat',
                 WebkitMaskPosition: 'center',
-                maskImage: 'url(/navbar/padel2.svg)',
+                maskImage: 'url(/navbar/paleta.png)',
                 maskSize: 'contain',
                 maskRepeat: 'no-repeat',
                 maskPosition: 'center'
