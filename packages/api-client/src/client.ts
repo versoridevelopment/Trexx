@@ -19,7 +19,11 @@ export async function apiFetch<T>(
 
   const headers: Record<string, string> = {}
   
-  if (!isFormData) {
+  // Solo seteamos Content-Type: application/json cuando efectivamente hay
+  // un body a enviar. Si lo mandamos en requests sin body (ej. DELETE o
+  // PATCH /restore), Fastify intenta parsear un JSON vacío y responde
+  // 400 Bad Request (FST_ERR_CTP_EMPTY_JSON_BODY) antes de llegar al controller.
+  if (!isFormData && body !== undefined) {
     headers['Content-Type'] = 'application/json'
   }
 
