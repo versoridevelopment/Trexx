@@ -1,4 +1,7 @@
-const API_URL = process.env.API_URL ?? 'http://127.0.0.1:3001'
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.API_URL ||
+  'http://localhost:3001'
 
 interface ApiFetchOptions {
   accessToken?: string
@@ -32,8 +35,16 @@ export async function apiFetch<T>(
   })
 
   if (!res.ok) {
-    const error = await res.json().catch(() => ({ message: 'API error' }))
-    throw new Error(error.message ?? `HTTP ${res.status}`)
+    const errorBody = await res.json().catch(async () => {
+      const text = await res.text().catch(() => '')
+      return { message: text || `HTTP ${res.status} ${res.statusText}` }
+    })
+
+    const message = Array.isArray(errorBody?.message)
+      ? errorBody.message.join(', ')
+      : errorBody?.message || errorBody?.error || `HTTP ${res.status}`
+
+    throw new Error(message)
   }
 
   return res.json()

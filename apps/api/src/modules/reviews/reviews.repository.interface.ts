@@ -6,4 +6,5 @@ export abstract class IReviewsRepository {
   abstract findUserReview(productId: number, userId: string): Promise<any | null>;
   abstract create(data: any): Promise<any>;
   abstract updateActiveStatus(id: number, isActive: boolean): Promise<any>;
+  abstract isOwnerOrAdmin(reviewId: number, userId: string): Promise<boolean>;
 }

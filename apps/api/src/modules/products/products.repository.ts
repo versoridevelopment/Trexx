@@ -189,7 +189,11 @@ export class ProductsRepository implements IProductsRepository {
     return this.prisma.products.update({
       where: { id },
       data: { is_active: isActive },
-      include: productIncludesAdmin,
+      include: {
+        categories: true,
+        product_images: true,
+        color: true,
+      },
     });
   }
 }

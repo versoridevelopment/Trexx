@@ -48,4 +48,10 @@ export const productsService = {
       method: 'DELETE',
       accessToken
     }),
+
+  restore: (id: number, accessToken: string) =>
+    apiFetch<any>(`/api/products/${id}/restore`, {
+      method: 'PATCH',
+      accessToken
+    }),
 }

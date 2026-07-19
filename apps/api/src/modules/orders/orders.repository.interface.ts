@@ -7,4 +7,6 @@ export abstract class IOrdersRepository {
   abstract update(id: bigint, data: any): Promise<any>;
   abstract updateActiveStatus(id: bigint, isActive: boolean): Promise<any>;
   abstract checkout(orderId: bigint, data: any): Promise<any>;
+  abstract isOwnerOrAdmin(orderId: bigint, userId: string): Promise<boolean>;
 }
+

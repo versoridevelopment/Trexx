@@ -8,6 +8,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator'
 import { ReviewsService } from './reviews.service'
 import { CreateReviewDto } from './dto/create-review.dto'
 import { Review } from './entities/review.entity'
+import { ReviewOwnerOrAdminGuard } from './guards/review-owner-or-admin.guard'
 
 /**
  * Controlador REST del módulo "reviews".
@@ -18,7 +19,7 @@ import { Review } from './entities/review.entity'
 @ApiTags('reviews')
 @Controller('reviews')
 export class ReviewsController {
-  constructor(private readonly service: ReviewsService) {}
+  constructor(private readonly service: ReviewsService) { }
 
   // PÚBLICO — reseñas de un producto
   /**
@@ -54,28 +55,21 @@ export class ReviewsController {
   ) {
     return this.service.create(dto, user.sub)
   }
-
-  // PROTEGIDO — eliminar reseña propia
+  // PROTEGIDO — eliminar reseña propia o admin
   /**
-   * Elimina una reseña. El propio autor puede eliminar su reseña; un admin
-   * puede eliminar cualquiera (se le pasa el flag isAdmin al servicio).
+   * Elimina una reseña. Autorizado mediante ReviewOwnerOrAdminGuard.
    * @route DELETE /reviews/:id
-   * @auth Requiere JWT de Supabase.
+   * @auth Requiere JWT de Supabase + ser creador de la reseña o administrador.
    * @param id ID de la reseña (ParseIntPipe).
-   * @param user Usuario autenticado inyectado por @CurrentUser().
    * @returns Resultado de la operación de borrado.
    */
   @Delete(':id')
-  @UseGuards(SupabaseAuthGuard)
+  @UseGuards(SupabaseAuthGuard, ReviewOwnerOrAdminGuard)
   @ApiBearerAuth()
   remove(
     @Param('id', ParseIntPipe) id: number,
-    @CurrentUser() user: any
   ) {
-    // Note: If admin, we should pass isAdmin flag. 
-    // For now, I'll check if user has admin role if I have it in CurrentUser.
-    const isAdmin = user.roles?.includes('admin')
-    return this.service.remove(id, user.sub, isAdmin)
+    return this.service.remove(id)
   }
 
   /**

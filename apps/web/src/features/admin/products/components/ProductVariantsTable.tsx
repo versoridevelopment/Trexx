@@ -5,26 +5,11 @@ import { createClient } from '@/shared/lib/supabase/client'
 import { toast } from 'sonner'
 import { Loader2, Save, Trash2, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { productVariantsService } from '@repo/api-client'
-
-interface VariantAttribute {
-  attribute_values: {
-    value: string
-    attribute_types: { name: string }
-  }
-}
-
-interface Variant {
-  id: number
-  sku: string | null
-  stock: number
-  price_modifier: number | null
-  is_active: boolean | null
-  variant_attributes: VariantAttribute[]
-}
+import { updateProductVariantAction, toggleVariantActiveAction } from '../actions'
+import type { AdminProductVariant } from '../types'
 
 interface VariantRowProps {
-  variant: Variant
+  variant: AdminProductVariant
   onUpdate: (id: number, sku: string, stock: number, priceModifier: number) => Promise<void>
   onToggleActive: (id: number, isActive: boolean) => Promise<void>
 }
@@ -59,7 +44,7 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
   const handleToggle = async () => {
     setToggling(true)
     try {
-      await onToggleActive(variant.id, !variant.is_active)
+      await onToggleActive(variant.id, Boolean(variant.is_active))
       toast.success(variant.is_active ? `Variante desactivada` : `Variante reactivada`)
     } finally {
       setToggling(false)
@@ -146,54 +131,42 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
 
 interface ProductVariantsTableProps {
   productId: number
-  initialVariants: Variant[]
+  initialVariants: AdminProductVariant[]
 }
 
 export function ProductVariantsTable({ productId, initialVariants }: ProductVariantsTableProps) {
-  const [variants, setVariants] = useState<Variant[]>(initialVariants)
-
-  const getToken = async () => {
-    const supabase = createClient()
-    const { data: { session } } = await (supabase.auth as any).getSession()
-    return session?.access_token || ''
-  }
+  const [variants, setVariants] = useState<AdminProductVariant[]>(initialVariants)
 
   const handleUpdate = async (id: number, sku: string, stock: number, priceModifier: number) => {
-    const token = await getToken()
-    const updated = await productVariantsService.update(
-      id,
-      { sku, stock, price_modifier: priceModifier },
-      token
-    )
+    const res = await updateProductVariantAction(id, { sku, stock, price_modifier: priceModifier })
+    if (!res.success) {
+      toast.error(res.error || 'Error al actualizar la variante')
+      return
+    }
 
     setVariants((prev) =>
       prev.map((v) =>
         v.id === id
           ? {
               ...v,
-              ...updated,
-              sku: typeof updated.sku === 'string' ? updated.sku : v.sku,
-              price_modifier:
-                typeof updated.price_modifier === 'number'
-                  ? updated.price_modifier
-                  : v.price_modifier,
+              sku,
+              stock,
+              price_modifier: priceModifier,
             }
           : v
       )
     )
   }
 
-  const handleToggleActive = async (id: number, isActive: boolean) => {
-    const token = await getToken()
-
-    if (isActive) {
-      await productVariantsService.restore(id, token)
-    } else {
-      await productVariantsService.remove(id, token)
+  const handleToggleActive = async (id: number, currentActive: boolean) => {
+    const res = await toggleVariantActiveAction(id, currentActive)
+    if (!res.success) {
+      toast.error(res.error || 'Error al cambiar el estado de la variante')
+      return
     }
 
     setVariants((prev) =>
-      prev.map((v) => (v.id === id ? { ...v, is_active: isActive } : v))
+      prev.map((v) => (v.id === id ? { ...v, is_active: !currentActive } : v))
     )
   }
 

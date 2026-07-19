@@ -25,7 +25,7 @@ export const productVariantsService = {
 
   update: (
     id: number,
-    data: { sku: string; stock: number; price_modifier: number },
+    data: { sku?: string; stock?: number; price_modifier?: number },
     accessToken?: string
   ) =>
     apiFetch<NormalizedProductVariant>(`/api/product-variants/${id}`, {

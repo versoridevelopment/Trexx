@@ -9,19 +9,19 @@ export class ProductsService {
   constructor(
     private readonly repository: IProductsRepository,
     private readonly storageService: StorageService
-  ) {}
+  ) { }
 
   // Mapeador auxiliar para inyectar la propiedad `image` y las variaciones de color consolidadas
   private mapProduct(record: any) {
     if (!record) return record
 
     const list: any[] = []
-    if (record.parent) {
+    if (record?.parent) {
       list.push(record.parent)
-      if (record.parent.variations) {
+      if (Array.isArray(record.parent.variations)) {
         list.push(...record.parent.variations)
       }
-    } else if (record.variations && record.variations.length > 0) {
+    } else if (Array.isArray(record?.variations) && record.variations.length > 0) {
       list.push(record)
       list.push(...record.variations)
     }
@@ -139,22 +139,11 @@ export class ProductsService {
     return list
   }
 
-  public async create(input: {
-    name?: string
-    priceStr?: string
-    categoryIdStr?: string
-    description?: string
-    parentIdStr?: string
-    colorIdStr?: string
-    slug?: string
-    variantsStr?: string
+  public async create(
+    dto: CreateProductDto,
     files?: { buffer: Buffer; filename: string; mimetype: string }[]
-  }) {
-    const { name, priceStr, categoryIdStr, description, parentIdStr, colorIdStr, slug, variantsStr, files } = input
-
-    if (!name || !priceStr || !categoryIdStr) {
-      throw new BadRequestException('Faltan campos obligatorios: name, price, category_id')
-    }
+  ) {
+    const { name, price: priceInput, category_id: catIdInput, description, parent_id: parentIdInput, color_id: colorIdInput, slug, variants: variantsInput } = dto as any
 
     if (!files || files.length === 0) {
       throw new BadRequestException('Falta cargar al menos una imagen')
@@ -166,10 +155,10 @@ export class ProductsService {
       }
     }
 
-    const price = Number(priceStr)
-    const category_id = Number(categoryIdStr)
-    const parent_id = parentIdStr ? Number(parentIdStr) : null
-    const color_id = colorIdStr ? Number(colorIdStr) : null
+    const price = Number(priceInput)
+    const category_id = Number(catIdInput)
+    const parent_id = parentIdInput ? Number(parentIdInput) : null
+    const color_id = colorIdInput ? Number(colorIdInput) : null
 
     if (isNaN(price) || price <= 0) {
       throw new BadRequestException('El precio debe ser un número positivo')
@@ -198,7 +187,7 @@ export class ProductsService {
     const productSlug = await this.generateUniqueSlug(slug || name)
 
     // Subir imágenes a Supabase Storage
-    const uploadPromises = files.map(file => 
+    const uploadPromises = files.map(file =>
       this.storageService.uploadFile(
         file.buffer,
         file.filename,
@@ -209,7 +198,7 @@ export class ProductsService {
     const imageUrls = await Promise.all(uploadPromises)
 
     // Parsear variantes y resolver SKUs únicos en el service (lógica de negocio)
-    const rawVariants = variantsStr ? JSON.parse(variantsStr) : []
+    const rawVariants = variantsInput ? (typeof variantsInput === 'string' ? JSON.parse(variantsInput) : variantsInput) : []
     const variants: any[] = []
     for (const v of rawVariants) {
       const baseSku = v.sku || `${productSlug.toUpperCase()}-VAR`
@@ -217,7 +206,6 @@ export class ProductsService {
       variants.push({ ...v, sku: finalSku })
     }
 
-    // Ejecutar creación atómica delegada en el repositorio
     const createdProductId = await this.repository.createWithVariants(
       {
         name,
@@ -243,21 +231,13 @@ export class ProductsService {
 
   public async update(
     id: number,
-    input: {
-      name?: string
-      priceStr?: string
-      categoryIdStr?: string
-      description?: string
-      parentIdStr?: string
-      colorIdStr?: string
-      slug?: string
-      files?: { buffer: Buffer; filename: string; mimetype: string }[]
-    }
+    dto: UpdateProductDto,
+    files?: { buffer: Buffer; filename: string; mimetype: string }[]
   ) {
     // Verificar que el producto exista
     await this.findOneAdmin(id)
 
-    const { name, priceStr, categoryIdStr, description, parentIdStr, colorIdStr, slug, files } = input
+    const { name, price: priceInput, category_id: catIdInput, description, parent_id: parentIdInput, color_id: colorIdInput, slug } = dto as any
     const dataToUpdate: any = {}
 
     if (name !== undefined) {
@@ -267,16 +247,16 @@ export class ProductsService {
       dataToUpdate.name = name
     }
 
-    if (priceStr !== undefined) {
-      const price = Number(priceStr)
+    if (priceInput !== undefined) {
+      const price = Number(priceInput)
       if (isNaN(price) || price <= 0) {
         throw new BadRequestException('El precio debe ser un número positivo')
       }
       dataToUpdate.price = price
     }
 
-    if (categoryIdStr !== undefined) {
-      const category_id = Number(categoryIdStr)
+    if (catIdInput !== undefined) {
+      const category_id = Number(catIdInput)
       if (isNaN(category_id)) {
         throw new BadRequestException('El ID de la categoría debe ser un número')
       }
@@ -292,8 +272,8 @@ export class ProductsService {
     }
 
     // Validaciones de relación y jerarquía
-    if (parentIdStr !== undefined) {
-      const parent_id = parentIdStr ? Number(parentIdStr) : null
+    if (parentIdInput !== undefined) {
+      const parent_id = parentIdInput ? Number(parentIdInput) : null
       if (parent_id) {
         if (parent_id === id) {
           throw new BadRequestException('Un producto no puede ser su propio padre')
@@ -309,8 +289,8 @@ export class ProductsService {
       dataToUpdate.parent_id = parent_id
     }
 
-    if (colorIdStr !== undefined) {
-      const color_id = colorIdStr ? Number(colorIdStr) : null
+    if (colorIdInput !== undefined) {
+      const color_id = colorIdInput ? Number(colorIdInput) : null
       dataToUpdate.color_id = color_id
     }
 
@@ -330,7 +310,7 @@ export class ProductsService {
           throw new BadRequestException('El archivo subido debe ser una imagen')
         }
       }
-      const uploadPromises = files.map(file => 
+      const uploadPromises = files.map(file =>
         this.storageService.uploadFile(
           file.buffer,
           file.filename,
@@ -361,9 +341,7 @@ export class ProductsService {
 
   // Reactivar
   public async restore(id: number) {
-    const record = await this.repository.findOneAdmin(id)
-    if (!record) throw new NotFoundException(`Producto #${id} no encontrado`)
-    if (record.is_active) throw new BadRequestException(`El producto #${id} ya está activo`)
+    await this.findOneAdmin(id)
     const restored = await this.repository.updateActiveStatus(id, true)
     return this.mapProduct(restored)
   }

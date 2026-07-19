@@ -6,6 +6,7 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { OrderOwnerOrAdminGuard } from './guards/order-owner-or-admin.guard';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 import { CheckoutOrderDto } from './dto/checkout-order.dto';
@@ -67,23 +68,20 @@ export class OrdersController {
     return this.service.findAll();
   }
 
+
   /**
    * Obtiene una orden por su ID.
-   * Si el usuario autenticado no tiene rol "admin", la búsqueda se restringe
-   * a las órdenes de ese mismo usuario (filtrado por userId).
+   * Autorizado mediante OrderOwnerOrAdminGuard.
    * @route GET /orders/:id
-   * @auth Requiere JWT de Supabase.
+   * @auth Requiere JWT de Supabase + ser dueño de la orden o administrador.
    * @param id ID de la orden (convertido a BigInt).
-   * @param user Usuario autenticado inyectado por @CurrentUser().
-   * @returns La orden encontrada (propia, o cualquiera si es admin).
+   * @returns La orden encontrada.
    */
-  @UseGuards(SupabaseAuthGuard)
+  @UseGuards(SupabaseAuthGuard, OrderOwnerOrAdminGuard)
   @ApiBearerAuth()
   @Get(':id')
-  findOne(@Param('id') id: string, @CurrentUser() user: any) {
-    // Si no es admin, filtramos por user_id
-    const userId = user.roles?.includes('admin') ? undefined : user.sub;
-    return this.service.findOne(BigInt(id), userId);
+  findOne(@Param('id') id: string) {
+    return this.service.findOne(BigInt(id));
   }
 
   /**

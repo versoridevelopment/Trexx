@@ -4,7 +4,7 @@ import { CreateReviewDto } from './dto/create-review.dto';
 
 @Injectable()
 export class ReviewsService {
-  constructor(private readonly repository: IReviewsRepository) {}
+  constructor(private readonly repository: IReviewsRepository) { }
 
   // Público: solo activas
   findByProduct(productId: number) {
@@ -49,12 +49,9 @@ export class ReviewsService {
     });
   }
 
-  // Soft delete (solo el autor o admin)
-  async remove(id: number, userId: string, isAdmin = false) {
-    const review = await this.findOneAdmin(id);
-    if (!isAdmin && review.user_id !== userId) {
-      throw new ForbiddenException('No tienes permiso para borrar esta reseña');
-    }
+  // Soft delete (autorización pre-validada por ReviewOwnerOrAdminGuard)
+  async remove(id: number) {
+    await this.findOneAdmin(id);
     return this.repository.updateActiveStatus(id, false);
   }
 

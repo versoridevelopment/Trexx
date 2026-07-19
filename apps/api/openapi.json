@@ -268,6 +268,111 @@
         ]
       }
     },
+    "/api/products/admin/colors": {
+      "get": {
+        "operationId": "ProductsController_findAllColors",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/products/admin/all": {
+      "get": {
+        "operationId": "ProductsController_findAllAdmin",
+        "parameters": [
+          {
+            "name": "includeInactive",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/products/admin/{id}": {
+      "get": {
+        "operationId": "ProductsController_findOneAdmin",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "tags": [
+          "products"
+        ]
+      }
+    },
+    "/api/products/slug/{slug}": {
+      "get": {
+        "operationId": "ProductsController_findOneBySlug",
+        "parameters": [
+          {
+            "name": "slug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "products"
+        ]
+      }
+    },
     "/api/products/{id}": {
       "get": {
         "operationId": "ProductsController_findOne",
@@ -377,111 +482,6 @@
       },
       "delete": {
         "operationId": "ProductsController_remove",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": [
-          "products"
-        ]
-      }
-    },
-    "/api/products/slug/{slug}": {
-      "get": {
-        "operationId": "ProductsController_findOneBySlug",
-        "parameters": [
-          {
-            "name": "slug",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Product"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "products"
-        ]
-      }
-    },
-    "/api/products/admin/colors": {
-      "get": {
-        "operationId": "ProductsController_findAllColors",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": [
-          "products"
-        ]
-      }
-    },
-    "/api/products/admin/all": {
-      "get": {
-        "operationId": "ProductsController_findAllAdmin",
-        "parameters": [
-          {
-            "name": "includeInactive",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "tags": [
-          "products"
-        ]
-      }
-    },
-    "/api/products/admin/{id}": {
-      "get": {
-        "operationId": "ProductsController_findOneAdmin",
         "parameters": [
           {
             "name": "id",

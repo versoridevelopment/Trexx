@@ -7,6 +7,8 @@ import { RolesGuard } from '../auth/guards/roles.guard'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { ProductsService } from './products.service'
 import { Product } from './entities/product.entity'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 import { parseMultipartRequest } from '../../common/utils/multipart'
 
 /**
@@ -36,30 +38,51 @@ export class ProductsController {
     return this.service.findAll(category)
   }
 
-  /**
-   * Obtiene un producto por su ID numérico.
-   * @route GET /products/:id
-   * @auth Público.
-   * @param id ID numérico del producto (ParseIntPipe).
-   * @returns El Product encontrado (200).
-   */
-  @Get(':id')
-  @ApiResponse({ status: 200, type: Product })
-  public findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOne(id)
+  // GET /products/admin/colors
+  @Get('admin/colors')
+  @UseGuards(SupabaseAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
+  public findAllColors() {
+    return this.service.findAllColors()
+  }
+
+  // GET /products/admin/all
+  @Get('admin/all')
+  @UseGuards(SupabaseAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
+  public findAllAdmin(@Query('includeInactive') includeInactive?: string) {
+    return this.service.findAllAdmin(includeInactive === 'true')
+  }
+
+  // GET /products/admin/:id
+  @Get('admin/:id')
+  @UseGuards(SupabaseAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
+  public findOneAdmin(@Param('id', ParseIntPipe) id: number) {
+    return this.service.findOneAdmin(id)
   }
 
   /**
-   * Obtiene un producto por su slug (identificador amigable para URLs/SEO).
+   * Obtiene un producto por su slug.
    * @route GET /products/slug/:slug
-   * @auth Público.
-   * @param slug Slug del producto.
-   * @returns El Product encontrado (200).
    */
   @Get('slug/:slug')
   @ApiResponse({ status: 200, type: Product })
   public findOneBySlug(@Param('slug') slug: string) {
     return this.service.findOneBySlug(slug)
+  }
+
+  /**
+   * Obtiene un producto por su ID numérico.
+   * @route GET /products/:id
+   */
+  @Get(':id')
+  @ApiResponse({ status: 200, type: Product })
+  public findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.service.findOne(id)
   }
 
   /**
@@ -112,17 +135,18 @@ export class ProductsController {
   public async create(@Req() req: FastifyRequest) {
     const { fields, files } = await parseMultipartRequest(req)
 
-    return this.service.create({
+    const dto: CreateProductDto = {
       name: fields.name,
-      priceStr: fields.price,
-      categoryIdStr: fields.category_id,
+      price: Number(fields.price),
+      category_id: Number(fields.category_id),
       description: fields.description,
-      parentIdStr: fields.parent_id,
-      colorIdStr: fields.color_id,
+      parent_id: fields.parent_id ? Number(fields.parent_id) : undefined,
+      color_id: fields.color_id ? Number(fields.color_id) : undefined,
       slug: fields.slug,
-      variantsStr: fields.variants,
-      files,
-    })
+      variants: fields.variants,
+    } as any
+
+    return this.service.create(dto, files)
   }
 
   /**
@@ -138,6 +162,22 @@ export class ProductsController {
    * @param req FastifyRequest crudo, usado para parsear el multipart manualmente.
    * @returns El Product actualizado.
    */
+  // PATCH /products/:id/restore
+  /**
+   * Restaura un producto previamente eliminado (soft delete).
+   * @route PATCH /products/:id/restore
+   * @auth Requiere JWT de Supabase + rol "admin".
+   * @param id ID numérico del producto a restaurar (ParseIntPipe).
+   * @returns El producto restaurado.
+   */
+  @Patch(':id/restore')
+  @UseGuards(SupabaseAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth()
+  public restore(@Param('id', ParseIntPipe) id: number) {
+    return this.service.restore(id)
+  }
+
   @Patch(':id')
   @UseGuards(SupabaseAuthGuard, RolesGuard)
   @Roles('admin')
@@ -169,16 +209,17 @@ export class ProductsController {
   ) {
     const { fields, files } = await parseMultipartRequest(req)
 
-    return this.service.update(id, {
+    const dto: UpdateProductDto = {
       name: fields.name,
-      priceStr: fields.price,
-      categoryIdStr: fields.category_id,
+      price: fields.price !== undefined ? Number(fields.price) : undefined,
+      category_id: fields.category_id !== undefined ? Number(fields.category_id) : undefined,
       description: fields.description,
-      parentIdStr: fields.parent_id,
-      colorIdStr: fields.color_id,
+      parent_id: fields.parent_id !== undefined ? (fields.parent_id ? Number(fields.parent_id) : null) : undefined,
+      color_id: fields.color_id !== undefined ? (fields.color_id ? Number(fields.color_id) : null) : undefined,
       slug: fields.slug,
-      files,
-    })
+    } as any
+
+    return this.service.update(id, dto, files)
   }
 
   /**
@@ -194,71 +235,5 @@ export class ProductsController {
   @ApiBearerAuth()
   public remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id)
-  }
-
-  // GET /products/admin/colors
-  /**
-   * Lista todos los colores disponibles para productos (uso administrativo,
-   * por ejemplo para poblar un selector al crear/editar un producto).
-   * @route GET /products/admin/colors
-   * @auth Requiere JWT de Supabase + rol "admin".
-   * @returns Arreglo de colores.
-   */
-  @Get('admin/colors')
-  @UseGuards(SupabaseAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth()
-  public findAllColors() {
-    return this.service.findAllColors()
-  }
-
-  // GET /products/admin?includeInactive=true
-  /**
-   * Lista todos los productos para administración, incluyendo opcionalmente
-   * los inactivos/eliminados.
-   * @route GET /products/admin/all?includeInactive=true|false
-   * @auth Requiere JWT de Supabase + rol "admin".
-   * @param includeInactive Query param string ('true'/'false') para incluir inactivos.
-   * @returns Arreglo de productos.
-   */
-  @Get('admin/all')
-  @UseGuards(SupabaseAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth()
-  public findAllAdmin(@Query('includeInactive') includeInactive?: string) {
-    return this.service.findAllAdmin(includeInactive === 'true')
-  }
-
-  // GET /products/admin/:id
-  /**
-   * Obtiene un producto por ID para administración (incluye datos/estado que
-   * no se exponen en el findOne público, ej. productos inactivos).
-   * @route GET /products/admin/:id
-   * @auth Requiere JWT de Supabase + rol "admin".
-   * @param id ID numérico del producto (ParseIntPipe).
-   * @returns El producto encontrado, con visibilidad administrativa.
-   */
-  @Get('admin/:id')
-  @UseGuards(SupabaseAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth()
-  public findOneAdmin(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOneAdmin(id)
-  }
-
-  // PATCH /products/:id/restore
-  /**
-   * Restaura un producto previamente eliminado (soft delete).
-   * @route PATCH /products/:id/restore
-   * @auth Requiere JWT de Supabase + rol "admin".
-   * @param id ID numérico del producto a restaurar (ParseIntPipe).
-   * @returns El producto restaurado.
-   */
-  @Patch(':id/restore')
-  @UseGuards(SupabaseAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth()
-  public restore(@Param('id', ParseIntPipe) id: number) {
-    return this.service.restore(id)
   }
 }

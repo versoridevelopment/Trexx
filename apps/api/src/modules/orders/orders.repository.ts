@@ -103,4 +103,24 @@ export class OrdersRepository implements IOrdersRepository {
       return order;
     });
   }
+
+  async isOwnerOrAdmin(orderId: bigint, userId: string): Promise<boolean> {
+    const order = await this.prisma.orders.findUnique({
+      where: { id: orderId } as any,
+      select: { user_id: true },
+    });
+
+    if (!order) return false;
+    if (order.user_id === userId) return true;
+
+    const adminRoleCount = await this.prisma.user_roles.count({
+      where: {
+        user_id: userId,
+        roles: { name: 'admin' },
+      },
+    });
+
+    return adminRoleCount > 0;
+  }
 }
+
