@@ -61,11 +61,11 @@ export function ProductBasicFields({
 
   return (
     <div className="space-y-6 pt-2">
-      <div className="space-y-1 border-b border-white/10 pb-3">
-        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
+      <div className="space-y-1 border-b border-gray-200 pb-3">
+        <h2 className="text-xs font-black uppercase tracking-[0.18em] text-trexx-red">
           1. Información del Producto
         </h2>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-gray-500">
           Ingresa el título, precio, categoría y detalles del artículo.
         </p>
       </div>
@@ -73,7 +73,7 @@ export function ProductBasicFields({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Name */}
         <div className="space-y-2">
-          <label className="text-xs font-bold tracking-wider uppercase text-white">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
             Nombre del Producto *
           </label>
           <input
@@ -82,13 +82,13 @@ export function ProductBasicFields({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Ej: Pala Trexx Pro Carbon 2026"
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all"
           />
         </div>
 
         {/* Price */}
         <div className="space-y-2">
-          <label className="text-xs font-bold tracking-wider uppercase text-white">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
             Precio ($) *
           </label>
           <input
@@ -98,19 +98,19 @@ export function ProductBasicFields({
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Ej: 250.00"
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 font-mono placeholder-gray-400 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all"
           />
         </div>
 
         {/* Category */}
         <div className="space-y-2">
-          <label className="text-xs font-bold tracking-wider uppercase text-white">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
             Categoría *
           </label>
           <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all"
           >
             {categories.map((cat) => (
               <option key={cat.id} value={cat.id.toString()}>
@@ -122,7 +122,7 @@ export function ProductBasicFields({
 
         {/* Slug SEO */}
         <div className="space-y-2">
-          <label className="text-xs font-bold tracking-wider uppercase text-white">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
             Slug de URL (Opcional)
           </label>
           <input
@@ -130,9 +130,9 @@ export function ProductBasicFields({
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             placeholder="Ej: pala-trexx-pro-carbon-2026"
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt font-mono"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 font-mono placeholder-gray-400 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all"
           />
-          <p className="text-[10px] text-muted-foreground">
+          <p className="text-[10px] text-gray-400">
             Dirección amigable para buscadores. Se genera automáticamente si se deja vacío.
           </p>
         </div>
@@ -140,7 +140,7 @@ export function ProductBasicFields({
         {/* Color Principal */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="text-xs font-bold tracking-wider uppercase text-white">
+            <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
               Color Principal (Opcional)
             </label>
             {selectedColorObj?.hex_code && (
@@ -156,7 +156,7 @@ export function ProductBasicFields({
           <select
             value={colorId}
             onChange={(e) => setColorId(e.target.value)}
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all"
           >
             <option value="">-- Sin color asignado --</option>
             {colors.map((col) => (
@@ -169,13 +169,13 @@ export function ProductBasicFields({
 
         {/* Producto Padre (Relación de Modelo) */}
         <div className="space-y-2">
-          <label className="text-xs font-bold tracking-wider uppercase text-white">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
             Producto Padre (Vinculación de Modelo)
           </label>
           <select
             value={parentId}
             onChange={(e) => setParentId(e.target.value)}
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all"
           >
             <option value="">-- Este es el producto principal (Padre) --</option>
             {parentProducts.map((p) => (
@@ -184,14 +184,14 @@ export function ProductBasicFields({
               </option>
             ))}
           </select>
-          <p className="text-[10px] text-muted-foreground">
+          <p className="text-[10px] text-gray-400">
             Asócialo a un producto base para agruparlo como una variación de color en la tienda.
           </p>
         </div>
 
         {/* Description */}
         <div className="space-y-2 md:col-span-2">
-          <label className="text-xs font-bold tracking-wider uppercase text-white">
+          <label className="text-[11px] font-bold tracking-wider uppercase text-gray-500">
             Descripción
           </label>
           <textarea
@@ -199,7 +199,7 @@ export function ProductBasicFields({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Detalla las características de fabricación o tecnologías..."
-            className="w-full bg-black border border-white/10 rounded-sm px-4 py-3 text-xs text-white focus:outline-none focus:border-trexx-volt resize-none"
+            className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all resize-none"
           />
         </div>
       </div>

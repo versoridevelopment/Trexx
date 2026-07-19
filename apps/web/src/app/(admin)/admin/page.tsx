@@ -11,7 +11,7 @@ export default async function AdminDashboardPage() {
 
   const products = productsRes.status === 'fulfilled' ? productsRes.value : []
   const categories = categoriesRes.status === 'fulfilled' ? categoriesRes.value : []
-  
+
   const activeProductsCount = products.filter((p: any) => p.is_active).length
 
   const stats = [
@@ -22,44 +22,50 @@ export default async function AdminDashboardPage() {
   ]
 
   return (
-    <div className="space-y-10 animate-enter">
-      {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-white/10 pb-6">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-gray-200">
         <div>
-          <h1 className="text-4xl font-black italic tracking-tighter uppercase text-white">
+          <h1 className="text-2xl font-black uppercase text-gray-900 tracking-tight">
             Panel de Control
           </h1>
-          <p className="text-xs text-trexx-volt font-bold tracking-[0.2em] uppercase mt-1">
+          <p className="text-xs text-gray-400 font-semibold tracking-wider uppercase mt-1">
             Gestión de Catálogo y Sistema
           </p>
         </div>
 
         <Link href="/admin/products/new">
-          <Button className="bg-trexx-volt text-black hover:bg-trexx-volt/90 font-bold tracking-wider uppercase text-xs gap-2 shadow-[0_0_20px_rgba(204,255,0,0.3)]">
-            <Plus size={16} />
+          <Button className="bg-trexx-red text-white hover:bg-red-700 font-bold tracking-wider uppercase text-xs gap-2 shadow-sm">
+            <Plus size={15} />
             <span>Nuevo Producto</span>
           </Button>
         </Link>
       </div>
 
       {/* Metric Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat, i) => {
           const Icon = stat.icon
           return (
             <div
               key={i}
-              className={`p-6 rounded-sm bg-[#09090b] border ${
-                stat.highlight ? 'border-trexx-volt/40 shadow-[0_0_15px_rgba(204,255,0,0.1)]' : 'border-white/10'
-              } space-y-4`}
+              className={`p-5 rounded-xl bg-white border shadow-sm space-y-3 ${
+                stat.highlight
+                  ? 'border-trexx-red/20 shadow-red-100'
+                  : 'border-gray-200'
+              }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+                <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-gray-400">
                   {stat.label}
                 </span>
-                <Icon size={18} className={stat.highlight ? 'text-trexx-volt' : 'text-white/40'} />
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  stat.highlight ? 'bg-red-50 text-trexx-red' : 'bg-gray-100 text-gray-400'
+                }`}>
+                  <Icon size={16} />
+                </div>
               </div>
-              <p className="text-4xl font-black italic tracking-tighter text-white tabular-nums">
+              <p className="text-4xl font-black tracking-tight text-gray-900 tabular-nums">
                 {stat.value}
               </p>
             </div>
@@ -68,30 +74,30 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Quick Actions & Recent Products */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Recent Products (8 cols) */}
-        <div className="lg:col-span-8 bg-[#09090b] border border-white/10 p-6 rounded-sm space-y-6">
+        <div className="lg:col-span-8 bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-5">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-black italic tracking-tighter uppercase text-white">
+            <h2 className="text-sm font-black uppercase tracking-wider text-gray-900">
               Últimos Productos
             </h2>
             <Link
               href="/admin/products"
-              className="text-xs text-trexx-volt hover:underline font-bold tracking-wider uppercase flex items-center gap-1"
+              className="text-xs text-trexx-red hover:text-red-700 font-bold tracking-wider uppercase flex items-center gap-1 transition-colors"
             >
               <span>Ver todos</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={13} />
             </Link>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             {products.slice(0, 5).map((p: any) => (
               <div
                 key={p.id}
-                className="flex items-center justify-between p-3 rounded-sm bg-white/5 border border-white/5"
+                className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-100 hover:border-gray-200 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-12 bg-black rounded-sm overflow-hidden flex-shrink-0 border border-white/10">
+                  <div className="w-10 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
                     {p.product_images?.[0]?.url || p.image ? (
                       <img
                         src={p.product_images?.[0]?.url || p.image}
@@ -99,23 +105,25 @@ export default async function AdminDashboardPage() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-[8px] text-muted-foreground">
+                      <div className="w-full h-full flex items-center justify-center text-[8px] text-gray-400">
                         S/I
                       </div>
                     )}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white tracking-wide">{p.name}</p>
-                    <p className="text-[10px] text-trexx-volt font-bold uppercase tracking-widest">
+                    <p className="text-sm font-bold text-gray-900">{p.name}</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-trexx-red">
                       {p.categories?.name || 'Sin Categoría'}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-black text-white tabular-nums">${Number(p.price).toFixed(2)}</p>
+                  <p className="text-sm font-black text-gray-900 tabular-nums">${Number(p.price).toFixed(2)}</p>
                   <span
-                    className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm ${
-                      p.is_active ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+                    className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                      p.is_active
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                        : 'bg-red-50 text-trexx-red border border-red-200'
                     }`}
                   >
                     {p.is_active ? 'Activo' : 'Inactivo'}
@@ -127,26 +135,26 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Shortcuts (4 cols) */}
-        <div className="lg:col-span-4 bg-[#09090b] border border-white/10 p-6 rounded-sm space-y-6">
-          <h2 className="text-xl font-black italic tracking-tighter uppercase text-white">
+        <div className="lg:col-span-4 bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-5">
+          <h2 className="text-sm font-black uppercase tracking-wider text-gray-900">
             Accesos Rápidos
           </h2>
 
           <div className="space-y-3">
             <Link
               href="/admin/products/new"
-              className="flex items-center justify-between p-4 rounded-sm bg-trexx-volt/10 border border-trexx-volt/30 text-trexx-volt hover:bg-trexx-volt/20 transition-colors"
+              className="flex items-center justify-between p-4 rounded-xl bg-red-50 border border-red-100 text-trexx-red hover:bg-red-100 transition-colors"
             >
               <span className="text-xs font-bold uppercase tracking-wider">Cargar Producto Nuevo</span>
-              <Plus size={16} />
+              <Plus size={15} />
             </Link>
 
             <Link
               href="/admin/products"
-              className="flex items-center justify-between p-4 rounded-sm bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
+              className="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-700 hover:bg-gray-100 transition-colors"
             >
               <span className="text-xs font-bold uppercase tracking-wider">Administrar Inventario</span>
-              <Package size={16} />
+              <Package size={15} />
             </Link>
           </div>
         </div>

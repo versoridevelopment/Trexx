@@ -12,9 +12,9 @@ export function ProductImageUploader({
   onRemoveFile,
 }: ProductImageUploaderProps) {
   return (
-    <div className="space-y-6 pt-4 border-t border-white/10">
-      <div className="space-y-1 border-b border-white/10 pb-3">
-        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
+    <div className="space-y-6 pt-4 border-t border-gray-200">
+      <div className="space-y-1 border-b border-gray-200 pb-3">
+        <h2 className="text-xs font-black uppercase tracking-[0.18em] text-trexx-red">
           2. Imágenes del Producto
         </h2>
         <p className="text-xs text-muted-foreground">
@@ -23,7 +23,7 @@ export function ProductImageUploader({
       </div>
 
       {/* Upload Dropzone */}
-      <div className="relative border-2 border-dashed border-white/10 hover:border-trexx-volt/50 rounded-sm p-8 text-center bg-black/50 transition-colors cursor-pointer group">
+      <div className="relative border-2 border-dashed border-gray-200 hover:border-trexx-red rounded-xl p-8 text-center bg-gray-50 hover:bg-red-50/30 transition-colors cursor-pointer group">
         <input
           type="file"
           multiple
@@ -32,13 +32,13 @@ export function ProductImageUploader({
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
         />
         <div className="space-y-2 pointer-events-none flex flex-col items-center">
-          <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-trexx-volt group-hover:scale-110 transition-transform">
+          <div className="w-12 h-12 rounded-full bg-gray-100 group-hover:bg-red-100 flex items-center justify-center text-gray-400 group-hover:text-trexx-red transition-colors">
             <Upload size={22} />
           </div>
-          <p className="text-xs font-bold text-white uppercase tracking-wider">
+          <p className="text-xs font-bold text-gray-600 group-hover:text-trexx-red uppercase tracking-wider transition-colors">
             Haz clic o arrastra imágenes aquí
           </p>
-          <p className="text-[10px] text-muted-foreground font-mono">
+          <p className="text-[10px] text-gray-400 font-mono">
             PNG, JPG, WEBP, JPEG
           </p>
         </div>
@@ -47,16 +47,16 @@ export function ProductImageUploader({
       {/* Previews Grid */}
       {previews.length > 0 && (
         <div className="space-y-2 pt-2">
-          <p className="text-[10px] font-bold text-trexx-volt uppercase tracking-widest">
+          <p className="text-[10px] font-bold text-trexx-red uppercase tracking-widest">
             Fotos seleccionadas ({previews.length})
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-4">
             {previews.map((src, index) => (
-              <div key={index} className="relative group aspect-[3/4] bg-black border border-white/10 rounded-sm overflow-hidden">
+              <div key={index} className="relative group aspect-[3/4] bg-gray-100 border border-gray-200 rounded-lg overflow-hidden">
                 <img src={src} alt={`Preview ${index}`} className="w-full h-full object-cover" />
                 
                 {index === 0 && (
-                  <span className="absolute top-1 left-1 bg-trexx-volt text-black font-bold text-[8px] uppercase px-1.5 py-0.5 rounded-sm shadow-md">
+                  <span className="absolute top-1 left-1 bg-trexx-red text-white font-bold text-[8px] uppercase px-1.5 py-0.5 rounded-sm shadow-md">
                     Portada
                   </span>
                 )}

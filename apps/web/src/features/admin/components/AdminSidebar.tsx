@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { LayoutDashboard, Package, ShoppingBag, Users, Tag, Sliders, ArrowLeft, LogOut, ShieldCheck, User } from 'lucide-react'
 import { createClient } from '@/shared/lib/supabase/client'
-
 import Image from 'next/image'
 
 const navItems = [
@@ -32,23 +31,26 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
   }
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-64 bg-[#09090b] border-r border-white/10 flex flex-col justify-between z-50 overflow-hidden">
-      <div className="p-6 space-y-6 overflow-y-auto">
+    <aside className="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 flex flex-col justify-between z-50 overflow-hidden shadow-sm">
+      <div className="flex flex-col overflow-y-auto">
         {/* Brand Header with Trexx Logo */}
-        <div className="pb-2">
+        <div className="px-5 pt-6 pb-4 border-b border-gray-100">
           <Link href="/admin" className="flex items-center hover:opacity-80 transition-opacity">
-            <Image 
-              src="/trexx/logo.png" 
-              alt="Trexx Padel" 
-              width={120} 
-              height={36} 
-              className="object-contain"
+            <Image
+              src="/trexx/logo.png"
+              alt="Trexx Padel"
+              width={110}
+              height={32}
+              className="object-contain brightness-0"
             />
           </Link>
+          <p className="text-[10px] text-gray-400 font-bold tracking-[0.15em] uppercase mt-2">
+            Panel de Administración
+          </p>
         </div>
 
         {/* Navigation Menu */}
-        <nav className="space-y-1.5 pt-2">
+        <nav className="p-3 space-y-0.5 mt-1">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href))
@@ -57,13 +59,13 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-2.5 rounded-md text-xs font-bold tracking-wider uppercase transition-all duration-200 ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all duration-150 ${
                   isActive
-                    ? 'bg-trexx-volt/10 text-trexx-volt border-l-2 border-trexx-volt shadow-[0_0_15px_rgba(204,255,0,0.15)]'
-                    : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                    ? 'bg-red-50 text-trexx-red border border-red-100'
+                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={16} className={isActive ? 'text-trexx-red' : 'text-gray-400'} />
                 <span>{item.label}</span>
               </Link>
             )
@@ -72,38 +74,38 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
       </div>
 
       {/* Footer Section: User Profile & Actions */}
-      <div className="p-4 border-t border-white/10 bg-[#060607] space-y-4">
+      <div className="p-4 border-t border-gray-100 bg-gray-50/80 space-y-3">
         {/* User Info */}
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-trexx-volt shrink-0">
-            <User size={16} />
+          <div className="w-8 h-8 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-trexx-red shrink-0">
+            <User size={15} />
           </div>
           <div className="space-y-0.5 overflow-hidden">
-            <p className="text-xs font-bold text-white tracking-wide truncate">
+            <p className="text-xs font-bold text-gray-800 tracking-wide truncate">
               {userEmail || 'Administrador'}
             </p>
-            <div className="flex items-center gap-1 text-[8px] font-bold tracking-widest uppercase text-trexx-volt">
-              <ShieldCheck size={10} />
-              <span>SUPER ADMIN</span>
+            <div className="flex items-center gap-1 text-[9px] font-bold tracking-widest uppercase text-trexx-red">
+              <ShieldCheck size={9} />
+              <span>Super Admin</span>
             </div>
           </div>
         </div>
 
         {/* Navigation / Logout Actions */}
-        <div className="flex items-center justify-between gap-2 pt-1 border-t border-white/5">
+        <div className="flex items-center justify-between gap-2 pt-1 border-t border-gray-200">
           <Link
             href="/shop"
-            className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase text-muted-foreground hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-[10px] font-semibold tracking-wide uppercase text-gray-400 hover:text-gray-700 transition-colors"
           >
-            <ArrowLeft size={13} />
+            <ArrowLeft size={12} />
             <span>Tienda</span>
           </Link>
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase text-rose-400 hover:text-rose-300 transition-colors"
+            className="flex items-center gap-1.5 text-[10px] font-semibold tracking-wide uppercase text-trexx-red hover:text-red-700 transition-colors"
           >
-            <LogOut size={13} />
+            <LogOut size={12} />
             <span>Salir</span>
           </button>
         </div>

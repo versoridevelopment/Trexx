@@ -54,12 +54,12 @@ export function ProductVariantSelector({
   onVariantModeChange,
 }: ProductVariantSelectorProps) {
   return (
-    <div className="space-y-8 pt-4 border-t border-white/10">
-      <div className="space-y-1 border-b border-white/10 pb-3">
-        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
+    <div className="space-y-8 pt-4 border-t border-gray-200">
+      <div className="space-y-1 border-b border-gray-200 pb-3">
+        <h2 className="text-xs font-black uppercase tracking-[0.18em] text-trexx-red">
           3. Stock e Inventario
         </h2>
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-gray-500">
           Define si el producto tiene características únicas o si cuenta con múltiples variaciones de stock.
         </p>
       </div>
@@ -70,30 +70,30 @@ export function ProductVariantSelector({
         <button
           type="button"
           onClick={() => onVariantModeChange('simple')}
-          className={`flex items-start gap-4 p-4 rounded-sm border transition-all text-left group ${
+          className={`flex items-start gap-4 p-4 rounded-xl border transition-all text-left group ${
             variantMode === 'simple'
-              ? 'bg-trexx-volt/5 border-trexx-volt shadow-[0_0_15px_rgba(204,255,0,0.1)]'
-              : 'bg-black border-white/10 hover:border-white/20'
+              ? 'bg-red-50 border-trexx-red shadow-sm'
+              : 'bg-white border-gray-200 hover:border-gray-300'
           }`}
         >
           <div
-            className={`p-3 rounded-sm transition-colors ${
+            className={`p-2.5 rounded-lg transition-colors ${
               variantMode === 'simple'
-                ? 'bg-trexx-volt text-black'
-                : 'bg-white/5 text-muted-foreground group-hover:text-white'
+                ? 'bg-trexx-red text-white'
+                : 'bg-gray-100 text-gray-400 group-hover:text-gray-700'
             }`}
           >
-            <Package size={20} />
+            <Package size={18} />
           </div>
           <div className="space-y-1">
             <p
-              className={`text-sm font-bold uppercase tracking-wider transition-colors ${
-                variantMode === 'simple' ? 'text-trexx-volt' : 'text-white'
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${
+                variantMode === 'simple' ? 'text-trexx-red' : 'text-gray-800'
               }`}
             >
               Producto Simple (Único)
             </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-xs text-gray-500 leading-relaxed">
               Un solo inventario, precio base y SKU. Ideal para accesorios o artículos de edición exclusiva.
             </p>
           </div>
@@ -103,30 +103,30 @@ export function ProductVariantSelector({
         <button
           type="button"
           onClick={() => onVariantModeChange('variable')}
-          className={`flex items-start gap-4 p-4 rounded-sm border transition-all text-left group ${
+          className={`flex items-start gap-4 p-4 rounded-xl border transition-all text-left group ${
             variantMode === 'variable'
-              ? 'bg-trexx-volt/5 border-trexx-volt shadow-[0_0_15px_rgba(204,255,0,0.1)]'
-              : 'bg-black border-white/10 hover:border-white/20'
+              ? 'bg-red-50 border-trexx-red shadow-sm'
+              : 'bg-white border-gray-200 hover:border-gray-300'
           }`}
         >
           <div
-            className={`p-3 rounded-sm transition-colors ${
+            className={`p-2.5 rounded-lg transition-colors ${
               variantMode === 'variable'
-                ? 'bg-trexx-volt text-black'
-                : 'bg-white/5 text-muted-foreground group-hover:text-white'
+                ? 'bg-trexx-red text-white'
+                : 'bg-gray-100 text-gray-400 group-hover:text-gray-700'
             }`}
           >
-            <Sparkles size={20} />
+            <Sparkles size={18} />
           </div>
           <div className="space-y-1">
             <p
-              className={`text-sm font-bold uppercase tracking-wider transition-colors ${
-                variantMode === 'variable' ? 'text-trexx-volt' : 'text-white'
+              className={`text-sm font-bold uppercase tracking-wide transition-colors ${
+                variantMode === 'variable' ? 'text-trexx-red' : 'text-gray-800'
               }`}
             >
               Producto Variable (Múltiple)
             </p>
-            <p className="text-xs text-muted-foreground leading-relaxed">
+            <p className="text-xs text-gray-500 leading-relaxed">
               Combinaciones de diferentes atributos (ej: Color y Peso) con control de stock y SKU independientes.
             </p>
           </div>
@@ -134,17 +134,17 @@ export function ProductVariantSelector({
       </div>
 
       {attributeTypes.length === 0 ? (
-        <p className="text-xs text-muted-foreground italic">No hay tipos de atributos configurados.</p>
+        <p className="text-xs text-gray-400 italic">No hay tipos de atributos configurados.</p>
       ) : (
-        <div className="space-y-6 pt-4 border-t border-white/5">
+        <div className="space-y-6 pt-4 border-t border-gray-100">
           {/* MODO PRODUCTO SIMPLE */}
           {variantMode === 'simple' && (
             <div className="space-y-4 max-w-[240px] animate-enter">
               <div className="space-y-1">
-                <label className="text-xs font-bold uppercase tracking-wider text-white">
+                <label className="text-xs font-bold uppercase tracking-wider text-gray-700">
                   Stock Disponible
                 </label>
-                <p className="text-[11px] text-muted-foreground">
+                <p className="text-[11px] text-gray-500">
                   Ingresa las unidades físicas en stock.
                 </p>
               </div>
@@ -153,7 +153,7 @@ export function ProductVariantSelector({
                 min={0}
                 value={baseStock}
                 onChange={(e) => onBaseStockChange(parseInt(e.target.value, 10) || 0)}
-                className="w-full bg-black border border-white/10 rounded px-3 py-2 text-white font-mono focus:border-trexx-volt focus:outline-none"
+                className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 font-mono text-sm focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 focus:outline-none transition-all"
                 placeholder="10"
               />
             </div>
@@ -170,7 +170,7 @@ export function ProductVariantSelector({
 
                   return (
                     <div key={type.id} className="space-y-3">
-                      <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-trexx-volt">
+                      <div className="flex items-center gap-2 text-xs font-bold tracking-wider uppercase text-trexx-red">
                         <Layers size={14} />
                         <span>Elegir opciones de {type.name}</span>
                       </div>
@@ -192,10 +192,10 @@ export function ProductVariantSelector({
                                   typeSlug: type.slug,
                                 })
                               }
-                              className={`h-9 px-4 flex items-center justify-center text-xs font-bold rounded-sm border transition-all ${
+                              className={`h-9 px-4 flex items-center justify-center text-xs font-bold rounded-lg border transition-all ${
                                 isSelected
-                                  ? 'bg-trexx-volt/10 border-trexx-volt text-trexx-volt shadow-[0_0_10px_rgba(204,255,0,0.15)]'
-                                  : 'bg-black border-white/10 text-muted-foreground hover:border-white/20 hover:text-white'
+                                  ? 'bg-red-50 border-trexx-red text-trexx-red shadow-sm'
+                                  : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-900'
                               }`}
                             >
                               {val.value}
@@ -210,39 +210,39 @@ export function ProductVariantSelector({
 
               {/* Tabla de Combinaciones de Variantes */}
               {generatedVariants.length > 0 ? (
-                <div className="space-y-4 pt-4 border-t border-white/10">
+                <div className="space-y-4 pt-4 border-t border-gray-100">
                   <div className="space-y-1">
-                    <h3 className="text-sm font-bold tracking-wider uppercase text-white">
+                    <h3 className="text-sm font-bold tracking-wider uppercase text-gray-900">
                       Combinaciones Generadas ({generatedVariants.length})
                     </h3>
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-[11px] text-gray-500">
                       Configura el SKU, precio adicional y stock de cada combinación.
                     </p>
                   </div>
 
-                  <div className="overflow-x-auto border border-white/10 rounded-sm">
-                    <table className="w-full text-left border-collapse text-xs">
-                      <thead>
-                        <tr className="border-b border-white/10 bg-white/[0.02] text-muted-foreground font-bold uppercase tracking-wider">
-                          <th className="p-3">Variante</th>
-                          <th className="p-3">SKU</th>
-                          <th className="p-3 w-32">Precio Adicional ($)</th>
-                          <th className="p-3 w-28">Stock</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/5 bg-black">
+                  <div className="overflow-x-auto border border-gray-200 rounded-xl">
+                      <table className="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr className="border-b border-gray-200 bg-gray-50 text-gray-500 font-bold uppercase tracking-wider">
+                            <th className="p-3">Variante</th>
+                            <th className="p-3">SKU</th>
+                            <th className="p-3 w-32">Precio Adicional ($)</th>
+                            <th className="p-3 w-28">Stock</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100 bg-white">
                         {generatedVariants.map((variant) => {
                           const label = variant.attributeValues.map((v) => v.value).join(' / ')
 
                           return (
-                            <tr key={variant.key} className="hover:bg-white/[0.01] transition-colors">
-                              <td className="p-3 font-bold text-white uppercase font-mono">{label}</td>
+                            <tr key={variant.key} className="hover:bg-gray-50 transition-colors">
+                              <td className="p-3 font-bold text-gray-900 uppercase font-mono text-xs">{label}</td>
                               <td className="p-3">
                                 <input
                                   type="text"
                                   value={variant.sku}
                                   onChange={(e) => onUpdateVariant(variant.key, { sku: e.target.value })}
-                                  className="w-full bg-black border border-white/10 rounded px-2 py-1 text-white font-mono focus:border-trexx-volt focus:outline-none"
+                                  className="w-full bg-white border border-gray-200 rounded-lg px-2 py-1.5 text-gray-900 font-mono text-xs focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 focus:outline-none transition-all"
                                   placeholder="SKU"
                                 />
                               </td>
@@ -254,7 +254,7 @@ export function ProductVariantSelector({
                                   onChange={(e) =>
                                     onUpdateVariant(variant.key, { priceModifier: parseFloat(e.target.value) || 0 })
                                   }
-                                  className="w-full bg-black border border-white/10 rounded px-2 py-1 text-white font-mono focus:border-trexx-volt focus:outline-none text-right"
+                                  className="w-full bg-white border border-gray-200 rounded-lg px-2 py-1.5 text-gray-900 font-mono text-xs focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 focus:outline-none transition-all text-right"
                                   placeholder="0.00"
                                 />
                               </td>
@@ -266,7 +266,7 @@ export function ProductVariantSelector({
                                   onChange={(e) =>
                                     onUpdateVariant(variant.key, { stock: parseInt(e.target.value, 10) || 0 })
                                   }
-                                  className="w-full bg-black border border-white/10 rounded px-2 py-1 text-white font-mono focus:border-trexx-volt focus:outline-none text-right"
+                                  className="w-full bg-white border border-gray-200 rounded-lg px-2 py-1.5 text-gray-900 font-mono text-xs focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 focus:outline-none transition-all text-right"
                                   placeholder="0"
                                 />
                               </td>
@@ -278,8 +278,8 @@ export function ProductVariantSelector({
                   </div>
                 </div>
               ) : (
-                <div className="p-6 bg-white/[0.01] border border-white/5 rounded-sm text-center">
-                  <p className="text-xs text-muted-foreground italic">
+                <div className="p-6 bg-gray-50 border border-gray-200 rounded-xl text-center">
+                  <p className="text-xs text-gray-400 italic">
                     Selecciona uno o más atributos arriba para generar las combinaciones de variantes correspondientes.
                   </p>
                 </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/shared/lib/supabase/client'
 import { toast } from 'sonner'
 import { Loader2, Save, Trash2, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -13,6 +12,8 @@ interface VariantRowProps {
   onUpdate: (id: number, sku: string, stock: number, priceModifier: number) => Promise<void>
   onToggleActive: (id: number, isActive: boolean) => Promise<void>
 }
+
+const cellInputClass = "bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 font-mono focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 disabled:opacity-40 disabled:bg-gray-100 transition-all"
 
 function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
   const [sku, setSku] = useState(variant.sku || '')
@@ -45,15 +46,15 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
     setToggling(true)
     try {
       await onToggleActive(variant.id, Boolean(variant.is_active))
-      toast.success(variant.is_active ? `Variante desactivada` : `Variante reactivada`)
+      toast.success(variant.is_active ? 'Variante desactivada' : 'Variante reactivada')
     } finally {
       setToggling(false)
     }
   }
 
   return (
-    <tr className={`border-b border-white/5 text-xs transition-colors ${variant.is_active ? '' : 'opacity-40'}`}>
-      <td className="py-3 px-4 font-bold text-white text-sm">{label}</td>
+    <tr className={`border-b border-gray-100 text-xs transition-colors hover:bg-gray-50/50 ${variant.is_active ? '' : 'opacity-40'}`}>
+      <td className="py-3 px-4 font-semibold text-gray-800 text-sm">{label}</td>
 
       <td className="py-3 px-4">
         <input
@@ -61,7 +62,7 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
           value={sku}
           onChange={(e) => setSku(e.target.value)}
           disabled={!variant.is_active}
-          className="w-full bg-black border border-white/10 rounded-sm px-3 py-1.5 text-[11px] text-white font-mono focus:outline-none focus:border-trexx-volt disabled:opacity-40"
+          className={`w-full ${cellInputClass}`}
         />
       </td>
 
@@ -72,7 +73,7 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
           min={0}
           onChange={(e) => setStock(Number(e.target.value))}
           disabled={!variant.is_active}
-          className="w-20 bg-black border border-white/10 rounded-sm px-3 py-1.5 text-[11px] text-white font-mono text-center focus:outline-none focus:border-trexx-volt disabled:opacity-40"
+          className={`w-20 text-center ${cellInputClass}`}
         />
       </td>
 
@@ -83,15 +84,15 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
           value={priceModifier}
           onChange={(e) => setPriceModifier(Number(e.target.value))}
           disabled={!variant.is_active}
-          className="w-24 bg-black border border-white/10 rounded-sm px-3 py-1.5 text-[11px] text-white font-mono text-center focus:outline-none focus:border-trexx-volt disabled:opacity-40"
+          className={`w-24 text-center ${cellInputClass}`}
         />
       </td>
 
       <td className="py-3 px-4">
-        <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded-sm border ${
+        <span className={`text-[9px] font-bold uppercase px-2 py-1 rounded-full border ${
           variant.is_active
-            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-            : 'bg-rose-500/10 text-rose-400 border-rose-500/30'
+            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+            : 'bg-red-50 text-trexx-red border-red-200'
         }`}>
           {variant.is_active ? 'Activa' : 'Baja'}
         </span>
@@ -103,9 +104,9 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
             size="sm"
             onClick={handleSave}
             disabled={saving}
-            className="h-7 px-3 bg-trexx-volt text-black hover:bg-trexx-volt/90 font-bold text-[10px] uppercase tracking-wider gap-1"
+            className="h-7 px-3 bg-trexx-red text-white hover:bg-red-700 font-bold text-[10px] uppercase tracking-wider gap-1 shadow-sm"
           >
-            {saving ? <Loader2 size={12} className="animate-spin" /> : <Save size={12} />}
+            {saving ? <Loader2 size={11} className="animate-spin" /> : <Save size={11} />}
             Guardar
           </Button>
         )}
@@ -115,7 +116,10 @@ function VariantRow({ variant, onUpdate, onToggleActive }: VariantRowProps) {
           onClick={handleToggle}
           disabled={toggling}
           title={variant.is_active ? 'Dar de baja' : 'Reactivar'}
-          className={`h-7 w-7 p-0 ${variant.is_active ? 'text-rose-400 hover:text-rose-300 hover:bg-rose-500/10' : 'text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10'}`}
+          className={`h-7 w-7 p-0 ${variant.is_active
+            ? 'text-red-400 hover:text-trexx-red hover:bg-red-50'
+            : 'text-emerald-500 hover:text-emerald-700 hover:bg-emerald-50'
+          }`}
         >
           {toggling
             ? <Loader2 size={12} className="animate-spin" />
@@ -147,12 +151,7 @@ export function ProductVariantsTable({ productId, initialVariants }: ProductVari
     setVariants((prev) =>
       prev.map((v) =>
         v.id === id
-          ? {
-              ...v,
-              sku,
-              stock,
-              price_modifier: priceModifier,
-            }
+          ? { ...v, sku, stock, price_modifier: priceModifier }
           : v
       )
     )
@@ -172,7 +171,7 @@ export function ProductVariantsTable({ productId, initialVariants }: ProductVari
 
   if (variants.length === 0) {
     return (
-      <p className="text-muted-foreground text-xs font-bold uppercase tracking-wider py-6 text-center">
+      <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider py-8 text-center">
         Este producto no tiene variantes registradas.
       </p>
     )
@@ -182,7 +181,7 @@ export function ProductVariantsTable({ productId, initialVariants }: ProductVari
     <div className="overflow-x-auto">
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="border-b border-white/10 bg-white/5 text-[10px] font-bold tracking-[0.2em] uppercase text-muted-foreground">
+          <tr className="border-b border-gray-200 bg-gray-50 text-[10px] font-bold tracking-[0.18em] uppercase text-gray-500">
             <th className="py-3 px-4">Atributos</th>
             <th className="py-3 px-4">SKU</th>
             <th className="py-3 px-4">Stock</th>

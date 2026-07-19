@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/shared/lib/supabase/client'
-import { productsAdminService } from '@repo/api-client'
 import { Button } from '@/components/ui/button'
 import { Loader2, CheckCircle2, ArrowLeft } from 'lucide-react'
 import { toast } from 'sonner'
@@ -72,14 +71,6 @@ export function ProductEditForm({ product, categories }: ProductEditFormProps) {
     setLoading(true)
 
     try {
-      const supabase = createClient()
-      const { data: { session } } = await (supabase.auth as any).getSession()
-
-      if (!session?.access_token) {
-        toast.error('Sesión expirada')
-        return
-      }
-
       const formData = new FormData()
       formData.append('name', name)
       formData.append('price', price)
@@ -115,21 +106,21 @@ export function ProductEditForm({ product, categories }: ProductEditFormProps) {
   }))
 
   return (
-    <div className="max-w-6xl mx-auto space-y-12 pb-20 animate-enter">
-      {/* Header Unificado con Explicación */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/10 pb-6 gap-4">
+    <div className="max-w-5xl mx-auto space-y-8 pb-20">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-200">
         <div>
           <Link
             href="/admin/products"
-            className="inline-flex items-center gap-2 text-[11px] font-bold text-muted-foreground hover:text-white transition-colors mb-2 uppercase tracking-wider"
+            className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 hover:text-gray-700 transition-colors mb-2 uppercase tracking-wider"
           >
-            <ArrowLeft size={14} /> Volver a Productos
+            <ArrowLeft size={13} /> Volver a Productos
           </Link>
-          <h1 className="text-3xl font-black italic uppercase text-white tracking-tight">
-            Edición Integral de Producto #{product.id}
+          <h1 className="text-2xl font-black uppercase text-gray-900 tracking-tight">
+            Editar Producto <span className="text-trexx-red">#{product.id}</span>
           </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Modificá la información general, catálogo de fotos y el inventario de talles desde un solo lugar.
+          <p className="text-xs text-gray-500 mt-1">
+            Modificá la información general, imágenes y el inventario de variantes.
           </p>
         </div>
 
@@ -137,9 +128,9 @@ export function ProductEditForm({ product, categories }: ProductEditFormProps) {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="bg-trexx-volt text-black hover:bg-trexx-volt/90 font-bold uppercase tracking-wider text-xs px-6"
+          className="bg-trexx-red text-white hover:bg-red-700 font-bold uppercase tracking-wider text-xs px-6 gap-2 shadow-sm"
         >
-          {loading ? <Loader2 size={16} className="animate-spin mr-2" /> : <CheckCircle2 size={16} className="mr-2" />}
+          {loading ? <Loader2 size={15} className="animate-spin" /> : <CheckCircle2 size={15} />}
           Guardar Cambios
         </Button>
       </div>
@@ -159,25 +150,26 @@ export function ProductEditForm({ product, categories }: ProductEditFormProps) {
         categories={categories}
       />
 
-      {/* Sección 2: Gestión e Subida de Imágenes */}
+      {/* Sección 2: Gestión de Imágenes */}
       <ProductImagesSection
         currentImages={product.product_images}
         handleFileChange={handleFileChange}
         previews={previews}
       />
 
-      {/* Sección 3: Gestión de Variantes de Stock / Talles */}
-      <div className="space-y-4 pt-4 border-t border-white/10">
+      {/* Sección 3: Variantes e Inventario */}
+      <div className="space-y-4 pt-4 border-t border-gray-200">
         <div className="space-y-1">
-          <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
-            Gestión de Inventario y Variantes ({initialVariants.length})
+          <h2 className="text-xs font-black uppercase tracking-[0.18em] text-trexx-red">
+            Inventario y Variantes ({initialVariants.length})
           </h2>
-          <p className="text-[11px] text-muted-foreground">
-            💡 <span className="text-white font-semibold">Guardado por fila:</span> Modificá el Stock, SKU o precio de un talle y presioná el botón <span className="text-trexx-volt font-bold">"Guardar"</span> que aparece en esa fila para aplicar el cambio inmediatamente sin recargar.
+          <p className="text-[11px] text-gray-500">
+            💡 <span className="text-gray-800 font-semibold">Guardado por fila:</span> Modificá el Stock, SKU o precio de un talle y presioná{' '}
+            <span className="text-trexx-red font-bold">Guardar</span> en esa fila para aplicar el cambio.
           </p>
         </div>
 
-        <div className="border border-white/10 rounded-lg overflow-hidden bg-[#070707]">
+        <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow-sm">
           <ProductVariantsTable productId={product.id} initialVariants={initialVariants} />
         </div>
       </div>

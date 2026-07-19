@@ -350,12 +350,12 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
       />
 
       {/* Submit Actions */}
-      <div className="flex items-center justify-end gap-4 pt-6 border-t border-white/10">
+      <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
         <Button
           type="button"
           variant="outline"
           onClick={() => router.push('/admin/products')}
-          className="border-white/10 text-muted-foreground hover:text-white uppercase font-bold text-xs"
+          className="border-gray-200 text-gray-500 hover:text-gray-900 uppercase font-bold text-xs"
         >
           Cancelar
         </Button>
@@ -363,7 +363,7 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
         <Button
           type="submit"
           disabled={loading}
-          className="bg-trexx-volt text-black hover:bg-trexx-volt/90 font-bold uppercase tracking-wider text-xs px-8 gap-2 shadow-[0_0_20px_rgba(204,255,0,0.3)]"
+          className="bg-trexx-red text-white hover:bg-red-700 font-bold uppercase tracking-wider text-xs px-8 gap-2 shadow-sm"
         >
           {loading ? (
             <>

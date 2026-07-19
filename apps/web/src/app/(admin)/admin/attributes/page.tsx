@@ -12,14 +12,14 @@ export default async function AdminAttributesPage() {
   }
 
   return (
-    <div className="space-y-8 animate-enter">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="border-b border-white/10 pb-6">
-        <h1 className="text-4xl font-black italic tracking-tighter uppercase text-white">
+      <div className="pb-6 border-b border-gray-200">
+        <h1 className="text-2xl font-black uppercase text-gray-900 tracking-tight">
           Atributos Globales
         </h1>
-        <p className="text-xs text-trexx-volt font-bold tracking-[0.2em] uppercase mt-1">
-          Dimensiones de Variantes ({attributeTypes.length} tipos de atributos)
+        <p className="text-xs text-gray-400 font-semibold tracking-wider uppercase mt-1">
+          {attributeTypes.length} tipo{attributeTypes.length !== 1 ? 's' : ''} de atributos configurado{attributeTypes.length !== 1 ? 's' : ''}
         </p>
       </div>
 

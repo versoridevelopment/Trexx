@@ -12,12 +12,12 @@ export default async function NewProductPage() {
   }
 
   return (
-    <div className="space-y-8 animate-enter">
-      <div>
-        <h1 className="text-4xl font-black italic tracking-tighter uppercase text-white">
+    <div className="space-y-6">
+      <div className="pb-6 border-b border-gray-200">
+        <h1 className="text-2xl font-black uppercase text-gray-900 tracking-tight">
           Nuevo Producto
         </h1>
-        <p className="text-xs text-trexx-volt font-bold tracking-[0.2em] uppercase mt-1">
+        <p className="text-xs text-gray-400 font-semibold tracking-wider uppercase mt-1">
           Agregar un nuevo artículo al catálogo
         </p>
       </div>
