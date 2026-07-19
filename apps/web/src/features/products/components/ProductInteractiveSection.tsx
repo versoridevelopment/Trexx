@@ -142,7 +142,7 @@ export function ProductInteractiveSection({
         )}
       </div>
 
-      {/* Selector de Colores (Opcional - Opción B) */}
+      {/* Selector de Colores con Miniatura de Portada */}
       {colorVariations.length > 1 && (
         <div className="space-y-3 pt-4 border-t border-white/5">
           <p className="text-[11px] font-bold tracking-[0.3em] uppercase text-white">
@@ -151,29 +151,31 @@ export function ProductInteractiveSection({
           <div className="flex flex-wrap gap-3">
             {colorVariations.map((variant) => {
               const isSelected = variant.id === product.id
-              const hexColor = variant.color?.hex_code || '#666666'
+              const imageUrl = variant.image
 
               return (
                 <Link
                   key={variant.id}
                   href={`/shop/${variant.slug || variant.id}`}
-                  className={`relative flex items-center justify-center rounded-full p-0.5 transition-all duration-300 ${
-                    isSelected
-                      ? 'ring-2 ring-trexx-volt ring-offset-2 ring-offset-black scale-110 shadow-[0_0_10px_rgba(204,255,0,0.4)]'
-                      : 'hover:scale-105 border border-white/10'
-                  }`}
-                  title={variant.color?.name || 'Otro color'}
+                  className={`relative flex items-center justify-center rounded-md transition-all duration-300 ${isSelected
+                      ? 'ring-2 ring-trexx-volt ring-offset-2 ring-offset-black scale-105 shadow-[0_0_12px_rgba(204,255,0,0.5)]'
+                      : 'hover:scale-105 border border-white/10 opacity-70 hover:opacity-100'
+                    }`}
+                  title={variant.color?.name || variant.name}
                 >
-                  <span
-                    className="w-8 h-8 rounded-full border border-white/20 shadow-inner flex items-center justify-center overflow-hidden"
-                    style={{ backgroundColor: hexColor }}
-                  >
-                    {!variant.color?.hex_code && (
-                      <span className="text-[10px] font-bold text-white uppercase font-mono">
-                        {variant.color?.name.substring(0, 2)}
+                  <div className="w-12 h-12 rounded-md border border-white/20 overflow-hidden bg-zinc-900 flex items-center justify-center">
+                    {imageUrl ? (
+                      <img
+                        src={imageUrl}
+                        alt={variant.color?.name || variant.name}
+                        className="w-full h-full object-cover object-center"
+                      />
+                    ) : (
+                      <span className="text-[9px] font-bold text-white uppercase font-mono">
+                        {variant.color?.name?.substring(0, 3) || 'VAR'}
                       </span>
                     )}
-                  </span>
+                  </div>
                 </Link>
               )
             })}
@@ -201,11 +203,10 @@ export function ProductInteractiveSection({
                         key={val.id}
                         type="button"
                         onClick={() => handleSelect(group.type.slug, val.id)}
-                        className={`min-w-[70px] h-[44px] px-4 flex items-center justify-center text-[12px] font-black tracking-widest uppercase rounded-sm transition-all duration-300 ${
-                          isSelected
+                        className={`min-w-[70px] h-[44px] px-4 flex items-center justify-center text-[12px] font-black tracking-widest uppercase rounded-sm transition-all duration-300 ${isSelected
                             ? 'border-2 border-trexx-volt bg-trexx-volt/10 text-trexx-volt shadow-[0_0_10px_rgba(204,255,0,0.2)]'
                             : 'border border-border bg-black text-muted-foreground hover:border-trexx-volt hover:text-white'
-                        }`}
+                          }`}
                       >
                         {val.value}
                       </button>
@@ -245,9 +246,9 @@ export function ProductInteractiveSection({
           selectedVariant={
             matchedVariant
               ? {
-                  id: matchedVariant.id,
-                  name: getVariantLabel(),
-                }
+                id: matchedVariant.id,
+                name: getVariantLabel(),
+              }
               : undefined
           }
           disabled={

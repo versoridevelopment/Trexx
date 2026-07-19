@@ -350,7 +350,7 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
       />
 
       {/* Submit Actions */}
-      <div className="flex items-center justify-end gap-4 bg-[#09090b] border border-white/10 p-6 rounded-sm">
+      <div className="flex items-center justify-end gap-4 pt-6 border-t border-white/10">
         <Button
           type="button"
           variant="outline"

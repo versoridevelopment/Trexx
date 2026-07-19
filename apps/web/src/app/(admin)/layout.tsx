@@ -1,7 +1,6 @@
 import { createClient } from '@/shared/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { AdminSidebar } from '@/features/admin/components/AdminSidebar'
-import { AdminHeader } from '@/features/admin/components/AdminHeader'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -19,12 +18,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-foreground flex">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader userEmail={user.email} />
-        <main className="flex-1 p-8 overflow-y-auto">{children}</main>
-      </div>
+    <div className="min-h-screen bg-[#050505] text-foreground flex overflow-hidden">
+      {/* Sidebar Fija e Inamovible (w-64 fixed h-screen) */}
+      <AdminSidebar userEmail={user.email} />
+
+      {/* Área Derecha Deslizable */}
+      <main className="ml-64 flex-1 h-screen overflow-y-auto p-8">
+        {children}
+      </main>
     </div>
   )
 }

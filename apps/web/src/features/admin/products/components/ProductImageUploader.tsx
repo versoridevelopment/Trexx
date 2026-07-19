@@ -12,9 +12,9 @@ export function ProductImageUploader({
   onRemoveFile,
 }: ProductImageUploaderProps) {
   return (
-    <div className="space-y-6 bg-[#09090b] border border-white/10 p-6 rounded-sm">
-      <div className="space-y-1 border-b border-white/10 pb-4">
-        <h2 className="text-xl font-black italic tracking-tighter uppercase text-white">
+    <div className="space-y-6 pt-4 border-t border-white/10">
+      <div className="space-y-1 border-b border-white/10 pb-3">
+        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
           2. Imágenes del Producto
         </h2>
         <p className="text-xs text-muted-foreground">

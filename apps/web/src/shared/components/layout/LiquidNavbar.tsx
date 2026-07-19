@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { Search, ShoppingBag, Menu, X, Shirt, Backpack } from 'lucide-react'
+import { Search, ShoppingBag, Menu, X, Shirt, Backpack, LayoutGrid } from 'lucide-react'
 import { NavbarClient } from './NavbarClient'
 import { useCart } from '@/features/cart/context/CartContext'
 
@@ -18,112 +18,111 @@ interface LiquidNavbarProps {
 }
 
 export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { totalItems, setIsCartOpen } = useCart()
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
     <>
-      {/* Desktop & Mobile Floating Pill */}
-      <header className={`fixed top-4 left-4 right-4 z-50 mx-auto transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${isScrolled ? 'max-w-[380px]' : 'max-w-4xl'}`}>
-        <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-full flex items-center justify-between px-6 py-3 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+      {/* Full-width Fixed Top Navbar */}
+      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+        <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
           
-          {/* Logo */}
-          <Link href="/" title="Inicio" className="flex items-center hover:opacity-80 transition-opacity">
-            <Image 
-              src="/trexx/logo.png" 
-              alt="Trexx Padel" 
-              width={100} 
-              height={30} 
-              className="object-contain"
-            />
-          </Link>
-
-          {/* Desktop Navigation (Icons that collapse on scroll) */}
-          <div 
-            className={`absolute left-1/2 -translate-x-1/2 hidden md:flex overflow-hidden transition-all duration-500 ease-in-out ${
-              isScrolled ? 'opacity-0 pointer-events-none scale-90 translate-y-2' : 'opacity-100 scale-100 translate-y-0'
-            }`}
-          >
-            <nav className="flex items-center gap-10 whitespace-nowrap">
-              <Link href="/shop?category=indumentaria" title="Indumentaria" className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all">
-                <Shirt size={20} />
-              </Link>
-              <Link href="/shop?category=palas" title="Palas" className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all flex items-center justify-center">
-                <div 
-                  className="w-[26px] h-[26px] bg-current" 
-                  style={{ 
-                    WebkitMaskImage: 'url(/navbar/paleta.png)', 
-                    WebkitMaskSize: 'contain', 
-                    WebkitMaskRepeat: 'no-repeat',
-                    WebkitMaskPosition: 'center',
-                    maskImage: 'url(/navbar/paleta.png)',
-                    maskSize: 'contain',
-                    maskRepeat: 'no-repeat',
-                    maskPosition: 'center'
-                  }} 
-                />
-              </Link>
-              <Link href="/shop?category=accesorios" title="Accesorios" className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all">
-                <Backpack size={20} />
-              </Link>
-            </nav>
+          {/* 1. Izquierda Extrema: Logo de Trexx */}
+          <div className="flex items-center">
+            <Link href="/" title="Inicio" className="flex items-center hover:opacity-80 transition-opacity">
+              <Image 
+                src="/trexx/logo.png" 
+                alt="Trexx Padel" 
+                width={110} 
+                height={32} 
+                className="object-contain"
+              />
+            </Link>
           </div>
 
-          {/* Desktop Actions */}
-          <div className="hidden md:flex items-center gap-5 ml-auto">
-            <button title="Buscar" className="text-white/70 hover:text-white transition-colors">
-              <Search size={18} strokeWidth={2} />
-            </button>
-            <button title="Carrito" onClick={() => setIsCartOpen(true)} className="text-white/70 hover:text-white transition-colors relative group">
-              <ShoppingBag size={18} strokeWidth={2} />
+          {/* 2. Centro: Navegación de Iconos (Absolutamente Centrado) */}
+          <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-8 sm:gap-10">
+            {/* Todos los Productos */}
+            <Link 
+              href="/shop" 
+              title="Todos los Productos" 
+              className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all p-1"
+            >
+              <LayoutGrid size={22} />
+            </Link>
+
+            <Link 
+              href="/shop?category=indumentaria" 
+              title="Indumentaria" 
+              className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all p-1"
+            >
+              <Shirt size={22} />
+            </Link>
+
+            <Link 
+              href="/shop?category=palas" 
+              title="Palas" 
+              className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all p-1 flex items-center justify-center"
+            >
+              <div 
+                className="w-[26px] h-[26px] bg-current" 
+                style={{ 
+                  WebkitMaskImage: 'url(/navbar/paleta.png)', 
+                  WebkitMaskSize: 'contain', 
+                  WebkitMaskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'center',
+                  maskImage: 'url(/navbar/paleta.png)',
+                  maskSize: 'contain',
+                  maskRepeat: 'no-repeat',
+                  maskPosition: 'center'
+                }} 
+              />
+            </Link>
+
+            <Link 
+              href="/shop?category=accesorios" 
+              title="Accesorios" 
+              className="text-white/70 hover:text-trexx-volt hover:drop-shadow-[0_0_8px_rgba(204,255,0,0.5)] transition-all p-1"
+            >
+              <Backpack size={22} />
+            </Link>
+          </nav>
+
+          {/* 3. Derecha Extrema: Buscador, Carrito, Perfil/Login */}
+          <div className="flex items-center gap-3 sm:gap-5">
+            {/* Buscador Interactivo a la derecha antes del carrito */}
+            <div className="relative hidden sm:block w-40 md:w-56">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50" size={14} />
+              <input
+                type="text"
+                placeholder="BUSCAR..."
+                className="w-full bg-white/5 border border-white/10 rounded-full py-1.5 pl-9 pr-3 text-[10px] font-bold tracking-[0.2em] uppercase text-white placeholder:text-white/40 focus:outline-none focus:border-trexx-volt focus:bg-black/90 transition-all"
+              />
+            </div>
+
+            <button title="Carrito" onClick={() => setIsCartOpen(true)} className="text-white/70 hover:text-white transition-colors relative p-1 group">
+              <ShoppingBag size={20} strokeWidth={2} />
               {totalItems > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-trexx-red text-[9px] text-white font-bold transition-opacity">
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-trexx-red text-[9px] text-white font-bold shadow-md">
                   {totalItems}
                 </span>
               )}
             </button>
-            <div className="h-4 w-[1px] bg-white/20 mx-1" />
+
+            <div className="h-4 w-[1px] bg-white/20 hidden sm:block" />
+
             {user ? (
               <NavbarClient user={user} />
             ) : (
-              <Link href="/login" className="text-[10px] font-bold tracking-[0.2em] uppercase bg-white text-black px-5 py-2 rounded-full hover:bg-trexx-volt transition-colors">
+              <Link 
+                href="/login" 
+                className="text-[11px] font-bold tracking-[0.2em] uppercase bg-white text-black px-4 py-2 rounded-full hover:bg-trexx-volt transition-colors"
+              >
                 Ingresar
               </Link>
             )}
           </div>
 
-          {/* Mobile Actions */}
-          <div className="flex md:hidden items-center gap-4 ml-auto">
-            <button title="Carrito" onClick={() => setIsCartOpen(true)} className="text-white/70 hover:text-trexx-volt transition-colors relative group">
-              <ShoppingBag size={20} />
-              {totalItems > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-trexx-red text-[9px] text-white font-bold transition-opacity">
-                  {totalItems}
-                </span>
-              )}
-            </button>
-            {user ? (
-              <NavbarClient user={user} />
-            ) : (
-              <Link href="/login" className="text-[10px] font-bold tracking-[0.1em] uppercase bg-white text-black px-3 py-1.5 rounded-full hover:bg-trexx-volt transition-colors">
-                Ingresar
-              </Link>
-            )}
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button title="Menú" onClick={() => setIsMobileMenuOpen(true)} className="md:hidden text-white hover:text-trexx-volt transition-colors ml-4">
-            <Menu size={24} />
-          </button>
         </div>
       </header>
 
@@ -133,6 +132,9 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
           <button title="Cerrar Menú" onClick={() => setIsMobileMenuOpen(false)} className="absolute top-6 right-6 text-white hover:text-trexx-volt transition-colors">
             <X size={32} />
           </button>
+          <Link href="/shop" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 text-3xl font-black italic uppercase text-white hover:text-trexx-volt transition-colors">
+            <LayoutGrid size={32} /> CATÁLOGO COMPLETO
+          </Link>
           <Link href="/shop?category=indumentaria" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 text-3xl font-black italic uppercase text-white hover:text-trexx-volt transition-colors">
             <Shirt size={32} /> INDUMENTARIA
           </Link>

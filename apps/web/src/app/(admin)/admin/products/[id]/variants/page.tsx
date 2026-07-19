@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, Package } from 'lucide-react'
+import { ArrowLeft, Package, Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ProductVariantsTable } from '@/features/admin/products/components/ProductVariantsTable'
 import { productsService } from '@repo/api-client'
@@ -55,35 +55,44 @@ export default async function ProductVariantsPage({
           </Button>
         </Link>
 
-        <div className="flex items-center gap-4">
-          {primaryImage ? (
-            <div className="w-14 h-16 bg-black border border-white/10 rounded-sm overflow-hidden flex-shrink-0">
-              <img src={primaryImage} alt={product.name} className="w-full h-full object-cover" />
-            </div>
-          ) : (
-            <div className="w-14 h-16 bg-black border border-white/10 rounded-sm flex items-center justify-center flex-shrink-0">
-              <Package size={20} className="text-muted-foreground" />
-            </div>
-          )}
-          <div>
-            <h1 className="text-3xl font-black italic tracking-tighter uppercase text-white">
-              {product.name}
-            </h1>
-            <p className="text-xs text-trexx-volt font-bold tracking-[0.2em] uppercase mt-0.5">
-              Gestión de variantes · {variants.length} variantes totales
-            </p>
-            {productColor && (
-              <span className="inline-flex items-center gap-1.5 mt-1">
-                <span
-                  className="w-3 h-3 rounded-full border border-white/20 flex-shrink-0"
-                  style={{ backgroundColor: productColor.hex_code || '#888' }}
-                />
-                <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
-                  {productColor.name}
-                </span>
-              </span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {primaryImage ? (
+              <div className="w-14 h-16 bg-black border border-white/10 rounded-sm overflow-hidden flex-shrink-0">
+                <img src={primaryImage} alt={product.name} className="w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div className="w-14 h-16 bg-black border border-white/10 rounded-sm flex items-center justify-center flex-shrink-0">
+                <Package size={20} className="text-muted-foreground" />
+              </div>
             )}
+            <div>
+              <h1 className="text-3xl font-black italic tracking-tighter uppercase text-white">
+                {product.name}
+              </h1>
+              <p className="text-xs text-trexx-volt font-bold tracking-[0.2em] uppercase mt-0.5">
+                Gestión de variantes · {variants.length} variantes totales
+              </p>
+              {productColor && (
+                <span className="inline-flex items-center gap-1.5 mt-1">
+                  <span
+                    className="w-3 h-3 rounded-full border border-white/20 flex-shrink-0"
+                    style={{ backgroundColor: productColor.hex_code || '#888' }}
+                  />
+                  <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                    {productColor.name}
+                  </span>
+                </span>
+              )}
+            </div>
           </div>
+
+          <Link href={`/admin/products/${product.id}/edit`}>
+            <Button className="bg-white/10 hover:bg-white/20 text-white font-bold uppercase tracking-wider text-xs gap-2">
+              <Pencil size={14} />
+              Editar Producto / Fotos
+            </Button>
+          </Link>
         </div>
       </div>
 

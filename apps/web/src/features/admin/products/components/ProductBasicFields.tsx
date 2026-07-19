@@ -60,9 +60,9 @@ export function ProductBasicFields({
   const selectedColorObj = colors.find((c) => c.id.toString() === colorId)
 
   return (
-    <div className="space-y-6 bg-[#09090b] border border-white/10 p-6 rounded-sm">
-      <div className="space-y-1 border-b border-white/10 pb-4">
-        <h2 className="text-xl font-black italic tracking-tighter uppercase text-white">
+    <div className="space-y-6 pt-2">
+      <div className="space-y-1 border-b border-white/10 pb-3">
+        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
           1. Información del Producto
         </h2>
         <p className="text-xs text-muted-foreground">

@@ -27,4 +27,11 @@ export const productsAdminService = {
       body: data,
       accessToken,
     }),
+
+  updateProduct: (id: number, data: FormData, accessToken?: string) =>
+    apiFetch<any>(`/api/products/${id}`, {
+      method: 'PATCH',
+      body: data,
+      accessToken,
+    }),
 }

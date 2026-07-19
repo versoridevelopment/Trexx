@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Plus, Eye, Settings2, Trash2, RotateCcw, Loader2 } from 'lucide-react'
+import { Plus, Eye, Settings2, Trash2, RotateCcw, Loader2, Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { toggleProductActiveAction } from '../actions'
@@ -42,7 +42,7 @@ export function ProductAdminTable({ initialProducts }: ProductAdminTableProps) {
   }
 
   return (
-    <div className="bg-[#09090b] border border-white/10 rounded-sm overflow-hidden">
+    <div className="w-full">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -118,16 +118,16 @@ export function ProductAdminTable({ initialProducts }: ProductAdminTableProps) {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-right space-x-2">
-                      {product.is_active && !product.parent_id && (
+                      {product.is_active && (
                         <Link href={`/admin/products/new?duplicate_from=${product.id}`}>
                           <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-trexx-volt hover:text-trexx-volt hover:bg-white/5" title="Añadir Variante de Color">
                             <Plus size={16} />
                           </Button>
                         </Link>
                       )}
-                      <Link href={`/admin/products/${product.id}/variants`}>
-                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-white" title="Gestionar Variantes">
-                          <Settings2 size={16} />
+                      <Link href={`/admin/products/${product.id}/edit`}>
+                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-muted-foreground hover:text-white" title="Editar Producto / Variantes">
+                          <Pencil size={16} />
                         </Button>
                       </Link>
                       <Link href={`/shop/${product.slug || product.id}`} target="_blank">

@@ -58,21 +58,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
     reviews.length > 0 ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length : 0
 
   return (
-    <div className="bg-[#050505] min-h-screen text-foreground pb-24">
-      <div className="max-w-7xl mx-auto px-6 pt-32 pb-12 lg:pt-40 lg:pb-20">
+    <div className="bg-[#050505] min-h-screen text-foreground pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-12 lg:pt-24 lg:pb-16">
         {/* Breadcrumb / Back */}
-        <nav className="mb-12 animate-enter">
+        <nav className="mb-6 animate-enter">
           <Link
             href="/shop"
-            className="group flex items-center gap-3 text-[11px] font-bold tracking-[0.3em] uppercase text-trexx-volt hover:text-white transition-colors"
+            className="group inline-flex items-center gap-2 text-[10px] font-bold tracking-[0.3em] uppercase text-trexx-volt hover:text-white transition-colors"
           >
-            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-2" />
+            <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
             <span>Volver al Catálogo</span>
           </Link>
         </nav>
 
         {/* Product Main Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Image Gallery (7/12) */}
           <div className="lg:col-span-7 animate-enter" style={{ animationDelay: '150ms' }}>
             <ProductGallery
@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           {/* Right Column: Info & Actions (5/12) - Sticky */}
           <div className="lg:col-span-5 relative animate-enter" style={{ animationDelay: '300ms' }}>
-            <div className="lg:sticky lg:top-32 space-y-10">
+            <div className="lg:sticky lg:top-24 space-y-6">
               {/* Header Info */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">

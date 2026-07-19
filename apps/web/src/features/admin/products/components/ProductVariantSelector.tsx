@@ -54,9 +54,9 @@ export function ProductVariantSelector({
   onVariantModeChange,
 }: ProductVariantSelectorProps) {
   return (
-    <div className="space-y-8 bg-[#09090b] border border-white/10 p-6 rounded-sm">
-      <div className="space-y-1 border-b border-white/10 pb-4">
-        <h2 className="text-xl font-black italic tracking-tighter uppercase text-white">
+    <div className="space-y-8 pt-4 border-t border-white/10">
+      <div className="space-y-1 border-b border-white/10 pb-3">
+        <h2 className="text-xs font-black uppercase tracking-[0.2em] text-trexx-volt">
           3. Stock e Inventario
         </h2>
         <p className="text-xs text-muted-foreground">
