@@ -145,11 +145,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
         >
           <div className="space-y-2 mb-12">
             <h2 className="text-4xl font-black italic tracking-tighter uppercase text-white">
-              Lo que dicen en la cancha
+              Comentarios sobre este producto
             </h2>
-            <p className="text-[11px] tracking-[0.2em] uppercase text-trexx-volt font-bold">
-              Opiniones de la banda
-            </p>
+
           </div>
 
           <div className="space-y-16">
@@ -170,7 +168,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             style={{ animationDelay: '600ms' }}
           >
             <h2 className="text-3xl font-black italic tracking-tighter uppercase text-white mb-8">
-              Llevate también
+              También te puede interesar
             </h2>
             <RecommendedCarousel products={recommended} />
           </div>

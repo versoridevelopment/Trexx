@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useTransition } from 'react'
 import { LogOut, User, Settings, Package } from 'lucide-react'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -17,10 +18,12 @@ interface NavbarClientProps {
   user: {
     email: string
     name?: string | null
+    role?: string
   }
 }
 
 export function NavbarClient({ user }: NavbarClientProps) {
+  const [isPending, startTransition] = useTransition()
   const initial = (user.name ?? user.email).charAt(0).toUpperCase()
 
   return (
@@ -48,6 +51,15 @@ export function NavbarClient({ user }: NavbarClientProps) {
         <DropdownMenuSeparator className="bg-border/40" />
         
         <div className="py-1">
+          {user.role === 'admin' && (
+            <DropdownMenuItem asChild className="rounded-none px-2 py-2 focus:bg-muted cursor-pointer transition-colors group">
+              <Link href="/admin" className="flex items-center gap-3 w-full text-trexx-red">
+                <Settings size={14} className="text-trexx-red group-hover:text-red-500 transition-colors" />
+                <span className="text-[11px] tracking-widest uppercase font-bold text-trexx-red group-hover:text-red-500 transition-colors">Panel Administrador</span>
+              </Link>
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem asChild className="rounded-none px-2 py-2 focus:bg-muted cursor-pointer transition-colors group">
             <Link href="/profile" className="flex items-center gap-3 w-full">
               <User size={14} className="text-muted-foreground group-hover:text-foreground transition-colors" />
@@ -71,18 +83,21 @@ export function NavbarClient({ user }: NavbarClientProps) {
         </div>
 
         <DropdownMenuSeparator className="bg-border/40" />
-        
-        <form action={logoutAction} className="py-1">
+        <div className="py-1">
           <DropdownMenuItem 
-            asChild 
-            className="rounded-none px-2 py-2 focus:bg-destructive/10 cursor-pointer transition-colors group"
+            onSelect={(e) => {
+              e.preventDefault()
+              startTransition(() => {
+                logoutAction()
+              })
+            }}
+            disabled={isPending}
+            className="rounded-none px-2 py-2 focus:bg-destructive/10 cursor-pointer transition-colors group flex items-center gap-3 w-full text-destructive"
           >
-            <button type="submit" className="flex items-center gap-3 w-full text-destructive">
-              <LogOut size={14} />
-              <span className="text-[11px] tracking-widest uppercase">Cerrar sesión</span>
-            </button>
+            <LogOut size={14} />
+            <span className="text-[11px] tracking-widest uppercase">{isPending ? 'Cerrando sesión...' : 'Cerrar sesión'}</span>
           </DropdownMenuItem>
-        </form>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   )

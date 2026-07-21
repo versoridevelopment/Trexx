@@ -158,8 +158,8 @@ export function ProductInteractiveSection({
                   key={variant.id}
                   href={`/shop/${variant.slug || variant.id}`}
                   className={`relative flex items-center justify-center rounded-md transition-all duration-300 ${isSelected
-                      ? 'ring-2 ring-trexx-volt ring-offset-2 ring-offset-black scale-105 shadow-[0_0_12px_rgba(204,255,0,0.5)]'
-                      : 'hover:scale-105 border border-white/10 opacity-70 hover:opacity-100'
+                    ? 'ring-2 ring-trexx-volt ring-offset-2 ring-offset-black scale-105 shadow-[0_0_12px_rgba(204,255,0,0.5)]'
+                    : 'hover:scale-105 border border-white/10 opacity-70 hover:opacity-100'
                     }`}
                   title={variant.color?.name || variant.name}
                 >
@@ -204,8 +204,8 @@ export function ProductInteractiveSection({
                         type="button"
                         onClick={() => handleSelect(group.type.slug, val.id)}
                         className={`min-w-[70px] h-[44px] px-4 flex items-center justify-center text-[12px] font-black tracking-widest uppercase rounded-sm transition-all duration-300 ${isSelected
-                            ? 'border-2 border-trexx-volt bg-trexx-volt/10 text-trexx-volt shadow-[0_0_10px_rgba(204,255,0,0.2)]'
-                            : 'border border-border bg-black text-muted-foreground hover:border-trexx-volt hover:text-white'
+                          ? 'border-2 border-trexx-volt bg-trexx-volt/10 text-trexx-volt shadow-[0_0_10px_rgba(204,255,0,0.2)]'
+                          : 'border border-border bg-black text-muted-foreground hover:border-trexx-volt hover:text-white'
                           }`}
                       >
                         {val.value}
@@ -226,7 +226,7 @@ export function ProductInteractiveSection({
             hasStock ? (
               <span className="text-trexx-volt">En stock ({matchedVariant.stock} disponibles)</span>
             ) : (
-              <span className="text-red-500">Sin stock para esta combinación</span>
+              <span className="text-red-500">Sin stock</span>
             )
           ) : (
             <span className="text-amber-500">Combinación no disponible</span>

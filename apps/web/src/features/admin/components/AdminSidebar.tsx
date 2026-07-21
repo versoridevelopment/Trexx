@@ -13,7 +13,7 @@ const navItems = [
   { label: 'Atributos', href: '/admin/attributes', icon: Sliders },
   { label: 'Pedidos', href: '/admin/orders', icon: ShoppingBag },
   { label: 'Usuarios', href: '/admin/users', icon: Users },
-  { label: 'Config Home', href: '/admin/home-config', icon: Home },
+  { label: 'Home', href: '/admin/home-config', icon: Home },
 ]
 
 interface AdminSidebarProps {
@@ -60,11 +60,10 @@ export function AdminSidebar({ userEmail }: AdminSidebarProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all duration-150 ${
-                  isActive
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all duration-150 ${isActive
                     ? 'bg-red-50 text-trexx-red border border-red-100'
                     : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                }`}
+                  }`}
               >
                 <Icon size={16} className={isActive ? 'text-trexx-red' : 'text-gray-400'} />
                 <span>{item.label}</span>

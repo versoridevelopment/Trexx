@@ -13,12 +13,7 @@ export function RecommendedCarousel({ products }: RecommendedCarouselProps) {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-light">
-          Descubrí más
-        </p>
-        <h2 className="text-xl font-light tracking-tight uppercase">
-          También te puede interesar
-        </h2>
+
       </div>
 
       <div className="relative">
@@ -29,7 +24,7 @@ export function RecommendedCarousel({ products }: RecommendedCarouselProps) {
             </div>
           ))}
         </div>
-        
+
         {/* Estilo para ocultar scrollbar */}
         <style jsx global>{`
           .scrollbar-hide::-webkit-scrollbar {

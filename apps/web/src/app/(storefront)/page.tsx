@@ -10,7 +10,6 @@ import { SectionDivider } from '@/shared/components/ui/SectionDivider'
 import { DirectionAwareHover } from '@/shared/components/ui/aceternity/direction-aware-hover'
 import { Meteors } from '@/shared/components/ui/aceternity/meteors'
 import { Button as MovingBorderButton } from '@/shared/components/ui/aceternity/moving-border'
-import { GlowingEffect } from '@/shared/components/ui/aceternity/glowing-effect'
 import { BackgroundGradient } from '@/shared/components/ui/aceternity/background-gradient'
 
 
@@ -30,7 +29,7 @@ export default async function HomePage() {
   let featured = products.slice(0, 4) // default
   if (featuredProductsConfig && Array.isArray(featuredProductsConfig) && featuredProductsConfig.length > 0) {
     featured = featuredProductsConfig
-      .map((slug: string) => products.find((p: any) => p.slug === slug))
+      .map((id: string) => products.find((p: any) => p.id.toString() === id))
       .filter(Boolean) as typeof products
   }
 
@@ -50,9 +49,9 @@ export default async function HomePage() {
       {/* Brand Values */}
       <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <GlowingEffect className="p-8 group">
+          <div className="p-8 bg-card border border-border rounded-3xl">
             <div className="flex flex-col items-center text-center space-y-6">
-              <div className="p-4 bg-white/[0.03] rounded-full group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-white/[0.03] rounded-full">
                 <Zap className="w-10 h-10 text-trexx-volt" />
               </div>
               <h3 className="text-[12px] tracking-[0.3em] font-black uppercase text-foreground">Máxima Potencia</h3>
@@ -60,11 +59,11 @@ export default async function HomePage() {
                 Materiales de carbono de última generación para golpes explosivos.
               </p>
             </div>
-          </GlowingEffect>
+          </div>
 
-          <GlowingEffect className="p-8 group">
+          <div className="p-8 bg-card border border-border rounded-3xl">
             <div className="flex flex-col items-center text-center space-y-6">
-              <div className="p-4 bg-white/[0.03] rounded-full group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-white/[0.03] rounded-full">
                 <ShieldCheck className="w-10 h-10 text-trexx-volt" />
               </div>
               <h3 className="text-[12px] tracking-[0.3em] font-black uppercase text-foreground">Control Absoluto</h3>
@@ -72,11 +71,11 @@ export default async function HomePage() {
                 Punto dulce optimizado para colocar la bola exactamente donde quieras.
               </p>
             </div>
-          </GlowingEffect>
+          </div>
 
-          <GlowingEffect className="p-8 group">
+          <div className="p-8 bg-card border border-border rounded-3xl">
             <div className="flex flex-col items-center text-center space-y-6">
-              <div className="p-4 bg-white/[0.03] rounded-full group-hover:scale-110 transition-transform duration-300">
+              <div className="p-4 bg-white/[0.03] rounded-full">
                 <Trophy className="w-10 h-10 text-trexx-volt" />
               </div>
               <h3 className="text-[12px] tracking-[0.3em] font-black uppercase text-foreground">Calidad Profesional</h3>
@@ -84,7 +83,7 @@ export default async function HomePage() {
                 Testeadas por jugadores profesionales en las canchas más exigentes.
               </p>
             </div>
-          </GlowingEffect>
+          </div>
         </div>
       </section>
 
@@ -98,7 +97,6 @@ export default async function HomePage() {
             <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
               <DirectionAwareHover imageUrl={getEq('palas').url} mediaType={getEq('palas').media_type}>
                 <h3 className="text-white text-5xl font-black tracking-wide uppercase italic">Palas</h3>
-                <p className="text-trexx-volt text-[12px] tracking-[0.3em] uppercase font-bold mt-2">Descubre el catálogo</p>
               </DirectionAwareHover>
             </BackgroundGradient>
           </Link>
@@ -109,7 +107,6 @@ export default async function HomePage() {
               <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
                 <DirectionAwareHover className="h-full" imageUrl={getEq('zapatillas').url} mediaType={getEq('zapatillas').media_type}>
                   <h3 className="text-white text-3xl font-black uppercase italic">Zapatillas</h3>
-                  <span className="text-trexx-volt text-[10px] tracking-[0.3em] uppercase font-bold mt-2">Comprar ahora &rarr;</span>
                 </DirectionAwareHover>
               </BackgroundGradient>
             </Link>

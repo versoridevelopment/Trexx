@@ -11,7 +11,7 @@ import { toast } from 'sonner'
 
 type Product = components['schemas']['Product']
 
-export type FeaturedProductsConfig = string[] // array of slugs
+export type FeaturedProductsConfig = string[] // array of ids
 
 interface FeaturedProductsManagerProps {
   initialConfig: FeaturedProductsConfig | null
@@ -26,26 +26,29 @@ export function FeaturedProductsManager({ initialConfig, allProducts }: Featured
 
   // The products currently selected, in order
   const selectedProducts = config
-    .map(slug => allProducts.find(p => p.slug === slug))
+    .map(id => allProducts.find(p => p.id.toString() === id))
     .filter((p): p is Product => p !== undefined)
 
   // Products available to be added
   const availableProducts = allProducts.filter(p => 
-    !config.includes(p.slug) && 
+    !config.includes(p.id.toString()) && 
     p.name.toLowerCase().includes(searchQuery.toLowerCase())
   ).slice(0, 5) // Show top 5 matches
 
-  const handleAddProduct = (slug: string) => {
-    setConfig(prev => [...prev, slug])
+  const handleAddProduct = (id: string) => {
+    setConfig(prev => [...prev, id])
     setSearchQuery('')
   }
 
-  const handleRemoveProduct = (slug: string) => {
-    setConfig(prev => prev.filter(s => s !== slug))
+  const handleRemoveProduct = (id: string) => {
+    setConfig(prev => prev.filter(s => s !== id))
   }
 
-  const moveProduct = (index: number, direction: 'up' | 'down') => {
+  const moveProduct = (id: string, direction: 'up' | 'down') => {
     const newConfig = [...config]
+    const index = newConfig.indexOf(id)
+    if (index === -1) return
+
     if (direction === 'up' && index > 0) {
       ;[newConfig[index - 1], newConfig[index]] = [newConfig[index], newConfig[index - 1]]
     } else if (direction === 'down' && index < newConfig.length - 1) {
@@ -93,12 +96,20 @@ export function FeaturedProductsManager({ initialConfig, allProducts }: Featured
           </p>
         ) : (
           selectedProducts.map((product, index) => (
-            <div key={product.slug} className="flex items-center gap-4 p-3 border border-gray-200 rounded-xl bg-gray-50 hover:border-gray-300 transition-colors">
+            <div key={product.id.toString()} className="flex items-center gap-4 p-3 border border-gray-200 rounded-xl bg-gray-50 hover:border-gray-300 transition-colors">
               <div className="flex flex-col gap-1 text-gray-400">
-                <button onClick={() => moveProduct(index, 'up')} disabled={index === 0} className="hover:text-black disabled:opacity-30">
+                <button 
+                  onClick={() => moveProduct(product.id.toString(), 'up')} 
+                  disabled={config.indexOf(product.id.toString()) === 0} 
+                  className="hover:text-black disabled:opacity-30"
+                >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
                 </button>
-                <button onClick={() => moveProduct(index, 'down')} disabled={index === selectedProducts.length - 1} className="hover:text-black disabled:opacity-30">
+                <button 
+                  onClick={() => moveProduct(product.id.toString(), 'down')} 
+                  disabled={config.indexOf(product.id.toString()) === config.length - 1} 
+                  className="hover:text-black disabled:opacity-30"
+                >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </button>
               </div>
@@ -113,7 +124,7 @@ export function FeaturedProductsManager({ initialConfig, allProducts }: Featured
               </div>
 
               <button 
-                onClick={() => handleRemoveProduct(product.slug)}
+                onClick={() => handleRemoveProduct(product.id.toString())}
                 className="p-2 text-gray-400 hover:text-trexx-red hover:bg-red-50 rounded-lg transition-colors"
               >
                 <Trash2 size={16} />
@@ -143,13 +154,13 @@ export function FeaturedProductsManager({ initialConfig, allProducts }: Featured
               <p className="text-xs text-gray-500 text-center py-2">No se encontraron productos.</p>
             ) : (
               availableProducts.map(product => (
-                <div key={product.slug} className="flex items-center justify-between p-2 bg-white rounded-md border border-gray-100">
+                <div key={product.id.toString()} className="flex items-center justify-between p-2 bg-white rounded-md border border-gray-100">
                   <div className="flex items-center gap-3 min-w-0">
                     <img src={product.product_images?.[0]?.url || '/placeholder.png'} alt={product.name} className="w-8 h-8 object-contain" />
                     <p className="text-xs font-medium truncate">{product.name}</p>
                   </div>
                   <button 
-                    onClick={() => handleAddProduct(product.slug)}
+                    onClick={() => handleAddProduct(product.id.toString())}
                     className="p-1.5 text-trexx-red hover:bg-red-50 rounded-md transition-colors"
                   >
                     <Plus size={16} />

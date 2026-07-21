@@ -14,6 +14,7 @@ interface LiquidNavbarProps {
   user: {
     email: string
     name?: string | null
+    role?: string
   } | null
 }
 

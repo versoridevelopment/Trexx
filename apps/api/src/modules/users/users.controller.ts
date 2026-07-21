@@ -33,7 +33,7 @@ export class UsersController {
   @Get('me')
   @ApiResponse({ status: 200, type: User })
   getMe(@CurrentUser() user: any) {
-    return this.usersService.findById(user.sub);
+    return this.usersService.findById(user.id || user.sub);
   }
 
   /**
@@ -50,7 +50,7 @@ export class UsersController {
     @CurrentUser() user: any,
     @Body() dto: UpdateUserDto,
   ) {
-    return this.usersService.update(user.sub, dto);
+    return this.usersService.update(user.id || user.sub, dto);
   }
 
   /**
