@@ -100,20 +100,20 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/{id}": {
+    "/api/products/admin/colors": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["ProductsController_findOne"];
+        get: operations["ProductsController_findAllColors"];
         put?: never;
         post?: never;
-        delete: operations["ProductsController_remove"];
+        delete?: never;
         options?: never;
         head?: never;
-        patch: operations["ProductsController_update"];
+        patch?: never;
         trace?: never;
     };
     "/api/products/admin/all": {
@@ -146,6 +146,38 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/products/slug/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_findOneBySlug"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/products/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ProductsController_findOne"];
+        put?: never;
+        post?: never;
+        delete: operations["ProductsController_remove"];
+        options?: never;
+        head?: never;
+        patch: operations["ProductsController_update"];
         trace?: never;
     };
     "/api/products/{id}/restore": {
@@ -898,9 +930,9 @@ export interface components {
             /** @example 1 */
             id: number;
             /** @example SKU-001 */
-            sku: Record<string, never>;
+            sku: string | null;
             /** @example 0 */
-            price_modifier: Record<string, never>;
+            price_modifier: number | null;
             /** @example 10 */
             stock: number;
             /** @example true */
@@ -1041,7 +1073,20 @@ export interface components {
             name: string;
         };
         UpdateOrderStatusDto: Record<string, never>;
-        Category: Record<string, never>;
+        Category: {
+            /** @example 1 */
+            id: number;
+            /** @example Remeras */
+            name: string;
+            /** @example remeras */
+            slug: string;
+            /** @example Descripción */
+            description: string | null;
+            /** @example true */
+            is_active: boolean;
+            /** @example 2026-04-10T00:00:00.000Z */
+            created_at: string | null;
+        };
         CreateCategoryDto: {
             name: string;
             slug: string;
@@ -1249,6 +1294,14 @@ export interface operations {
                     category_id: number;
                     /** @description Descripción opcional del producto */
                     description?: string;
+                    /** @description ID del producto padre */
+                    parent_id?: number;
+                    /** @description ID del color principal */
+                    color_id?: number;
+                    /** @description Slug para SEO */
+                    slug?: string;
+                    /** @description Variantes serializadas en JSON */
+                    variants?: string;
                     /** @description Archivos de imagen del producto */
                     images: string[];
                 };
@@ -1260,6 +1313,82 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    ProductsController_findAllColors: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findAllAdmin: {
+        parameters: {
+            query: {
+                includeInactive: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findOneAdmin: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ProductsController_findOneBySlug: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Product"];
+                };
             };
         };
     };
@@ -1323,49 +1452,19 @@ export interface operations {
                     category_id?: number;
                     /** @description Nueva descripción opcional del producto */
                     description?: string;
+                    /** @description Nuevo ID del producto padre */
+                    parent_id?: number;
+                    /** @description Nuevo ID del color principal */
+                    color_id?: number;
+                    /** @description Nuevo slug */
+                    slug?: string;
+                    /** @description Nuevas variantes serializadas en JSON */
+                    variants?: string;
                     /** @description Nuevos archivos de imagen del producto a reemplazar */
                     images?: string[];
                 };
             };
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ProductsController_findAllAdmin: {
-        parameters: {
-            query: {
-                includeInactive: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    ProductsController_findOneAdmin: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
         responses: {
             200: {
                 headers: {

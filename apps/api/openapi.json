@@ -2959,12 +2959,14 @@
             "example": 1
           },
           "sku": {
-            "type": "object",
-            "example": "SKU-001"
+            "type": "string",
+            "example": "SKU-001",
+            "nullable": true
           },
           "price_modifier": {
-            "type": "object",
-            "example": 0
+            "type": "number",
+            "example": 0,
+            "nullable": true
           },
           "stock": {
             "type": "number",
@@ -3578,7 +3580,42 @@
       },
       "Category": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Remeras"
+          },
+          "slug": {
+            "type": "string",
+            "example": "remeras"
+          },
+          "description": {
+            "type": "string",
+            "example": "Descripción",
+            "nullable": true
+          },
+          "is_active": {
+            "type": "boolean",
+            "example": true
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2026-04-10T00:00:00.000Z",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "slug",
+          "description",
+          "is_active",
+          "created_at"
+        ]
       },
       "CreateCategoryDto": {
         "type": "object",

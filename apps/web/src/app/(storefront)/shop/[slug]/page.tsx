@@ -10,6 +10,7 @@ import { StarRating } from '@/features/reviews/components/StarRating'
 import { RecommendedCarousel } from '@/features/products/components/RecommendedCarousel'
 import { ProductGallery } from '@/features/products/components/ProductGallery'
 import { ProductInteractiveSection } from '@/features/products/components/ProductInteractiveSection'
+import { ProductDescription } from '@/features/products/components/ProductDescription'
 import { ArrowLeft } from 'lucide-react'
 
 interface ProductPageProps {
@@ -114,9 +115,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <p className="text-[11px] font-bold tracking-[0.3em] uppercase text-white">
                     Sobre el artículo
                   </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-medium">
-                    {product.description}
-                  </p>
+                  <ProductDescription description={product.description} />
                 </div>
               )}
 

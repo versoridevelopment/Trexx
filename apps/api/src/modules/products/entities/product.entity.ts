@@ -32,10 +32,10 @@ export class ProductVariant {
   @ApiProperty({ example: 1 })
   id: number
 
-  @ApiProperty({ example: 'SKU-001' })
+  @ApiProperty({ example: 'SKU-001', nullable: true, type: () => String })
   sku: string | null
 
-  @ApiProperty({ example: 0 })
+  @ApiProperty({ example: 0, nullable: true, type: () => Number })
   price_modifier: number | null
 
   @ApiProperty({ example: 10 })

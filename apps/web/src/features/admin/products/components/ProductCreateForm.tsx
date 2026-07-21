@@ -14,6 +14,7 @@ import {
   type SelectedAttrValue,
   type GeneratedVariantEntry,
 } from './ProductVariantSelector'
+import { ProductLivePreview } from './ProductLivePreview'
 
 interface Category {
   id: number
@@ -307,77 +308,96 @@ export function ProductCreateForm({ categories }: ProductCreateFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
-      {/* 1. Basic Info Section */}
-      <ProductBasicFields
-        name={name}
-        setName={setName}
-        price={price}
-        setPrice={setPrice}
-        categoryId={categoryId}
-        setCategoryId={setCategoryId}
-        description={description}
-        setDescription={setDescription}
-        categories={categories}
-        colors={colors}
-        colorId={colorId}
-        setColorId={setColorId}
-        parentProducts={parentProducts}
-        parentId={parentId}
-        setParentId={setParentId}
-        slug={slug}
-        setSlug={setSlug}
-      />
+    <div className="grid grid-cols-1 xl:grid-cols-[1fr_minmax(450px,500px)] gap-10 items-start pb-20">
+      {/* Columna Izquierda: Formulario */}
+      <div className="bg-white rounded-xl shadow-sm p-6 lg:p-8 border border-gray-100">
+        <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl mx-auto">
+          {/* 1. Basic Info Section */}
+          <ProductBasicFields
+            name={name}
+            setName={setName}
+            price={price}
+            setPrice={setPrice}
+            categoryId={categoryId}
+            setCategoryId={setCategoryId}
+            description={description}
+            setDescription={setDescription}
+            categories={categories}
+            colors={colors}
+            colorId={colorId}
+            setColorId={setColorId}
+            parentProducts={parentProducts}
+            parentId={parentId}
+            setParentId={setParentId}
+            slug={slug}
+            setSlug={setSlug}
+          />
 
-      {/* 2. Images Section */}
-      <ProductImageUploader
-        previews={previews}
-        onFileChange={handleFileChange}
-        onRemoveFile={handleRemoveFile}
-      />
+          {/* 2. Images Section */}
+          <ProductImageUploader
+            previews={previews}
+            onFileChange={handleFileChange}
+            onRemoveFile={handleRemoveFile}
+          />
 
-      {/* 3. Variants & Stock Section */}
-      <ProductVariantSelector
-        attributeTypes={attributeTypes}
-        selectedAttrValues={selectedAttrValues}
-        onToggleAttribute={handleToggleAttribute}
-        generatedVariants={generatedVariants}
-        onUpdateVariant={handleUpdateVariant}
-        baseStock={baseStock}
-        onBaseStockChange={setBaseStock}
-        variantMode={variantMode}
-        onVariantModeChange={setVariantMode}
-      />
+          {/* 3. Variants & Stock Section */}
+          <ProductVariantSelector
+            attributeTypes={attributeTypes}
+            selectedAttrValues={selectedAttrValues}
+            onToggleAttribute={handleToggleAttribute}
+            generatedVariants={generatedVariants}
+            onUpdateVariant={handleUpdateVariant}
+            baseStock={baseStock}
+            onBaseStockChange={setBaseStock}
+            variantMode={variantMode}
+            onVariantModeChange={setVariantMode}
+          />
 
-      {/* Submit Actions */}
-      <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => router.push('/admin/products')}
-          className="border-gray-200 text-gray-500 hover:text-gray-900 uppercase font-bold text-xs"
-        >
-          Cancelar
-        </Button>
+          {/* Submit Actions */}
+          <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push('/admin/products')}
+              className="border-gray-200 text-gray-500 hover:text-gray-900 uppercase font-bold text-xs"
+            >
+              Cancelar
+            </Button>
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className="bg-trexx-red text-white hover:bg-red-700 font-bold uppercase tracking-wider text-xs px-8 gap-2 shadow-sm"
-        >
-          {loading ? (
-            <>
-              <Loader2 size={16} className="animate-spin" />
-              <span>Guardando Producto...</span>
-            </>
-          ) : (
-            <>
-              <CheckCircle2 size={16} />
-              <span>Guardar y Publicar</span>
-            </>
-          )}
-        </Button>
+            <Button
+              type="submit"
+              disabled={loading}
+              className="bg-trexx-red text-white hover:bg-red-700 font-bold uppercase tracking-wider text-xs px-8 gap-2 shadow-sm"
+            >
+              {loading ? (
+                <>
+                  <Loader2 size={16} className="animate-spin" />
+                  <span>Guardando Producto...</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 size={16} />
+                  <span>Guardar y Publicar</span>
+                </>
+              )}
+            </Button>
+          </div>
+        </form>
       </div>
-    </form>
+
+      {/* Columna Derecha: Previsualización en Vivo (Sticky) */}
+      <div className="xl:sticky xl:top-8 border border-white/10 rounded-2xl bg-[#050505] overflow-hidden shadow-2xl h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar">
+        <ProductLivePreview
+          name={name}
+          price={price}
+          description={description}
+          categoryId={categoryId}
+          categories={categories}
+          previews={previews}
+          generatedVariants={generatedVariants}
+          variantMode={variantMode}
+        />
+      </div>
+    </div>
   )
 }

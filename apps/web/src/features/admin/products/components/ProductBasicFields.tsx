@@ -198,7 +198,7 @@ export function ProductBasicFields({
             rows={3}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Detalla las características de fabricación o tecnologías..."
+            placeholder="Detalla las características. Usa 'Enter' para crear párrafos. Usa '-' o '*' al principio de una línea para crear una lista de items."
             className="w-full bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-trexx-red focus:ring-1 focus:ring-trexx-red/20 transition-all resize-none"
           />
         </div>
