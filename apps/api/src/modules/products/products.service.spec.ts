@@ -46,8 +46,8 @@ describe('ProductsService', () => {
     it('should throw BadRequestException if name is missing', async () => {
       await expect(
         service.create({
-          priceStr: '100',
-          categoryIdStr: '2',
+          price: 100,
+          category_id: 2,
         })
       ).rejects.toThrow(BadRequestException)
     })
@@ -56,8 +56,8 @@ describe('ProductsService', () => {
       await expect(
         service.create({
           name: 'Pala',
-          priceStr: '100',
-          categoryIdStr: '2',
+          price: 100,
+          category_id: 2,
           files: [],
         })
       ).rejects.toThrow(BadRequestException)
@@ -67,8 +67,8 @@ describe('ProductsService', () => {
       await expect(
         service.create({
           name: 'Pala',
-          priceStr: '100',
-          categoryIdStr: '2',
+          price: 100,
+          category_id: 2,
           files: [
             {
               buffer: Buffer.from('test'),
@@ -84,8 +84,8 @@ describe('ProductsService', () => {
       await expect(
         service.create({
           name: 'Pala',
-          priceStr: '-10',
-          categoryIdStr: '2',
+          price: -10,
+          category_id: 2,
           files: [
             {
               buffer: Buffer.from('test'),
@@ -103,8 +103,8 @@ describe('ProductsService', () => {
       await expect(
         service.create({
           name: 'Pala',
-          priceStr: '100',
-          categoryIdStr: '999',
+          price: 100,
+          category_id: 999,
           files: [
             {
               buffer: Buffer.from('test'),
@@ -131,8 +131,8 @@ describe('ProductsService', () => {
 
       const result = await service.create({
         name: 'Pala',
-        priceStr: '100',
-        categoryIdStr: '2',
+        price: 100,
+        category_id: 2,
         files,
       })
 

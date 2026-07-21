@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, Package, ShoppingBag, Users, Tag, Sliders, ArrowLeft, LogOut, ShieldCheck, User } from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingBag, Users, Tag, Sliders, ArrowLeft, LogOut, ShieldCheck, User, Home } from 'lucide-react'
 import { createClient } from '@/shared/lib/supabase/client'
 import Image from 'next/image'
 
@@ -13,6 +13,7 @@ const navItems = [
   { label: 'Atributos', href: '/admin/attributes', icon: Sliders },
   { label: 'Pedidos', href: '/admin/orders', icon: ShoppingBag },
   { label: 'Usuarios', href: '/admin/users', icon: Users },
+  { label: 'Config Home', href: '/admin/home-config', icon: Home },
 ]
 
 interface AdminSidebarProps {

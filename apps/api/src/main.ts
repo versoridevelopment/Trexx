@@ -10,15 +10,20 @@ import contentParser from '@fastify/multipart';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter({ bodyLimit: 104857600 }) // 100MB
   );
 
   app.enableCors({
     origin: true,
     credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
 
-  await app.register(contentParser);
+  await app.register(contentParser, {
+    limits: {
+      fileSize: 104857600, // 100MB
+    },
+  });
 
   app.useGlobalPipes(
     new ZodValidationPipe(),

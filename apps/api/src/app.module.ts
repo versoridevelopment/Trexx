@@ -27,6 +27,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { ProductVariantsModule } from './modules/product-variants/product-variants.module';
 import { AttributeTypesModule } from './modules/attribute-types/attribute-types.module';
+import { SettingsModule } from './modules/settings/settings.module';
 
 @Module({
 
@@ -57,6 +58,7 @@ import { AttributeTypesModule } from './modules/attribute-types/attribute-types.
     CategoriesModule,
     ProductVariantsModule,
     AttributeTypesModule,
+    SettingsModule,
   ],
 
   controllers: [AppController],

@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/shared/lib/supabase/server'
-import { productsService } from '@repo/api-client'
+import { productsService, settingsService } from '@repo/api-client'
 import { ProductGrid } from '@/features/products/components/ProductGrid'
+import { HeroSlider } from '@/features/home/components/HeroSlider'
 import { ArrowRight, Zap, ShieldCheck, Trophy } from 'lucide-react'
 import { InfiniteMarquee } from '@/shared/components/ui/InfiniteMarquee'
 import { SectionDivider } from '@/shared/components/ui/SectionDivider'
@@ -11,66 +12,40 @@ import { Meteors } from '@/shared/components/ui/aceternity/meteors'
 import { Button as MovingBorderButton } from '@/shared/components/ui/aceternity/moving-border'
 import { GlowingEffect } from '@/shared/components/ui/aceternity/glowing-effect'
 import { BackgroundGradient } from '@/shared/components/ui/aceternity/background-gradient'
-import { FlipWords } from '@/shared/components/ui/aceternity/flip-words'
+
 
 export default async function HomePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const products = await productsService.getAll()
-  // Grab a few featured products
-  const featured = products.slice(0, 4)
+  const [products, heroSlides, marqueeConfig, equipmentConfig, featuredProductsConfig] = await Promise.all([
+    productsService.getAll(),
+    settingsService.getByKey('home_hero_slides'),
+    settingsService.getByKey('home_marquee_config'),
+    settingsService.getByKey('home_equipment_config'),
+    settingsService.getByKey('home_featured_products')
+  ])
+
+  // Process featured products based on config
+  let featured = products.slice(0, 4) // default
+  if (featuredProductsConfig && Array.isArray(featuredProductsConfig) && featuredProductsConfig.length > 0) {
+    featured = featuredProductsConfig
+      .map((slug: string) => products.find((p: any) => p.slug === slug))
+      .filter(Boolean)
+  }
+
+  // Helper for equipment
+  const getEq = (cat: string) => equipmentConfig?.[cat] || { url: '', media_type: 'image' }
 
   return (
     <div className="bg-background text-foreground">
-      {/* Hero Section (NewReleaseHero) */}
-      <section className="relative h-[calc(100vh)] w-full flex items-center justify-center overflow-hidden bg-black border-b border-border">
-        {/* Banner image or video container */}
-        <div className="absolute inset-0 bg-neutral-900 z-0">
-          {/* Aquí iría la etiqueta <Image /> o <video />. Mantenemos el fondo oscuro por defecto. */}
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/60 to-black/90 z-0" />
-
-        {/* Radial subtle glow in the background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-trexx-red/10 rounded-full blur-[100px] z-0 pointer-events-none" />
-
-        <div className="relative z-10 text-center space-y-10 px-6 max-w-5xl flex flex-col items-center justify-center">
-          <div className="space-y-4">
-            <p className="text-[12px] md:text-sm tracking-[0.6em] uppercase text-trexx-volt drop-shadow-sm animate-enter font-bold">
-              Nueva Colección 2026
-            </p>
-            <h1 className="text-6xl md:text-9xl font-black tracking-tighter text-white drop-shadow-2xl leading-[0.85] animate-enter" style={{ animationDelay: '200ms' }}>
-              DOMINA LA <br />
-              <FlipWords
-                words={["CANCHA", "RED", "POTENCIA", "VOLEA"]}
-                className="text-trexx-red drop-shadow-lg p-0 m-0"
-              />
-            </h1>
-          </div>
-          <p className="text-sm md:text-xl text-white/80 max-w-xl mx-auto font-light leading-relaxed drop-shadow-md animate-enter" style={{ animationDelay: '400ms' }}>
-            Potencia, control y velocidad. Descubre la nueva línea de palas diseñadas para jugadores que no aceptan límites.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center pt-8 animate-enter" style={{ animationDelay: '600ms' }}>
-            <MovingBorderButton
-              borderRadius="0.25rem"
-              containerClassName="w-64 h-16"
-              className="bg-black hover:bg-neutral-900 text-[12px] font-bold tracking-[0.3em] uppercase transition-colors"
-              borderClassName="bg-[radial-gradient(#ccff00_40%,transparent_60%)]"
-            >
-              <Link
-                href="/shop"
-                className="flex items-center justify-center gap-3 w-full h-full text-white"
-              >
-                Ver el Catálogo
-                <ArrowRight size={16} />
-              </Link>
-            </MovingBorderButton>
-          </div>
-        </div>
+      {/* Hero Section */}
+      <section className="relative mt-16 aspect-[16/8] sm:aspect-[21/9] w-full flex items-center justify-center overflow-hidden bg-black border-b border-border">
+        <HeroSlider slides={heroSlides} />
       </section>
 
       {/* Infinite Marquee */}
-      <InfiniteMarquee text="TREXX PADEL • POTENCIA • CONTROL • VELOCIDAD •" />
+      <InfiniteMarquee {...marqueeConfig} />
 
       {/* Brand Values */}
       <section className="max-w-7xl mx-auto px-6 py-24">
@@ -106,14 +81,14 @@ export default async function HomePage() {
               </div>
               <h3 className="text-[12px] tracking-[0.3em] font-black uppercase text-foreground">Calidad Profesional</h3>
               <p className="text-[12px] text-muted-foreground font-light leading-relaxed">
-                Testeadas por jugadores de élite en las canchas más exigentes.
+                Testeadas por jugadores profesionales en las canchas más exigentes.
               </p>
             </div>
           </GlowingEffect>
         </div>
       </section>
 
-      <SectionDivider title="Equipamiento" subtitle="Elige tu arma" />
+      <SectionDivider title="Equipamiento" />
 
       {/* Category Grid */}
       <section className="max-w-7xl mx-auto px-6 space-y-16">
@@ -121,7 +96,7 @@ export default async function HomePage() {
           {/* Main Category (Palas) */}
           <Link href="/shop?category=palas" className="relative group overflow-visible rounded-3xl animate-enter block h-full">
             <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
-              <DirectionAwareHover imageUrl="https://ueyphnqgkwbvafsxewyu.supabase.co/storage/v1/object/public/store-assets/products/1784336698828-m1r5c8p1oq.png">
+              <DirectionAwareHover imageUrl={getEq('palas').url} mediaType={getEq('palas').media_type}>
                 <h3 className="text-white text-5xl font-black tracking-wide uppercase italic">Palas</h3>
                 <p className="text-trexx-volt text-[12px] tracking-[0.3em] uppercase font-bold mt-2">Descubre el catálogo</p>
               </DirectionAwareHover>
@@ -132,7 +107,7 @@ export default async function HomePage() {
           <div className="flex flex-col gap-8 h-full">
             <Link href="/shop?category=zapatillas" className="relative group overflow-visible rounded-3xl flex-1 animate-enter block" style={{ animationDelay: '150ms' }}>
               <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
-                <DirectionAwareHover className="h-full">
+                <DirectionAwareHover className="h-full" imageUrl={getEq('zapatillas').url} mediaType={getEq('zapatillas').media_type}>
                   <h3 className="text-white text-3xl font-black uppercase italic">Zapatillas</h3>
                   <span className="text-trexx-volt text-[10px] tracking-[0.3em] uppercase font-bold mt-2">Comprar ahora &rarr;</span>
                 </DirectionAwareHover>
@@ -142,14 +117,14 @@ export default async function HomePage() {
             <div className="flex gap-8 flex-1">
               <Link href="/shop?category=indumentaria" className="relative group overflow-visible rounded-3xl flex-1 animate-enter block" style={{ animationDelay: '300ms' }}>
                 <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
-                  <DirectionAwareHover className="h-full">
+                  <DirectionAwareHover className="h-full" imageUrl={getEq('indumentaria').url} mediaType={getEq('indumentaria').media_type}>
                     <h3 className="text-white text-2xl font-black uppercase italic">Indumentaria</h3>
                   </DirectionAwareHover>
                 </BackgroundGradient>
               </Link>
               <Link href="/shop?category=accesorios" className="relative group overflow-visible rounded-3xl flex-1 animate-enter block" style={{ animationDelay: '450ms' }}>
                 <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
-                  <DirectionAwareHover className="h-full">
+                  <DirectionAwareHover className="h-full" imageUrl={getEq('accesorios').url} mediaType={getEq('accesorios').media_type}>
                     <h3 className="text-white text-2xl font-black uppercase italic">Accesorios</h3>
                   </DirectionAwareHover>
                 </BackgroundGradient>
@@ -188,7 +163,7 @@ export default async function HomePage() {
                 WhatsApp
               </a>
             </MovingBorderButton>
-            
+
             <MovingBorderButton
               borderRadius="2rem"
               containerClassName="w-64 h-16"
@@ -208,7 +183,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <SectionDivider title="Destacados" subtitle="Lo más buscado" />
+      <SectionDivider title="Destacados" />
 
       {/* Featured Products */}
       <section className="max-w-7xl mx-auto px-6 pb-32 space-y-12">

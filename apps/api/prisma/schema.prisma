@@ -799,6 +799,15 @@ model user_roles {
   @@schema("public")
 }
 
+model store_settings {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique
+  value      Json
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+
+  @@schema("public")
+}
+
 
 
 enum aal_level {

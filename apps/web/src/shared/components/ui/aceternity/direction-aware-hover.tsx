@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils"
 
 export const DirectionAwareHover = ({
   imageUrl,
+  mediaType = 'image',
   children,
   className,
   imageClassName,
 }: {
   imageUrl?: string
+  mediaType?: 'image' | 'video'
   children: React.ReactNode
   className?: string
   imageClassName?: string
@@ -90,15 +92,29 @@ export const DirectionAwareHover = ({
           whileHover={direction}
           exit="exit"
         >
-          {imageUrl && (
+          {imageUrl && mediaType === 'image' && (
             <motion.img
               variants={variants}
               className={cn(
-                "h-full w-full object-cover scale-105 opacity-50 group-hover/card:opacity-30 transition-opacity duration-500",
+                "absolute inset-0 h-full w-full object-cover scale-105 opacity-50 group-hover/card:opacity-30 transition-opacity duration-500",
                 imageClassName
               )}
               alt="Category Image"
               src={imageUrl}
+            />
+          )}
+          {imageUrl && mediaType === 'video' && (
+            <motion.video
+              variants={variants}
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover object-center scale-105 opacity-50 group-hover/card:opacity-30 transition-opacity duration-500",
+                imageClassName
+              )}
+              src={imageUrl}
+              autoPlay
+              loop
+              muted
+              playsInline
             />
           )}
           {!imageUrl && (

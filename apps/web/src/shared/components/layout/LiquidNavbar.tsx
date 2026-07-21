@@ -27,8 +27,15 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
       <header className="fixed top-0 left-0 right-0 z-50 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
         <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
           
-          {/* 1. Izquierda Extrema: Logo de Trexx */}
-          <div className="flex items-center">
+          {/* 1. Izquierda Extrema: Menú Móvil + Logo de Trexx */}
+          <div className="flex items-center gap-4">
+            <button 
+              className="md:hidden text-white/70 hover:text-white p-1" 
+              onClick={() => setIsMobileMenuOpen(true)}
+              title="Abrir Menú"
+            >
+              <Menu size={24} />
+            </button>
             <Link href="/" title="Inicio" className="flex items-center hover:opacity-80 transition-opacity">
               <Image 
                 src="/trexx/logo.png" 
@@ -40,8 +47,8 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
             </Link>
           </div>
 
-          {/* 2. Centro: Navegación de Iconos (Absolutamente Centrado) */}
-          <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-8 sm:gap-10">
+          {/* 2. Centro: Navegación de Iconos (Absolutamente Centrado, oculto en móvil) */}
+          <nav className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 lg:gap-10">
             {/* Todos los Productos */}
             <Link 
               href="/shop" 
