@@ -9,7 +9,7 @@ type NormalizedProductVariant = Omit<ProductVariant, 'sku' | 'price_modifier'> &
 
 export const productVariantsService = {
   getAll: () =>
-    apiFetch<ProductVariant[]>('/api/product-variants'),
+    apiFetch<ProductVariant[]>('/product-variants'),
 
   create: (data: {
     product_id: number
@@ -18,7 +18,7 @@ export const productVariantsService = {
     stock: number
     attribute_value_ids?: number[]
   }) =>
-    apiFetch<NormalizedProductVariant>('/api/product-variants', {
+    apiFetch<NormalizedProductVariant>('/product-variants', {
       method: 'POST',
       body: data,
     }),
@@ -28,20 +28,20 @@ export const productVariantsService = {
     data: { sku?: string; stock?: number; price_modifier?: number },
     accessToken?: string
   ) =>
-    apiFetch<NormalizedProductVariant>(`/api/product-variants/${id}`, {
+    apiFetch<NormalizedProductVariant>(`/product-variants/${id}`, {
       method: 'PATCH',
       body: data,
       accessToken,
     }),
 
   restore: (id: number, accessToken?: string) =>
-    apiFetch<NormalizedProductVariant>(`/api/product-variants/${id}/restore`, {
+    apiFetch<NormalizedProductVariant>(`/product-variants/${id}/restore`, {
       method: 'PATCH',
       accessToken,
     }),
 
   remove: (id: number, accessToken?: string) =>
-    apiFetch<void>(`/api/product-variants/${id}`, {
+    apiFetch<void>(`/product-variants/${id}`, {
       method: 'DELETE',
       accessToken,
     }),

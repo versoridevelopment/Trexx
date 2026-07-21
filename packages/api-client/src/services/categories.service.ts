@@ -5,13 +5,13 @@ type Category = components['schemas']['Category']
 
 export const categoriesService = {
   getAll: () =>
-    apiFetch<Category[]>('/api/categories'),
+    apiFetch<Category[]>('/categories'),
 
   getBySlug: (slug: string) =>
-    apiFetch<Category>(`/api/categories/${slug}`),
+    apiFetch<Category>(`/categories/${slug}`),
 
   create: (data: { name: string; slug: string; description?: string }, accessToken?: string) =>
-    apiFetch<Category>('/api/categories', {
+    apiFetch<Category>('/categories', {
       method: 'POST',
       body: data,
       accessToken,

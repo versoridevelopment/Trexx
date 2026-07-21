@@ -5,7 +5,7 @@ type AttributeValue = components['schemas']['AttributeValue']
 
 export const attributeValuesService = {
   create: (data: { attribute_type_id: number; value: string }, accessToken?: string) =>
-    apiFetch<AttributeValue>('/api/attribute-values', {
+    apiFetch<AttributeValue>('/attribute-values', {
       method: 'POST',
       body: data,
       accessToken,

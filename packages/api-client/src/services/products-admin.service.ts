@@ -7,29 +7,29 @@ type ProductCreatePayload = FormData
 
 export const productsAdminService = {
   getColors: (accessToken?: string) =>
-    apiFetch<any[]>('/api/products/admin/colors', {
+    apiFetch<any[]>('/products/admin/colors', {
       accessToken,
     }),
 
   getProductById: (id: number, accessToken?: string) =>
-    apiFetch<Product>(`/api/products/admin/${id}`, {
+    apiFetch<Product>(`/products/admin/${id}`, {
       accessToken,
     }),
 
   getAllProducts: (accessToken?: string, includeInactive = true) =>
-    apiFetch<Product[]>(`/api/products/admin/all?includeInactive=${includeInactive}`, {
+    apiFetch<Product[]>(`/products/admin/all?includeInactive=${includeInactive}`, {
       accessToken,
     }),
 
   create: (data: ProductCreatePayload, accessToken?: string) =>
-    apiFetch<any>('/api/products', {
+    apiFetch<any>('/products', {
       method: 'POST',
       body: data,
       accessToken,
     }),
 
   updateProduct: (id: number, data: FormData, accessToken?: string) =>
-    apiFetch<any>(`/api/products/${id}`, {
+    apiFetch<any>(`/products/${id}`, {
       method: 'PATCH',
       body: data,
       accessToken,

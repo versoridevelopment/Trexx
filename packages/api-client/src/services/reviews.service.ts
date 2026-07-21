@@ -6,17 +6,17 @@ type CreateReviewDto = components['schemas']['CreateReviewDto']
 
 export const reviewsService = {
   getByProduct: (productId: number) =>
-    apiFetch<Review[]>(`/api/reviews/product/${productId}`),
+    apiFetch<Review[]>(`/reviews/product/${productId}`),
 
   create: (accessToken: string, data: CreateReviewDto) =>
-    apiFetch<Review>('/api/reviews', {
+    apiFetch<Review>('/reviews', {
       accessToken,
       method: 'POST',
       body: data,
     }),
 
   remove: (accessToken: string, id: number) =>
-    apiFetch<void>(`/api/reviews/${id}`, {
+    apiFetch<void>(`/reviews/${id}`, {
       accessToken,
       method: 'DELETE',
     }),

@@ -20,8 +20,6 @@ async function bootstrap() {
 
   await app.register(contentParser);
 
-  app.setGlobalPrefix('api');
-
   app.useGlobalPipes(
     new ZodValidationPipe(),
   );

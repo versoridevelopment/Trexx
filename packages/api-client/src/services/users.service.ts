@@ -6,10 +6,10 @@ type UpdateUserDto = components['schemas']['UpdateUserDto']
 
 export const usersService = {
   getMe: (accessToken: string) =>
-    apiFetch<User>('/api/users/me', { accessToken }),
+    apiFetch<User>('/users/me', { accessToken }),
 
   updateMe: (accessToken: string, data: UpdateUserDto) =>
-    apiFetch<User>('/api/users/me', {
+    apiFetch<User>('/users/me', {
       accessToken,
       method: 'PATCH',
       body: data,

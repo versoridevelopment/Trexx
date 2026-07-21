@@ -8,49 +8,49 @@ export const productsService = {
   getAll: (categorySlug?: string) =>
     apiFetch<Product[]>(
       categorySlug
-        ? `/api/products?category=${categorySlug}`
-        : '/api/products'
+        ? `/products?category=${categorySlug}`
+        : '/products'
     ),
 
   getById: (id: number) =>
-    apiFetch<Product>(`/api/products/${id}`),
+    apiFetch<Product>(`/products/${id}`),
 
   getBySlug: (slug: string) =>
-    apiFetch<Product>(`/api/products/slug/${slug}`),
+    apiFetch<Product>(`/products/slug/${slug}`),
 
   // Admin endpoints
   getAllAdmin: (accessToken: string, includeInactive = true) =>
-    apiFetch<Product[]>(`/api/products/admin/all?includeInactive=${includeInactive}`, {
+    apiFetch<Product[]>(`/products/admin/all?includeInactive=${includeInactive}`, {
       accessToken,
     }),
 
   getByIdAdmin: (id: number, accessToken: string) =>
-    apiFetch<Product>(`/api/products/admin/${id}`, {
+    apiFetch<Product>(`/products/admin/${id}`, {
       accessToken,
     }),
 
   create: (data: FormData, accessToken: string) =>
-    apiFetch<any>('/api/products', {
+    apiFetch<any>('/products', {
       method: 'POST',
       body: data,
       accessToken
     }),
 
   update: (id: number, data: FormData, accessToken: string) =>
-    apiFetch<any>(`/api/products/${id}`, {
+    apiFetch<any>(`/products/${id}`, {
       method: 'PATCH',
       body: data,
       accessToken
     }),
 
   remove: (id: number, accessToken: string) =>
-    apiFetch<any>(`/api/products/${id}`, {
+    apiFetch<any>(`/products/${id}`, {
       method: 'DELETE',
       accessToken
     }),
 
   restore: (id: number, accessToken: string) =>
-    apiFetch<any>(`/api/products/${id}/restore`, {
+    apiFetch<any>(`/products/${id}/restore`, {
       method: 'PATCH',
       accessToken
     }),

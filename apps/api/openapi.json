@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api": {
+    "/": {
       "get": {
         "operationId": "AppController_getHello",
         "parameters": [],
@@ -15,7 +15,7 @@
         ]
       }
     },
-    "/api/users/me": {
+    "/users/me": {
       "get": {
         "operationId": "UsersController_getMe",
         "parameters": [],
@@ -75,7 +75,7 @@
         ]
       }
     },
-    "/api/users/admin/all": {
+    "/users/admin/all": {
       "get": {
         "operationId": "UsersController_findAllAdmin",
         "parameters": [
@@ -103,7 +103,7 @@
         ]
       }
     },
-    "/api/users/{id}": {
+    "/users/{id}": {
       "delete": {
         "operationId": "UsersController_remove",
         "parameters": [
@@ -131,7 +131,7 @@
         ]
       }
     },
-    "/api/users/{id}/restore": {
+    "/users/{id}/restore": {
       "patch": {
         "operationId": "UsersController_restore",
         "parameters": [
@@ -159,7 +159,7 @@
         ]
       }
     },
-    "/api/products": {
+    "/products": {
       "get": {
         "operationId": "ProductsController_findAll",
         "parameters": [
@@ -268,7 +268,7 @@
         ]
       }
     },
-    "/api/products/admin/colors": {
+    "/products/admin/colors": {
       "get": {
         "operationId": "ProductsController_findAllColors",
         "parameters": [],
@@ -287,7 +287,7 @@
         ]
       }
     },
-    "/api/products/admin/all": {
+    "/products/admin/all": {
       "get": {
         "operationId": "ProductsController_findAllAdmin",
         "parameters": [
@@ -315,7 +315,7 @@
         ]
       }
     },
-    "/api/products/admin/{id}": {
+    "/products/admin/{id}": {
       "get": {
         "operationId": "ProductsController_findOneAdmin",
         "parameters": [
@@ -343,7 +343,7 @@
         ]
       }
     },
-    "/api/products/slug/{slug}": {
+    "/products/slug/{slug}": {
       "get": {
         "operationId": "ProductsController_findOneBySlug",
         "parameters": [
@@ -373,7 +373,7 @@
         ]
       }
     },
-    "/api/products/{id}": {
+    "/products/{id}": {
       "get": {
         "operationId": "ProductsController_findOne",
         "parameters": [
@@ -507,7 +507,7 @@
         ]
       }
     },
-    "/api/products/{id}/restore": {
+    "/products/{id}/restore": {
       "patch": {
         "operationId": "ProductsController_restore",
         "parameters": [
@@ -535,7 +535,7 @@
         ]
       }
     },
-    "/api/provinces": {
+    "/provinces": {
       "post": {
         "operationId": "ProvincesController_create",
         "parameters": [],
@@ -576,7 +576,7 @@
         ]
       }
     },
-    "/api/provinces/{id}": {
+    "/provinces/{id}": {
       "get": {
         "operationId": "ProvincesController_findOne",
         "parameters": [
@@ -666,7 +666,7 @@
         ]
       }
     },
-    "/api/cities": {
+    "/cities": {
       "post": {
         "operationId": "CitysController_create",
         "parameters": [],
@@ -707,7 +707,7 @@
         ]
       }
     },
-    "/api/cities/{id}": {
+    "/cities/{id}": {
       "get": {
         "operationId": "CitysController_findOne",
         "parameters": [
@@ -797,7 +797,7 @@
         ]
       }
     },
-    "/api/orders/checkout": {
+    "/orders/checkout": {
       "post": {
         "operationId": "OrdersController_checkout",
         "parameters": [],
@@ -826,7 +826,7 @@
         ]
       }
     },
-    "/api/orders": {
+    "/orders": {
       "post": {
         "operationId": "OrdersController_create",
         "parameters": [],
@@ -872,7 +872,7 @@
         ]
       }
     },
-    "/api/orders/{id}": {
+    "/orders/{id}": {
       "get": {
         "operationId": "OrdersController_findOne",
         "parameters": [
@@ -962,7 +962,7 @@
         ]
       }
     },
-    "/api/orders/admin/all": {
+    "/orders/admin/all": {
       "get": {
         "operationId": "OrdersController_findAllAdmin",
         "parameters": [
@@ -990,7 +990,7 @@
         ]
       }
     },
-    "/api/orders/{id}/restore": {
+    "/orders/{id}/restore": {
       "patch": {
         "operationId": "OrdersController_restore",
         "parameters": [
@@ -1018,7 +1018,7 @@
         ]
       }
     },
-    "/api/order_items": {
+    "/order_items": {
       "post": {
         "operationId": "OrderItemsController_create",
         "parameters": [],
@@ -1064,7 +1064,7 @@
         ]
       }
     },
-    "/api/order_items/{id}": {
+    "/order_items/{id}": {
       "get": {
         "operationId": "OrderItemsController_findOne",
         "parameters": [
@@ -1154,7 +1154,7 @@
         ]
       }
     },
-    "/api/order_shippings": {
+    "/order_shippings": {
       "post": {
         "operationId": "OrderShippingsController_create",
         "parameters": [],
@@ -1200,7 +1200,7 @@
         ]
       }
     },
-    "/api/order_shippings/{id}": {
+    "/order_shippings/{id}": {
       "get": {
         "operationId": "OrderShippingsController_findOne",
         "parameters": [
@@ -1290,7 +1290,7 @@
         ]
       }
     },
-    "/api/payments": {
+    "/payments": {
       "post": {
         "operationId": "PaymentsController_create",
         "parameters": [],
@@ -1336,7 +1336,7 @@
         ]
       }
     },
-    "/api/payments/{id}": {
+    "/payments/{id}": {
       "get": {
         "operationId": "PaymentsController_findOne",
         "parameters": [
@@ -1426,7 +1426,7 @@
         ]
       }
     },
-    "/api/reviews/product/{productId}": {
+    "/reviews/product/{productId}": {
       "get": {
         "operationId": "ReviewsController_findByProduct",
         "parameters": [
@@ -1460,7 +1460,7 @@
         ]
       }
     },
-    "/api/reviews": {
+    "/reviews": {
       "post": {
         "operationId": "ReviewsController_create",
         "parameters": [],
@@ -1496,7 +1496,7 @@
         ]
       }
     },
-    "/api/reviews/{id}": {
+    "/reviews/{id}": {
       "delete": {
         "operationId": "ReviewsController_remove",
         "parameters": [
@@ -1524,7 +1524,7 @@
         ]
       }
     },
-    "/api/reviews/admin/all": {
+    "/reviews/admin/all": {
       "get": {
         "operationId": "ReviewsController_findAllAdmin",
         "parameters": [
@@ -1552,7 +1552,7 @@
         ]
       }
     },
-    "/api/reviews/{id}/restore": {
+    "/reviews/{id}/restore": {
       "patch": {
         "operationId": "ReviewsController_restore",
         "parameters": [
@@ -1580,7 +1580,7 @@
         ]
       }
     },
-    "/api/addresses/me": {
+    "/addresses/me": {
       "get": {
         "operationId": "AddressesController_findMe",
         "parameters": [],
@@ -1599,7 +1599,7 @@
         ]
       }
     },
-    "/api/addresses": {
+    "/addresses": {
       "post": {
         "operationId": "AddressesController_create",
         "parameters": [],
@@ -1640,7 +1640,7 @@
         ]
       }
     },
-    "/api/addresses/{id}": {
+    "/addresses/{id}": {
       "get": {
         "operationId": "AddressesController_findOne",
         "parameters": [
@@ -1730,7 +1730,7 @@
         ]
       }
     },
-    "/api/postal_codes": {
+    "/postal_codes": {
       "post": {
         "operationId": "PostalCodesController_create",
         "parameters": [],
@@ -1766,7 +1766,7 @@
         ]
       }
     },
-    "/api/postal_codes/{id}": {
+    "/postal_codes/{id}": {
       "get": {
         "operationId": "PostalCodesController_findOne",
         "parameters": [
@@ -1841,7 +1841,7 @@
         ]
       }
     },
-    "/api/payment_methods": {
+    "/payment_methods": {
       "post": {
         "operationId": "PaymentMethodsController_create",
         "parameters": [],
@@ -1882,7 +1882,7 @@
         ]
       }
     },
-    "/api/payment_methods/{id}": {
+    "/payment_methods/{id}": {
       "get": {
         "operationId": "PaymentMethodsController_findOne",
         "parameters": [
@@ -1972,7 +1972,7 @@
         ]
       }
     },
-    "/api/payment_statuses": {
+    "/payment_statuses": {
       "post": {
         "operationId": "PaymentStatussController_create",
         "parameters": [],
@@ -2013,7 +2013,7 @@
         ]
       }
     },
-    "/api/payment_statuses/{id}": {
+    "/payment_statuses/{id}": {
       "get": {
         "operationId": "PaymentStatussController_findOne",
         "parameters": [
@@ -2103,7 +2103,7 @@
         ]
       }
     },
-    "/api/order_statuses": {
+    "/order_statuses": {
       "post": {
         "operationId": "OrderStatusesController_create",
         "parameters": [],
@@ -2144,7 +2144,7 @@
         ]
       }
     },
-    "/api/order_statuses/{id}": {
+    "/order_statuses/{id}": {
       "get": {
         "operationId": "OrderStatusesController_findOne",
         "parameters": [
@@ -2234,7 +2234,7 @@
         ]
       }
     },
-    "/api/categories": {
+    "/categories": {
       "get": {
         "operationId": "CategoriesController_findAll",
         "parameters": [],
@@ -2292,7 +2292,7 @@
         ]
       }
     },
-    "/api/categories/{slug}": {
+    "/categories/{slug}": {
       "get": {
         "operationId": "CategoriesController_findBySlug",
         "parameters": [
@@ -2322,7 +2322,7 @@
         ]
       }
     },
-    "/api/categories/{id}": {
+    "/categories/{id}": {
       "patch": {
         "operationId": "CategoriesController_update",
         "parameters": [
@@ -2393,7 +2393,7 @@
         ]
       }
     },
-    "/api/categories/admin/all": {
+    "/categories/admin/all": {
       "get": {
         "operationId": "CategoriesController_findAllAdmin",
         "parameters": [
@@ -2421,7 +2421,7 @@
         ]
       }
     },
-    "/api/categories/{id}/restore": {
+    "/categories/{id}/restore": {
       "patch": {
         "operationId": "CategoriesController_restore",
         "parameters": [
@@ -2449,7 +2449,7 @@
         ]
       }
     },
-    "/api/product-variants": {
+    "/product-variants": {
       "get": {
         "operationId": "ProductVariantsController_findAll",
         "parameters": [],
@@ -2490,7 +2490,7 @@
         ]
       }
     },
-    "/api/product-variants/{id}": {
+    "/product-variants/{id}": {
       "get": {
         "operationId": "ProductVariantsController_findOne",
         "parameters": [
@@ -2575,7 +2575,7 @@
         ]
       }
     },
-    "/api/product-variants/{id}/restore": {
+    "/product-variants/{id}/restore": {
       "patch": {
         "operationId": "ProductVariantsController_restore",
         "parameters": [
@@ -2603,7 +2603,7 @@
         ]
       }
     },
-    "/api/attribute-types": {
+    "/attribute-types": {
       "get": {
         "operationId": "AttributeTypesController_findAll",
         "parameters": [],
@@ -2644,7 +2644,7 @@
         ]
       }
     },
-    "/api/attribute-types/{id}": {
+    "/attribute-types/{id}": {
       "get": {
         "operationId": "AttributeTypesController_findOne",
         "parameters": [
@@ -2729,7 +2729,7 @@
         ]
       }
     },
-    "/api/attribute-types/{id}/restore": {
+    "/attribute-types/{id}/restore": {
       "patch": {
         "operationId": "AttributeTypesController_restore",
         "parameters": [
