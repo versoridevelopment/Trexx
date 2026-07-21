@@ -31,7 +31,7 @@ export default async function HomePage() {
   if (featuredProductsConfig && Array.isArray(featuredProductsConfig) && featuredProductsConfig.length > 0) {
     featured = featuredProductsConfig
       .map((slug: string) => products.find((p: any) => p.slug === slug))
-      .filter(Boolean)
+      .filter(Boolean) as typeof products
   }
 
   // Helper for equipment
@@ -136,8 +136,7 @@ export default async function HomePage() {
 
       {/* Promotional Banner */}
       <section className="border-t border-border bg-gradient-to-b from-neutral-900 to-black py-20 mt-12 mb-12 relative overflow-hidden">
-        <Meteors number={20} />
-        <div className="max-w-4xl mx-auto px-6 text-center space-y-8 animate-enter relative z-10">
+        <div className="max-w-4xl mx-auto px-6 text-center space-y-8 relative z-10">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-tight italic uppercase">
             HASTA 6 CUOTAS SIN INTERÉS <br />
             <span className="text-trexx-volt text-3xl md:text-5xl mt-2 block">
@@ -148,37 +147,23 @@ export default async function HomePage() {
             Estamos acá para ayudarte a elegir tu próximo equipamiento. Escribinos por nuestras redes y recibí asesoramiento personalizado de inmediato.
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6 pt-4">
-            <MovingBorderButton
-              borderRadius="2rem"
-              containerClassName="w-64 h-16"
-              className="bg-[#25D366]/10 hover:bg-[#25D366]/20 transition-colors border-0"
-              borderClassName="bg-[radial-gradient(#25D366_40%,transparent_60%)]"
+            <a
+              href="https://wa.me/5493412272837?text=Hola!%20tengo%20una%20consulta%20por%20un%20producto%20Trexx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-64 h-14 flex justify-center items-center gap-3 text-[12px] font-bold tracking-[0.2em] uppercase text-white bg-[#25D366] hover:bg-[#1DA851] rounded-full transition-colors shadow-lg shadow-[#25D366]/20"
             >
-              <a
-                href="https://wa.me/5493412272837?text=Hola!%20tengo%20una%20consulta%20por%20un%20producto%20Trexx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full h-full flex justify-center items-center gap-3 text-[12px] font-bold tracking-[0.2em] uppercase text-[#25D366]"
-              >
-                WhatsApp
-              </a>
-            </MovingBorderButton>
+              WhatsApp
+            </a>
 
-            <MovingBorderButton
-              borderRadius="2rem"
-              containerClassName="w-64 h-16"
-              className="bg-[#E1306C]/10 hover:bg-[#E1306C]/20 transition-colors border-0"
-              borderClassName="bg-[radial-gradient(#E1306C_40%,transparent_60%)]"
+            <a
+              href="https://www.instagram.com/trexxpadel"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-64 h-14 flex justify-center items-center gap-3 text-[12px] font-bold tracking-[0.2em] uppercase text-white bg-gradient-to-tr from-[#FFDC80] via-[#F56040] to-[#C13584] hover:opacity-90 rounded-full transition-opacity shadow-lg shadow-[#E1306C]/20"
             >
-              <a
-                href="https://www.instagram.com/trexxpadel"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full h-full flex justify-center items-center gap-3 text-[12px] font-bold tracking-[0.2em] uppercase text-[#E1306C]"
-              >
-                Instagram
-              </a>
-            </MovingBorderButton>
+              Instagram
+            </a>
           </div>
         </div>
       </section>

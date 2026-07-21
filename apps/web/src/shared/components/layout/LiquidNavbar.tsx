@@ -19,12 +19,34 @@ interface LiquidNavbarProps {
 
 export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
+  const [lastScrollY, setLastScrollY] = useState(0)
   const { totalItems, setIsCartOpen } = useCart()
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== 'undefined') {
+        if (window.scrollY > lastScrollY && window.scrollY > 80) {
+          setIsVisible(false)
+        } else {
+          setIsVisible(true)
+        }
+        setLastScrollY(window.scrollY)
+      }
+    }
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', controlNavbar)
+      return () => {
+        window.removeEventListener('scroll', controlNavbar)
+      }
+    }
+  }, [lastScrollY])
 
   return (
     <>
       {/* Full-width Fixed Top Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+      <header className={`fixed top-0 left-0 right-0 z-50 w-full bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.5)] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
           
           {/* 1. Izquierda Extrema: Menú Móvil + Logo de Trexx */}
@@ -97,15 +119,6 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
 
           {/* 3. Derecha Extrema: Buscador, Carrito, Perfil/Login */}
           <div className="flex items-center gap-3 sm:gap-5">
-            {/* Buscador Interactivo a la derecha antes del carrito */}
-            <div className="relative hidden sm:block w-40 md:w-56">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50" size={14} />
-              <input
-                type="text"
-                placeholder="BUSCAR..."
-                className="w-full bg-white/5 border border-white/10 rounded-full py-1.5 pl-9 pr-3 text-[10px] font-bold tracking-[0.2em] uppercase text-white placeholder:text-white/40 focus:outline-none focus:border-trexx-volt focus:bg-black/90 transition-all"
-              />
-            </div>
 
             <button title="Carrito" onClick={() => setIsCartOpen(true)} className="text-white/70 hover:text-white transition-colors relative p-1 group">
               <ShoppingBag size={20} strokeWidth={2} />
@@ -168,7 +181,6 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
           <div className="w-12 h-1 bg-trexx-red my-4" />
           
           <div className="flex gap-6 items-center">
-            <button className="text-white hover:text-trexx-volt transition-colors"><Search size={24} /></button>
             <button onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true); }} className="text-white hover:text-trexx-volt transition-colors relative">
               <ShoppingBag size={24} />
               {totalItems > 0 && (

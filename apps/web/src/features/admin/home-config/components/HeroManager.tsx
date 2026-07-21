@@ -13,6 +13,7 @@ interface Slide {
   url: string
   media_type: 'image' | 'video'
   accent_color?: string
+  link?: string
 }
 
 interface HeroManagerProps {
@@ -95,6 +96,12 @@ export function HeroManager({ initialSlides }: HeroManagerProps) {
     )
   }
 
+  const updateSlideLink = (id: string, link: string) => {
+    setSlides((prev) =>
+      prev.map((s) => (s.id === id ? { ...s, link } : s))
+    )
+  }
+
   const handleSave = async () => {
     try {
       setLoading(true)
@@ -173,20 +180,35 @@ export function HeroManager({ initialSlides }: HeroManagerProps) {
               
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-500 truncate">{slide.url}</p>
-                <div className="flex items-center gap-4 mt-2">
-                  <p className="text-xs font-bold uppercase text-gray-400">
-                    {slide.media_type}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <label htmlFor={`color-${slide.id}`} className="text-xs font-bold text-gray-500 cursor-pointer">
-                      Color de Acento:
+                <div className="flex flex-col gap-3 mt-2">
+                  <div className="flex items-center gap-4">
+                    <p className="text-xs font-bold uppercase text-gray-400">
+                      {slide.media_type}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <label htmlFor={`color-${slide.id}`} className="text-xs font-bold text-gray-500 cursor-pointer">
+                        Color de Acento:
+                      </label>
+                      <input
+                        id={`color-${slide.id}`}
+                        type="color"
+                        value={slide.accent_color || '#e40000'}
+                        onChange={(e) => updateSlideColor(slide.id, e.target.value)}
+                        className="w-6 h-6 p-0 border-0 rounded cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 w-full max-w-sm">
+                    <label htmlFor={`link-${slide.id}`} className="text-xs font-bold text-gray-500">
+                      Link (opcional):
                     </label>
                     <input
-                      id={`color-${slide.id}`}
-                      type="color"
-                      value={slide.accent_color || '#e40000'}
-                      onChange={(e) => updateSlideColor(slide.id, e.target.value)}
-                      className="w-6 h-6 p-0 border-0 rounded cursor-pointer"
+                      id={`link-${slide.id}`}
+                      type="text"
+                      placeholder="Ej: /shop?category=palas"
+                      value={slide.link || ''}
+                      onChange={(e) => updateSlideLink(slide.id, e.target.value)}
+                      className="flex-1 border border-gray-200 rounded px-2 py-1 text-xs focus:outline-none focus:border-trexx-red"
                     />
                   </div>
                 </div>

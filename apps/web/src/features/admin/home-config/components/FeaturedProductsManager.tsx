@@ -104,12 +104,12 @@ export function FeaturedProductsManager({ initialConfig, allProducts }: Featured
               </div>
               
               <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center p-1 border border-gray-100 flex-shrink-0">
-                <img src={product.images[0] || '/placeholder.png'} alt={product.name} className="max-w-full max-h-full object-contain" />
+                <img src={product.product_images?.[0]?.url || '/placeholder.png'} alt={product.name} className="max-w-full max-h-full object-contain" />
               </div>
               
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-bold truncate text-gray-900">{product.name}</p>
-                <p className="text-[10px] uppercase text-gray-500 tracking-wider">{product.category_slug}</p>
+                <p className="text-[10px] uppercase text-gray-500 tracking-wider">{product.categories?.name || 'Sin Categoría'}</p>
               </div>
 
               <button 
@@ -145,7 +145,7 @@ export function FeaturedProductsManager({ initialConfig, allProducts }: Featured
               availableProducts.map(product => (
                 <div key={product.slug} className="flex items-center justify-between p-2 bg-white rounded-md border border-gray-100">
                   <div className="flex items-center gap-3 min-w-0">
-                    <img src={product.images[0] || '/placeholder.png'} alt={product.name} className="w-8 h-8 object-contain" />
+                    <img src={product.product_images?.[0]?.url || '/placeholder.png'} alt={product.name} className="w-8 h-8 object-contain" />
                     <p className="text-xs font-medium truncate">{product.name}</p>
                   </div>
                   <button 

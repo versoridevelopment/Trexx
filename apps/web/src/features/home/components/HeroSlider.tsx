@@ -2,12 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
 
 interface Slide {
   id: string
   url: string
   media_type: 'image' | 'video'
   accent_color?: string
+  link?: string
 }
 
 interface HeroSliderProps {
@@ -56,34 +58,50 @@ export function HeroSlider({ slides }: HeroSliderProps) {
         className="flex h-full transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${current * 100}%)` }}
       >
-        {slides.map((slide, index) => (
-          <div key={slide.id} className="w-full h-full flex-shrink-0 relative">
-            {slide.media_type === 'video' ? (
-              <video
-                src={slide.url}
-                className="w-full h-full object-contain sm:object-cover"
-                autoPlay
-                loop
-                muted
-                playsInline
+        {slides.map((slide, index) => {
+          const SlideContent = (
+            <>
+              {slide.media_type === 'video' ? (
+                <video
+                  src={slide.url}
+                  className="w-full h-full object-contain sm:object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                />
+              ) : (
+                <img
+                  src={slide.url}
+                  alt={`Hero Slide ${index + 1}`}
+                  className="w-full h-full object-contain sm:object-cover"
+                />
+              )}
+              {/* Subtle Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 z-10 pointer-events-none" />
+              
+              {/* Dynamic radial subtle glow in the background */}
+              <div 
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[100px] z-20 pointer-events-none" 
+                style={{ backgroundColor: slide.accent_color || '#e40000', opacity: 0.15 }}
               />
-            ) : (
-              <img
-                src={slide.url}
-                alt={`Hero Slide ${index + 1}`}
-                className="w-full h-full object-contain sm:object-cover"
-              />
-            )}
-            {/* Subtle Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10 z-10" />
-            
-            {/* Dynamic radial subtle glow in the background */}
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[100px] z-20 pointer-events-none" 
-              style={{ backgroundColor: slide.accent_color || '#e40000', opacity: 0.15 }}
-            />
-          </div>
-        ))}
+            </>
+          )
+
+          return (
+            <div key={slide.id} className="w-full h-full flex-shrink-0 relative">
+              {slide.link ? (
+                <Link href={slide.link} className="block w-full h-full cursor-pointer relative z-30">
+                  {SlideContent}
+                </Link>
+              ) : (
+                <div className="w-full h-full">
+                  {SlideContent}
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
 
       {/* Navigation Arrows */}
