@@ -11,6 +11,8 @@ RUN pnpm --filter @repo/types build
 RUN pnpm --filter @repo/api exec prisma generate
 RUN pnpm --filter @repo/api build
 RUN pnpm --filter @repo/api deploy /app/deployed --legacy
+WORKDIR /app/deployed
+RUN pnpm exec prisma generate
 
 # --- Runtime Stage ---
 FROM node:22-slim AS runtime
