@@ -129,7 +129,7 @@ export const DirectionAwareHover = ({
           <motion.div
             variants={textVariants}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="absolute inset-0 p-8 flex flex-col justify-end z-10"
+            className="absolute inset-0 p-8 flex flex-col justify-end z-10 max-md:!opacity-100"
           >
             {children}
           </motion.div>

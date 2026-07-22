@@ -54,10 +54,10 @@ export const LiquidNavbar = ({ user }: LiquidNavbarProps) => {
           <div className="flex items-center gap-4">
             <button 
               className="md:hidden text-white/70 hover:text-white p-1" 
-              onClick={() => setIsMobileMenuOpen(true)}
-              title="Abrir Menú"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              title={isMobileMenuOpen ? "Cerrar Menú" : "Abrir Menú"}
             >
-              <Menu size={24} />
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             <Link href="/" title="Inicio" className="flex items-center hover:opacity-80 transition-opacity">
               <Image 

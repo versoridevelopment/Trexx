@@ -37,7 +37,7 @@ export function NavbarClient({ user }: NavbarClientProps) {
           </Avatar>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56 p-2 rounded-none border-border/60">
+      <DropdownMenuContent align="end" className="w-56 p-2 rounded-none border-border/60 bg-background">
         <DropdownMenuLabel className="px-2 py-3">
           <div className="flex flex-col gap-1">
             <p className="text-xs font-semibold leading-none text-foreground uppercase tracking-widest">

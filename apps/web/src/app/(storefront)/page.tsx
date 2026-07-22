@@ -91,9 +91,9 @@ export default async function HomePage() {
 
       {/* Category Grid */}
       <section className="max-w-7xl mx-auto px-6 space-y-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-[800px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:h-[800px]">
           {/* Main Category (Palas) */}
-          <Link href="/shop?category=palas" className="relative group overflow-visible rounded-3xl animate-enter block h-full">
+          <Link href="/shop?category=palas" className="relative group overflow-visible rounded-3xl animate-enter block h-64 md:h-full">
             <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
               <DirectionAwareHover imageUrl={getEq('palas').url} mediaType={getEq('palas').media_type}>
                 <h3 className="text-white text-5xl font-black tracking-wide uppercase italic">Palas</h3>
@@ -103,7 +103,7 @@ export default async function HomePage() {
 
           {/* Secondary Categories */}
           <div className="flex flex-col gap-8 h-full">
-            <Link href="/shop?category=zapatillas" className="relative group overflow-visible rounded-3xl flex-1 animate-enter block" style={{ animationDelay: '150ms' }}>
+            <Link href="/shop?category=zapatillas" className="relative group overflow-visible rounded-3xl h-48 md:flex-1 md:h-auto animate-enter block" style={{ animationDelay: '150ms' }}>
               <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
                 <DirectionAwareHover className="h-full" imageUrl={getEq('zapatillas').url} mediaType={getEq('zapatillas').media_type}>
                   <h3 className="text-white text-3xl font-black uppercase italic">Zapatillas</h3>
@@ -111,15 +111,15 @@ export default async function HomePage() {
               </BackgroundGradient>
             </Link>
 
-            <div className="flex gap-8 flex-1">
-              <Link href="/shop?category=indumentaria" className="relative group overflow-visible rounded-3xl flex-1 animate-enter block" style={{ animationDelay: '300ms' }}>
+            <div className="flex flex-col sm:flex-row gap-8 md:flex-1">
+              <Link href="/shop?category=indumentaria" className="relative group overflow-visible rounded-3xl h-48 md:flex-1 md:h-auto animate-enter block" style={{ animationDelay: '300ms' }}>
                 <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
                   <DirectionAwareHover className="h-full" imageUrl={getEq('indumentaria').url} mediaType={getEq('indumentaria').media_type}>
                     <h3 className="text-white text-2xl font-black uppercase italic">Indumentaria</h3>
                   </DirectionAwareHover>
                 </BackgroundGradient>
               </Link>
-              <Link href="/shop?category=accesorios" className="relative group overflow-visible rounded-3xl flex-1 animate-enter block" style={{ animationDelay: '450ms' }}>
+              <Link href="/shop?category=accesorios" className="relative group overflow-visible rounded-3xl h-48 md:flex-1 md:h-auto animate-enter block" style={{ animationDelay: '450ms' }}>
                 <BackgroundGradient containerClassName="h-full w-full" className="h-full w-full rounded-3xl overflow-hidden bg-card">
                   <DirectionAwareHover className="h-full" imageUrl={getEq('accesorios').url} mediaType={getEq('accesorios').media_type}>
                     <h3 className="text-white text-2xl font-black uppercase italic">Accesorios</h3>
@@ -193,13 +193,13 @@ export default async function HomePage() {
             SUMATE A LA <span className="text-trexx-red">REVOLUCIÓN</span>
           </h2>
           <p className="text-[12px] font-bold tracking-[0.3em] uppercase text-muted-foreground">Unite al club Trexx y conseguí beneficios exclusivos</p>
-          <div className="max-w-md mx-auto flex gap-0 mt-8">
+          <div className="max-w-md mx-auto flex flex-col sm:flex-row gap-4 sm:gap-0 mt-8">
             <input
               type="email"
               placeholder="TU EMAIL"
-              className="flex-1 bg-background border border-border px-4 py-4 text-[12px] font-bold tracking-widest uppercase focus:outline-none focus:border-trexx-volt transition-colors"
+              className="flex-1 w-full bg-background border border-border px-4 py-4 text-[12px] font-bold tracking-widest uppercase focus:outline-none focus:border-trexx-volt transition-colors"
             />
-            <button className="text-[12px] font-black tracking-[0.3em] uppercase bg-trexx-volt text-black px-8 py-4 hover:bg-trexx-red hover:text-white transition-colors">
+            <button className="w-full sm:w-auto text-[12px] font-black tracking-[0.3em] uppercase bg-trexx-volt text-black px-8 py-4 hover:bg-trexx-red hover:text-white transition-colors">
               Suscribirse
             </button>
           </div>

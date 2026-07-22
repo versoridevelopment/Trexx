@@ -18,12 +18,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] text-gray-900 flex overflow-hidden">
-      {/* Sidebar Fija e Inamovible */}
+    <div className="min-h-screen bg-[#F5F5F7] text-gray-900 flex flex-col md:flex-row overflow-hidden">
       <AdminSidebar userEmail={user.email} />
 
-      {/* Área Derecha Deslizable */}
-      <main className="ml-64 flex-1 h-screen overflow-y-auto p-8">
+      <main className="md:ml-64 flex-1 h-screen overflow-y-auto p-4 md:p-8 pt-24 md:pt-8">
         {children}
       </main>
     </div>
