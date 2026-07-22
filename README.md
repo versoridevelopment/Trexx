@@ -1,116 +1,151 @@
-<p align="center">
-  <a href="https://trexxpadel.vercel.app" target="_blank">
-    <img src="https://trexxpadel.vercel.app/logo.png" width="240" alt="Trexx Padel Logo" />
-  </a>
-</p>
+<div align="center">
 
-<p align="center">Plataforma Profesional de E-commerce para el mercado de Pádel argentino.</p>
+<img src="https://trexxpadel.vercel.app/trexx/logo.png" width="340" alt="Trexx Logo" />
 
-<p align="center">
-  <a href="https://nestjs.com/" target="_blank"><img src="https://img.shields.io/badge/Backend-NestJS%2011%20%2F%20Fastify-E0234E.svg" alt="Backend" /></a>
-  <a href="https://nextjs.org/" target="_blank"><img src="https://img.shields.io/badge/Frontend-Next.js%2016-000000.svg" alt="Frontend" /></a>
-  <a href="https://supabase.com/" target="_blank"><img src="https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E.svg" alt="Database" /></a>
-  <a href="https://turbo.build/" target="_blank"><img src="https://img.shields.io/badge/Monorepo-Turborepo%20%2F%20pnpm-EF4444.svg" alt="Monorepo" /></a>
-  <a href="https://vercel.com/" target="_blank"><img src="https://img.shields.io/badge/Hosting-Vercel%20%26%20Fly.io-8A2BE2.svg" alt="Hosting" /></a>
-</p>
+# Trexx
 
-**Trexx Padel** es una plataforma moderna y escalable de comercio electrónico optimizada para la venta y distribución de equipamiento deportivo de pádel. Implementada a través de un monorepo robusto, integra tecnologías líderes en rendimiento, tipado estricto extremo y despliegue automático en la nube.
+**Plataforma de E-commerce especializada para el mercado de Pádel.**
 
----
+[![Backend: NestJS 11](https://img.shields.io/badge/Backend-NestJS%2011%20%2F%20Fastify-E0234E?logo=nestjs)](https://nestjs.com/)
+[![Frontend: Next.js 16](https://img.shields.io/badge/Frontend-Next.js%2016-000000?logo=next.js)](https://nextjs.org/)
+[![Database: Supabase](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?logo=supabase)](https://supabase.com/)
+[![Monorepo: Turborepo](https://img.shields.io/badge/Monorepo-Turborepo-EF4444?logo=turborepo)](https://turbo.build/)
+[![CI/CD: Vercel & Fly.io](https://img.shields.io/badge/CI%2FCD-Vercel%20%26%20Fly.io-8A2BE2?logo=vercel)](https://fly.io/)
 
-## 🏗️ Arquitectura y Flujo del Monorepo
+Trexx es una plataforma moderna y escalable que permite a los amantes y comerciantes de pádel gestionar y realizar compras de equipamiento deportivo de manera rápida y segura.
 
-El proyecto está organizado en un **Monorepo** orquestado por **Turborepo** y gestionado eficientemente mediante workspaces de **pnpm**:
+[Explorar Características](#características-principales) • [Ver Arquitectura](#arquitectura-del-monorepo) • [Empezar a Desarrollar](#getting-started)
 
-- **`apps/web` (Frontend):** Aplicación Next.js 16 con App Router, Server Components para optimización de SEO/rendimiento y diseño responsivo premium. Se despliega automáticamente en **Vercel** (nodo en São Paulo para latencia mínima).
-- **`apps/api` (Backend):** Servidor NestJS 11 con motor de alto rendimiento **Fastify** que valida esquemas a alta velocidad. Se aloja en **Fly.io** (São Paulo).
-- **`packages/types`:** Tipos TypeScript y validaciones de esquema **Zod** compartidas entre el Backend y el Frontend (fuente única de verdad).
-- **`packages/api-client`:** Cliente de consumo HTTP tipado autogenerado a partir de OpenAPI/Swagger.
+</div>
 
 ---
 
-## 📦 Stack Tecnológico
+## Características Principales
 
-| Herramienta | Rol en la Plataforma |
-|---|---|
-| **Next.js 16** | Frontend interactivo y Server-Side Rendering (SSR). |
-| **NestJS 11 + Fastify** | Backend modular, estructurado e inyección de dependencias sólida. |
-| **Prisma ORM** | Modelado de datos y consultas tipadas sobre PostgreSQL. |
-| **Supabase (Auth & PG)** | Base de datos PostgreSQL alojada en Brasil con Autenticación gestionada. |
-| **Turborepo & pnpm** | Orquestación, caché y velocidad de compilación en el monorepo. |
-| **Zod** | Esquemas de validación unificados en la capa de datos. |
+- **Catálogo Especializado:** Gestión avanzada de productos de pádel (palas, indumentaria, calzado y accesorios), variantes de talles/colores y stock en tiempo real.
+- **Rendimiento Excepcional:** Frontends construidos con **Next.js 16** (App Router y SSR), garantizando velocidades de carga ultrarrápidas y un SEO óptimo.
+- **Backend Optimizado:** API REST potente en **NestJS 11** y **Fastify**, facilitando la mantenibilidad, validación rápida de esquemas con Zod y escalabilidad del negocio.
+- **Autenticación e Integración:** Autenticación fluida con Supabase Auth que incluye flujos de confirmación de email y redirecciones automáticas a producción.
+- **Monorepo Modular:** Gestión eficiente del código fuente usando **Turborepo** y **pnpm workspaces**, compartiendo tipos y utilidades en todo el proyecto.
 
 ---
 
-## ⚙️ Configuración y Puesta en Marcha (Local)
+## Stack Tecnológico
 
-### 📋 Prerrequisitos
-- **Node.js** v22+
-- **pnpm** v10+
+| Área | Tecnologías |
+| :--- | :--- |
+| **Backend API** | NestJS 11, Fastify, Prisma ORM, PostgreSQL |
+| **Frontend** | Next.js 16, TypeScript, React, Tailwind CSS |
+| **Herramientas** | Turborepo, pnpm (v10+), ESLint, Prettier |
+| **Infraestructura** | Fly.io, Vercel, Supabase Auth |
 
-### 🛠️ Guía Paso a Paso
+---
 
-#### 1. Clonar e Instalar
+## Arquitectura del Monorepo
+
+El proyecto está estructurado para separar responsabilidades en distintas aplicaciones y compartir la lógica y el diseño a través de paquetes.
+
+```text
+trexx/
+├── apps/
+│   ├── web/          # Storefront: Tienda pública orientada al cliente final (Next.js)
+│   └── api/          # Backend Centralizado: NestJS API que orquesta el negocio
+├── packages/
+│   ├── types/        # Modelos, interfaces y esquemas de validación unificados (Zod)
+│   └── api-client/   # Cliente HTTP autogenerado con tipos a partir de OpenAPI
+└── turbo.json        # Configuración de los flujos de Turborepo
+```
+
+---
+
+## Getting Started
+
+Sigue estos pasos para levantar el entorno de desarrollo local.
+
+### 1. Prerrequisitos
+
+Asegúrate de tener instalado:
+- Node.js (v22+)
+- pnpm (v10+)
+
+### 2. Instalación de Dependencias
+
+Clona el repositorio e instala todas las dependencias del monorepo desde la raíz:
+
 ```bash
 git clone https://github.com/versoridevelopment/Trexx.git
 cd Trexx
 pnpm install
 ```
 
-#### 2. Variables de Entorno (`.env`)
+### 3. Configuración de Variables de Entorno
 
-Crea los archivos de entorno locales:
+**Para el Frontend (Next.js):**
+Crea un archivo `.env` en la carpeta `apps/web` e incluye las siguientes variables:
 
-- **Frontend (`apps/web/.env`):**
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=https://tu-supabase.supabase.co
-  NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
-  NEXT_PUBLIC_APP_URL=http://localhost:3000
-  NEXT_PUBLIC_API_URL=http://localhost:3001
-  ```
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://tu-supabase.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-supabase
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
 
-- **Backend (`apps/api/.env`):**
-  ```env
-  PORT=3001
-  NODE_ENV=development
-  SUPABASE_URL=https://tu-supabase.supabase.co
-  SUPABASE_ANON_KEY=tu-anon-key
-  SUPABASE_JWT_SECRET=tu-jwt-secret
-  DATABASE_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
-  DIRECT_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
-  ```
+**Para el Backend (NestJS):**
+Crea un archivo `.env` en la carpeta `apps/api` e incluye las siguientes variables:
 
-#### 3. Compilación Inicial y Base de Datos
+```env
+PORT=3001
+NODE_ENV=development
+SUPABASE_URL=https://tu-supabase.supabase.co
+SUPABASE_ANON_KEY=tu-anon-key-supabase
+SUPABASE_JWT_SECRET=tu-jwt-secret-supabase
+DATABASE_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+DIRECT_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
+```
+
+### 4. Compilación y Cliente de Base de Datos
+
+Ejecuta los siguientes comandos desde la raíz para compilar tipos compartidos y configurar Prisma:
+
 ```bash
 # Compilar tipos compartidos
 pnpm --filter @repo/types build
 
 # Generar cliente de Prisma
 pnpm --filter @repo/api exec prisma generate
-
-# Sincronizar esquema de base de datos con Supabase
-pnpm --filter @repo/api exec prisma db push
 ```
 
-#### 4. Levantar en Desarrollo
+### 5. Ejecutar el Proyecto
+
+Puedes levantar todo el ecosistema de forma concurrente:
+
 ```bash
-pnpm dev
+pnpm run dev
 ```
 - **Web:** [http://localhost:3000](http://localhost:3000)
-- **API UI (Swagger Docs):** [http://localhost:3001/docs](http://localhost:3001/docs)
+- **API UI (Swagger):** [http://localhost:3001/docs](http://localhost:3001/docs)
 
 ---
 
-## 🚀 Pipeline de Despliegue (CI/CD)
+## Comandos Disponibles
 
-El monorepo está diseñado para automatizar los despliegues en cada actualización en la rama principal (`main`):
+Desde la raíz del proyecto, Turborepo te permite orquestar todas las aplicaciones:
 
-### 1. Frontend en Vercel
-Vercel compila el monorepo y levanta la aplicación web en [https://trexxpadel.vercel.app](https://trexxpadel.vercel.app). Las variables de entorno se declaran en el dashboard del proyecto.
+- `pnpm run dev` — Levanta los entornos de desarrollo de forma concurrente.
+- `pnpm run build` — Genera los builds de producción, optimizando las aplicaciones mediante la caché de Turbo.
+- `pnpm run lint` — Analiza el código de todos los workspaces utilizando ESLint.
 
-### 2. Backend en Fly.io (GitHub Actions)
-Configurado mediante [.github/workflows/fly-deploy.yml](.github/workflows/fly-deploy.yml):
-- Al realizar un `git push origin main`, se analiza si hubo cambios en `apps/api` o `packages/**`.
-- Si existen cambios, se ejecuta el workflow de GitHub, compilando la imagen utilizando el [Dockerfile](Dockerfile) multi-stage optimizado (`pnpm deploy`) y levantando la API de producción en São Paulo (`https://trexx-api.fly.dev`).
+---
 
-*(Requiere configurar el secret `FLY_API_TOKEN` en GitHub).*
+## Contribuyendo
+
+Las contribuciones son bienvenidas para mejorar Trexx. Asegúrate de mantener la tipificación estricta en TypeScript y ejecutar el formateado antes de enviar un Pull Request.
+
+## Licencia
+
+Este proyecto está bajo la licencia **MIT**. Lee el archivo de licencia para obtener más detalles.
+
+---
+<div align="center">
+  <i>Construido para potenciar el deporte y comercio digital.</i>
+</div>
