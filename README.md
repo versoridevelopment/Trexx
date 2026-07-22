@@ -21,16 +21,6 @@ El proyecto está organizado en un **Monorepo** orquestado por **Turborepo** y g
 - **`packages/types`:** Tipos TypeScript y validaciones de esquema **Zod** compartidas entre el Backend y el Frontend (fuente única de verdad).
 - **`packages/api-client`:** Cliente de consumo HTTP tipado autogenerado a partir de OpenAPI/Swagger.
 
-```mermaid
-graph TD
-    User([Cliente]) -->|Navega / Compra| Vercel[Vercel Frontend - gru1]
-    Vercel -->|Llamadas API| Fly[Fly.io Backend - gru]
-    Fly -->|Prisma Client| Supabase[Supabase DB / Storage - sa-east-1]
-    GitHub[GitHub Repo] -->|Push main| Actions[GitHub Actions CI/CD]
-    Actions -->|Deploy API| Fly
-    GitHub -->|Trigger webhook| Vercel
-```
-
 ---
 
 ## 📦 Stack Tecnológico
