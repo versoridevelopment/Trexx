@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/api": {
+    "/": {
         parameters: {
             query?: never;
             header?: never;
@@ -20,7 +20,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/me": {
+    "/users/me": {
         parameters: {
             query?: never;
             header?: never;
@@ -36,7 +36,7 @@ export interface paths {
         patch: operations["UsersController_updateMe"];
         trace?: never;
     };
-    "/api/users/admin/all": {
+    "/users/admin/all": {
         parameters: {
             query?: never;
             header?: never;
@@ -52,7 +52,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/{id}": {
+    "/users/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -68,7 +68,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/users/{id}/restore": {
+    "/users/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -84,7 +84,7 @@ export interface paths {
         patch: operations["UsersController_restore"];
         trace?: never;
     };
-    "/api/products": {
+    "/products": {
         parameters: {
             query?: never;
             header?: never;
@@ -100,7 +100,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/admin/colors": {
+    "/products/admin/colors": {
         parameters: {
             query?: never;
             header?: never;
@@ -116,7 +116,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/admin/all": {
+    "/products/admin/all": {
         parameters: {
             query?: never;
             header?: never;
@@ -132,7 +132,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/admin/{id}": {
+    "/products/admin/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -148,7 +148,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/slug/{slug}": {
+    "/products/slug/{slug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -164,7 +164,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/products/{id}": {
+    "/products/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -180,7 +180,7 @@ export interface paths {
         patch: operations["ProductsController_update"];
         trace?: never;
     };
-    "/api/products/{id}/restore": {
+    "/products/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -196,7 +196,7 @@ export interface paths {
         patch: operations["ProductsController_restore"];
         trace?: never;
     };
-    "/api/provinces": {
+    "/provinces": {
         parameters: {
             query?: never;
             header?: never;
@@ -212,7 +212,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provinces/{id}": {
+    "/provinces/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -228,7 +228,7 @@ export interface paths {
         patch: operations["ProvincesController_update"];
         trace?: never;
     };
-    "/api/cities": {
+    "/cities": {
         parameters: {
             query?: never;
             header?: never;
@@ -244,7 +244,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/cities/{id}": {
+    "/cities/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -260,7 +260,7 @@ export interface paths {
         patch: operations["CitysController_update"];
         trace?: never;
     };
-    "/api/orders/checkout": {
+    "/orders/checkout": {
         parameters: {
             query?: never;
             header?: never;
@@ -276,7 +276,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders": {
+    "/orders": {
         parameters: {
             query?: never;
             header?: never;
@@ -292,7 +292,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/{id}": {
+    "/orders/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -308,7 +308,7 @@ export interface paths {
         patch: operations["OrdersController_update"];
         trace?: never;
     };
-    "/api/orders/admin/all": {
+    "/orders/admin/all": {
         parameters: {
             query?: never;
             header?: never;
@@ -324,7 +324,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/orders/{id}/restore": {
+    "/orders/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -340,7 +340,7 @@ export interface paths {
         patch: operations["OrdersController_restore"];
         trace?: never;
     };
-    "/api/order_items": {
+    "/order_items": {
         parameters: {
             query?: never;
             header?: never;
@@ -356,7 +356,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/order_items/{id}": {
+    "/order_items/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -372,7 +372,7 @@ export interface paths {
         patch: operations["OrderItemsController_update"];
         trace?: never;
     };
-    "/api/order_shippings": {
+    "/order_shippings": {
         parameters: {
             query?: never;
             header?: never;
@@ -388,7 +388,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/order_shippings/{id}": {
+    "/order_shippings/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -404,7 +404,7 @@ export interface paths {
         patch: operations["OrderShippingsController_update"];
         trace?: never;
     };
-    "/api/payments": {
+    "/payments": {
         parameters: {
             query?: never;
             header?: never;
@@ -420,7 +420,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payments/{id}": {
+    "/payments/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -436,7 +436,7 @@ export interface paths {
         patch: operations["PaymentsController_update"];
         trace?: never;
     };
-    "/api/reviews/product/{productId}": {
+    "/reviews/product/{productId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -452,7 +452,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/reviews": {
+    "/reviews": {
         parameters: {
             query?: never;
             header?: never;
@@ -468,7 +468,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/reviews/{id}": {
+    "/reviews/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -484,7 +484,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/reviews/admin/all": {
+    "/reviews/admin/all": {
         parameters: {
             query?: never;
             header?: never;
@@ -500,7 +500,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/reviews/{id}/restore": {
+    "/reviews/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -516,7 +516,7 @@ export interface paths {
         patch: operations["ReviewsController_restore"];
         trace?: never;
     };
-    "/api/addresses/me": {
+    "/addresses/me": {
         parameters: {
             query?: never;
             header?: never;
@@ -532,7 +532,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/addresses": {
+    "/addresses": {
         parameters: {
             query?: never;
             header?: never;
@@ -548,7 +548,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/addresses/{id}": {
+    "/addresses/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -564,7 +564,7 @@ export interface paths {
         patch: operations["AddressesController_update"];
         trace?: never;
     };
-    "/api/postal_codes": {
+    "/postal_codes": {
         parameters: {
             query?: never;
             header?: never;
@@ -580,7 +580,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/postal_codes/{id}": {
+    "/postal_codes/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -596,7 +596,7 @@ export interface paths {
         patch: operations["PostalCodesController_update"];
         trace?: never;
     };
-    "/api/payment_methods": {
+    "/payment_methods": {
         parameters: {
             query?: never;
             header?: never;
@@ -612,7 +612,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payment_methods/{id}": {
+    "/payment_methods/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -628,7 +628,7 @@ export interface paths {
         patch: operations["PaymentMethodsController_update"];
         trace?: never;
     };
-    "/api/payment_statuses": {
+    "/payment_statuses": {
         parameters: {
             query?: never;
             header?: never;
@@ -644,7 +644,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payment_statuses/{id}": {
+    "/payment_statuses/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -660,7 +660,7 @@ export interface paths {
         patch: operations["PaymentStatussController_update"];
         trace?: never;
     };
-    "/api/order_statuses": {
+    "/order_statuses": {
         parameters: {
             query?: never;
             header?: never;
@@ -676,7 +676,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/order_statuses/{id}": {
+    "/order_statuses/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -692,7 +692,7 @@ export interface paths {
         patch: operations["OrderStatusesController_update"];
         trace?: never;
     };
-    "/api/categories": {
+    "/categories": {
         parameters: {
             query?: never;
             header?: never;
@@ -708,7 +708,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/categories/{slug}": {
+    "/categories/{slug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -724,7 +724,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/categories/{id}": {
+    "/categories/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -740,7 +740,7 @@ export interface paths {
         patch: operations["CategoriesController_update"];
         trace?: never;
     };
-    "/api/categories/admin/all": {
+    "/categories/admin/all": {
         parameters: {
             query?: never;
             header?: never;
@@ -756,7 +756,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/categories/{id}/restore": {
+    "/categories/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -772,7 +772,7 @@ export interface paths {
         patch: operations["CategoriesController_restore"];
         trace?: never;
     };
-    "/api/product-variants": {
+    "/product-variants": {
         parameters: {
             query?: never;
             header?: never;
@@ -788,7 +788,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/product-variants/{id}": {
+    "/product-variants/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -804,7 +804,7 @@ export interface paths {
         patch: operations["ProductVariantsController_update"];
         trace?: never;
     };
-    "/api/product-variants/{id}/restore": {
+    "/product-variants/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -820,7 +820,7 @@ export interface paths {
         patch: operations["ProductVariantsController_restore"];
         trace?: never;
     };
-    "/api/attribute-types": {
+    "/attribute-types": {
         parameters: {
             query?: never;
             header?: never;
@@ -836,7 +836,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/attribute-types/{id}": {
+    "/attribute-types/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -852,7 +852,7 @@ export interface paths {
         patch: operations["AttributeTypesController_update"];
         trace?: never;
     };
-    "/api/attribute-types/{id}/restore": {
+    "/attribute-types/{id}/restore": {
         parameters: {
             query?: never;
             header?: never;
@@ -866,6 +866,38 @@ export interface paths {
         options?: never;
         head?: never;
         patch: operations["AttributeTypesController_restore"];
+        trace?: never;
+    };
+    "/settings/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["SettingsController_getByKey"];
+        put: operations["SettingsController_updateByKey"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/settings/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["SettingsController_uploadFile"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
 }
@@ -3134,6 +3166,68 @@ export interface operations {
         requestBody?: never;
         responses: {
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SettingsController_getByKey: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SettingsController_updateByKey: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SettingsController_uploadFile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file?: string;
+                };
+            };
+        };
+        responses: {
+            201: {
                 headers: {
                     [name: string]: unknown;
                 };
