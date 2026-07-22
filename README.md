@@ -1,12 +1,18 @@
-# 🎾 Trexx Padel
+<p align="center">
+  <a href="https://trexxpadel.vercel.app" target="_blank">
+    <img src="https://trexxpadel.vercel.app/logo.png" width="240" alt="Trexx Padel Logo" />
+  </a>
+</p>
 
-### Plataforma Profesional de E-commerce para el mercado de Pádel argentino.
+<p align="center">Plataforma Profesional de E-commerce para el mercado de Pádel argentino.</p>
 
-[![Backend](https://img.shields.io/badge/Backend-NestJS%2011%20%2F%20Fastify-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
-[![Frontend](https://img.shields.io/badge/Frontend-Next.js%2016-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Database](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![Monorepo](https://img.shields.io/badge/Monorepo-Turborepo%20%2F%20pnpm-EF4444?style=for-the-badge&logo=turborepo&logoColor=white)](https://turbo.build/)
-[![Hosting](https://img.shields.io/badge/Hosting-Vercel%20%26%20Fly.io-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+<p align="center">
+  <a href="https://nestjs.com/" target="_blank"><img src="https://img.shields.io/badge/Backend-NestJS%2011%20%2F%20Fastify-E0234E.svg" alt="Backend" /></a>
+  <a href="https://nextjs.org/" target="_blank"><img src="https://img.shields.io/badge/Frontend-Next.js%2016-000000.svg" alt="Frontend" /></a>
+  <a href="https://supabase.com/" target="_blank"><img src="https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E.svg" alt="Database" /></a>
+  <a href="https://turbo.build/" target="_blank"><img src="https://img.shields.io/badge/Monorepo-Turborepo%20%2F%20pnpm-EF4444.svg" alt="Monorepo" /></a>
+  <a href="https://vercel.com/" target="_blank"><img src="https://img.shields.io/badge/Hosting-Vercel%20%26%20Fly.io-8A2BE2.svg" alt="Hosting" /></a>
+</p>
 
 **Trexx Padel** es una plataforma moderna y escalable de comercio electrónico optimizada para la venta y distribución de equipamiento deportivo de pádel. Implementada a través de un monorepo robusto, integra tecnologías líderes en rendimiento, tipado estricto extremo y despliegue automático en la nube.
 
