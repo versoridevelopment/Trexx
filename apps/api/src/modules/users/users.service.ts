@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { IUsersRepository } from './users.repository.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -13,13 +17,15 @@ export class UsersService {
 
   async findById(id: string) {
     const record = await this.repository.findByIdWithRoles(id);
-    if (!record || !record.is_active) throw new NotFoundException(`User #${id} not found`);
+    if (!record || !record.is_active)
+      throw new NotFoundException(`User #${id} not found`);
     return record;
   }
 
   async findOne(id: string) {
     const user = await this.repository.findOne(id);
-    if (!user || !user.is_active) throw new NotFoundException(`User #${id} not found`);
+    if (!user || !user.is_active)
+      throw new NotFoundException(`User #${id} not found`);
     return user;
   }
 
@@ -49,7 +55,8 @@ export class UsersService {
   async restore(id: string) {
     const record = await this.repository.findOne(id);
     if (!record) throw new NotFoundException(`User #${id} not found`);
-    if (record.is_active) throw new BadRequestException(`User #${id} is already active`);
+    if (record.is_active)
+      throw new BadRequestException(`User #${id} is already active`);
     return this.repository.updateActiveStatus(id, true);
   }
 

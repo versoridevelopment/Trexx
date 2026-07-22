@@ -17,7 +17,9 @@ export interface ParsedFile {
 
 export async function parseMultipartRequest(req: FastifyRequest) {
   if (!req.isMultipart()) {
-    throw new BadRequestException('La petición debe ser de tipo multipart/form-data');
+    throw new BadRequestException(
+      'La petición debe ser de tipo multipart/form-data',
+    );
   }
 
   const files: ParsedFile[] = [];

@@ -2,5 +2,5 @@ import { createZodDto } from 'nestjs-zod';
 import { ProductSchema } from '@repo/types';
 
 export class CreateProductDto extends createZodDto(
-  ProductSchema.omit({ id: true, created_at: true, is_active: true })
+  ProductSchema.omit({ id: true, created_at: true, is_active: true }),
 ) {}

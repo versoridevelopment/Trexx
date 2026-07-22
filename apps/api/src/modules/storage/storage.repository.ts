@@ -9,8 +9,7 @@ export class StorageRepository implements IStorageRepository {
 
   constructor(private readonly config: ConfigService) {
     const supabaseUrl =
-      this.config.get<string>('supabase.url') ||
-      process.env.SUPABASE_URL;
+      this.config.get<string>('supabase.url') || process.env.SUPABASE_URL;
 
     // Use service_role key to bypass RLS for server-side uploads
     const supabaseServiceKey =
@@ -42,12 +41,14 @@ export class StorageRepository implements IStorageRepository {
       });
 
     if (error) {
-      throw new Error(`Failed to upload file to Supabase Storage: ${error.message}`);
+      throw new Error(
+        `Failed to upload file to Supabase Storage: ${error.message}`,
+      );
     }
 
-    const { data: { publicUrl } } = this.supabase.storage
-      .from(bucketName)
-      .getPublicUrl(filePath);
+    const {
+      data: { publicUrl },
+    } = this.supabase.storage.from(bucketName).getPublicUrl(filePath);
 
     return publicUrl;
   }

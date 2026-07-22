@@ -4,9 +4,7 @@ import { CategoryNotFoundError } from '../../domain/exceptions/category.exceptio
 
 @Injectable()
 export class GetOneCategoryUseCase {
-  constructor(
-    private readonly repository: ICategoriesRepository
-  ) {}
+  constructor(private readonly repository: ICategoriesRepository) {}
 
   async execute(idOrSlug: string | number) {
     let record;

@@ -1,5 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ZodValidationPipe } from 'nestjs-zod';
@@ -10,7 +13,7 @@ import contentParser from '@fastify/multipart';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ bodyLimit: 104857600 }) // 100MB
+    new FastifyAdapter({ bodyLimit: 104857600 }), // 100MB
   );
 
   app.enableCors({
@@ -25,10 +28,8 @@ async function bootstrap() {
     },
   });
 
-  app.useGlobalPipes(
-    new ZodValidationPipe(),
-  );
-  
+  app.useGlobalPipes(new ZodValidationPipe());
+
   app.useGlobalFilters(new DomainExceptionFilter());
 
   const config = new DocumentBuilder()

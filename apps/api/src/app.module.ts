@@ -30,7 +30,6 @@ import { AttributeTypesModule } from './modules/attribute-types/attribute-types.
 import { SettingsModule } from './modules/settings/settings.module';
 
 @Module({
-
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,

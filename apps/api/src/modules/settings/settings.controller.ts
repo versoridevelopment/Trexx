@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Put, Body, Param, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Body,
+  Param,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import type { FastifyRequest } from 'fastify';
 import { SettingsService } from './settings.service';
@@ -13,7 +22,7 @@ import { StorageService } from '../storage/storage.service';
 export class SettingsController {
   constructor(
     private readonly settingsService: SettingsService,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
   ) {}
 
   @Get(':key')
@@ -48,20 +57,20 @@ export class SettingsController {
   })
   public async uploadFile(@Req() req: FastifyRequest) {
     const { fields, files } = await parseMultipartRequest(req);
-    
+
     if (!files || files.length === 0) {
       throw new Error('No file uploaded');
     }
 
     const file = files[0];
     const folder = fields.folder || 'home/hero';
-    
+
     const url = await this.storageService.uploadFile(
       file.buffer,
       file.filename,
       file.mimetype,
       folder,
-      'store-assets'
+      'store-assets',
     );
 
     return { url };

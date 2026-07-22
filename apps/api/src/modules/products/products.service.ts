@@ -1,50 +1,61 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
-import { IProductsRepository } from './products.repository.interface'
-import { CreateProductDto } from './dto/create-product.dto'
-import { UpdateProductDto } from './dto/update-product.dto'
-import { StorageService } from '../storage/storage.service'
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
+import { IProductsRepository } from './products.repository.interface';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { StorageService } from '../storage/storage.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     private readonly repository: IProductsRepository,
-    private readonly storageService: StorageService
-  ) { }
+    private readonly storageService: StorageService,
+  ) {}
 
   // Mapeador auxiliar para inyectar la propiedad `image` y las variaciones de color consolidadas
   private mapProduct(record: any) {
-    if (!record) return record
+    if (!record) return record;
 
-    const list: any[] = []
+    const list: any[] = [];
     if (record?.parent) {
-      list.push(record.parent)
+      list.push(record.parent);
       if (Array.isArray(record.parent.variations)) {
-        list.push(...record.parent.variations)
+        list.push(...record.parent.variations);
       }
-    } else if (Array.isArray(record?.variations) && record.variations.length > 0) {
-      list.push(record)
-      list.push(...record.variations)
+    } else if (
+      Array.isArray(record?.variations) &&
+      record.variations.length > 0
+    ) {
+      list.push(record);
+      list.push(...record.variations);
     }
 
-    const colorVariations = Array.from(new Map(list.map((p) => [p.id, p])).values())
+    const colorVariations = Array.from(
+      new Map(list.map((p) => [p.id, p])).values(),
+    )
       .map((p: any) => ({
         id: p.id,
         name: p.name,
         slug: p.slug,
         image: p.product_images?.[0]?.url || null,
-        color: p.color ? {
-          id: p.color.id,
-          name: p.color.name,
-          hex_code: p.color.hex_code
-        } : null
+        color: p.color
+          ? {
+              id: p.color.id,
+              name: p.color.name,
+              hex_code: p.color.hex_code,
+            }
+          : null,
       }))
-      .filter((v) => v.color !== null)
+      .filter((v) => v.color !== null);
 
     return {
       ...record,
       image: record.product_images?.[0]?.url || null,
       color_variations: colorVariations,
-    }
+    };
   }
 
   // Helper para normalizar el nombre y generar un slug único
@@ -54,75 +65,75 @@ export class ProductsService {
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '') // Quitar acentos
       .replace(/[^a-z0-9]+/g, '-') // Reemplazar caracteres no alfanuméricos con guiones
-      .replace(/(^-|-$)+/g, '') // Quitar guiones iniciales/finales
+      .replace(/(^-|-$)+/g, ''); // Quitar guiones iniciales/finales
 
-    let uniqueSlug = baseSlug
-    let counter = 1
+    let uniqueSlug = baseSlug;
+    let counter = 1;
     while (await this.repository.slugExists(uniqueSlug)) {
-      uniqueSlug = `${baseSlug}-${counter}`
-      counter++
+      uniqueSlug = `${baseSlug}-${counter}`;
+      counter++;
     }
-    return uniqueSlug
+    return uniqueSlug;
   }
 
   // Helper para generar un SKU único — resuelve colisiones con sufijo numérico
   private async generateUniqueSku(baseSku: string): Promise<string> {
-    let finalSku = baseSku
-    let counter = 1
+    let finalSku = baseSku;
+    let counter = 1;
     while (await this.repository.skuExists(finalSku)) {
-      finalSku = `${baseSku}-${counter}`
-      counter++
+      finalSku = `${baseSku}-${counter}`;
+      counter++;
     }
-    return finalSku
+    return finalSku;
   }
 
   // Endpoint público: solo productos activos
   public async findAll(categorySlug?: string) {
-    const records = await this.repository.findAll(categorySlug)
-    return records.map((r) => this.mapProduct(r))
+    const records = await this.repository.findAll(categorySlug);
+    return records.map((r) => this.mapProduct(r));
   }
 
   // Endpoint público: lanza 404 si no existe o está inactivo
   public async findOne(id: number) {
-    const record = await this.repository.findOne(id)
+    const record = await this.repository.findOne(id);
     if (!record || !record.is_active) {
-      throw new NotFoundException(`Producto #${id} no encontrado`)
+      throw new NotFoundException(`Producto #${id} no encontrado`);
     }
-    return this.mapProduct(record)
+    return this.mapProduct(record);
   }
 
   // Endpoint público para resolver por Slug (SEO)
   public async findOneBySlug(slug: string) {
-    let record = await this.repository.findBySlug(slug)
+    let record = await this.repository.findBySlug(slug);
     if (!record) {
       // Fallback: ver si el slug es en realidad un ID numérico
-      const id = Number(slug)
+      const id = Number(slug);
       if (!isNaN(id)) {
-        record = await this.repository.findOne(id)
+        record = await this.repository.findOne(id);
       }
     }
     if (!record || !record.is_active) {
-      throw new NotFoundException(`Producto "${slug}" no encontrado`)
+      throw new NotFoundException(`Producto "${slug}" no encontrado`);
     }
-    return this.mapProduct(record)
+    return this.mapProduct(record);
   }
 
   // Admin: ve todos, activos e inactivos
   public async findAllAdmin(includeInactive = false) {
-    const records = await this.repository.findAllAdmin(includeInactive)
-    return records.map((r) => this.mapProduct(r))
+    const records = await this.repository.findAllAdmin(includeInactive);
+    return records.map((r) => this.mapProduct(r));
   }
 
   // Admin: ve el producto aunque esté inactivo
   public async findOneAdmin(id: number) {
-    const record = await this.repository.findOneAdmin(id)
-    if (!record) throw new NotFoundException(`Producto #${id} no encontrado`)
-    return this.mapProduct(record)
+    const record = await this.repository.findOneAdmin(id);
+    if (!record) throw new NotFoundException(`Producto #${id} no encontrado`);
+    return this.mapProduct(record);
   }
 
   // Admin: lista todos los colores y auto-crea semillas si está vacío
   public async findAllColors() {
-    let list = await this.repository.findAllColors()
+    let list = await this.repository.findAllColors();
 
     if (list.length === 0) {
       await this.repository.createManyColors([
@@ -132,78 +143,99 @@ export class ProductsService {
         { name: 'Rojo', hex_code: '#ef4444', display_order: 4 },
         { name: 'Azul', hex_code: '#3b82f6', display_order: 5 },
         { name: 'Verde', hex_code: '#22c55e', display_order: 6 },
-      ])
-      list = await this.repository.findAllColors()
+      ]);
+      list = await this.repository.findAllColors();
     }
 
-    return list
+    return list;
   }
 
   public async create(
     dto: CreateProductDto,
-    files?: { buffer: Buffer; filename: string; mimetype: string }[]
+    files?: { buffer: Buffer; filename: string; mimetype: string }[],
   ) {
-    const { name, price: priceInput, category_id: catIdInput, description, parent_id: parentIdInput, color_id: colorIdInput, slug, variants: variantsInput } = dto as any
+    const {
+      name,
+      price: priceInput,
+      category_id: catIdInput,
+      description,
+      parent_id: parentIdInput,
+      color_id: colorIdInput,
+      slug,
+      variants: variantsInput,
+    } = dto as any;
 
     if (!files || files.length === 0) {
-      throw new BadRequestException('Falta cargar al menos una imagen')
+      throw new BadRequestException('Falta cargar al menos una imagen');
     }
 
     for (const file of files) {
       if (!file.mimetype.startsWith('image/')) {
-        throw new BadRequestException('Todos los archivos subidos deben ser imágenes')
+        throw new BadRequestException(
+          'Todos los archivos subidos deben ser imágenes',
+        );
       }
     }
 
-    const price = Number(priceInput)
-    const category_id = Number(catIdInput)
-    const parent_id = parentIdInput ? Number(parentIdInput) : null
-    const color_id = colorIdInput ? Number(colorIdInput) : null
+    const price = Number(priceInput);
+    const category_id = Number(catIdInput);
+    const parent_id = parentIdInput ? Number(parentIdInput) : null;
+    const color_id = colorIdInput ? Number(colorIdInput) : null;
 
     if (isNaN(price) || price <= 0) {
-      throw new BadRequestException('El precio debe ser un número positivo')
+      throw new BadRequestException('El precio debe ser un número positivo');
     }
     if (isNaN(category_id)) {
-      throw new BadRequestException('El ID de la categoría debe ser un número')
+      throw new BadRequestException('El ID de la categoría debe ser un número');
     }
 
-    const categoryExists = await this.repository.categoryExists(category_id)
+    const categoryExists = await this.repository.categoryExists(category_id);
     if (!categoryExists) {
-      throw new NotFoundException(`Categoría #${category_id} no encontrada o inactiva`)
+      throw new NotFoundException(
+        `Categoría #${category_id} no encontrada o inactiva`,
+      );
     }
 
     // Validar jerarquía (solo 1 nivel)
     if (parent_id) {
-      const parentRecord = await this.repository.findOneAdmin(parent_id)
+      const parentRecord = await this.repository.findOneAdmin(parent_id);
       if (!parentRecord) {
-        throw new NotFoundException(`Producto padre #${parent_id} no encontrado`)
+        throw new NotFoundException(
+          `Producto padre #${parent_id} no encontrado`,
+        );
       }
       if (parentRecord.parent_id) {
-        throw new BadRequestException('Un producto hijo no puede ser seleccionado como padre. Solo se permite 1 nivel de jerarquía.')
+        throw new BadRequestException(
+          'Un producto hijo no puede ser seleccionado como padre. Solo se permite 1 nivel de jerarquía.',
+        );
       }
     }
 
     // Generar Slug único
-    const productSlug = await this.generateUniqueSlug(slug || name)
+    const productSlug = await this.generateUniqueSlug(slug || name);
 
     // Subir imágenes a Supabase Storage
-    const uploadPromises = files.map(file =>
+    const uploadPromises = files.map((file) =>
       this.storageService.uploadFile(
         file.buffer,
         file.filename,
         file.mimetype,
-        'products'
-      )
-    )
-    const imageUrls = await Promise.all(uploadPromises)
+        'products',
+      ),
+    );
+    const imageUrls = await Promise.all(uploadPromises);
 
     // Parsear variantes y resolver SKUs únicos en el service (lógica de negocio)
-    const rawVariants = variantsInput ? (typeof variantsInput === 'string' ? JSON.parse(variantsInput) : variantsInput) : []
-    const variants: any[] = []
+    const rawVariants = variantsInput
+      ? typeof variantsInput === 'string'
+        ? JSON.parse(variantsInput)
+        : variantsInput
+      : [];
+    const variants: any[] = [];
     for (const v of rawVariants) {
-      const baseSku = v.sku || `${productSlug.toUpperCase()}-VAR`
-      const finalSku = await this.generateUniqueSku(baseSku)
-      variants.push({ ...v, sku: finalSku })
+      const baseSku = v.sku || `${productSlug.toUpperCase()}-VAR`;
+      const finalSku = await this.generateUniqueSku(baseSku);
+      variants.push({ ...v, sku: finalSku });
     }
 
     const createdProductId = await this.repository.createWithVariants(
@@ -222,127 +254,151 @@ export class ProductsService {
           })),
         },
       },
-      variants
-    )
+      variants,
+    );
 
-    const created = await this.repository.findOneAdmin(createdProductId)
-    return this.mapProduct(created)
+    const created = await this.repository.findOneAdmin(createdProductId);
+    return this.mapProduct(created);
   }
 
   public async update(
     id: number,
     dto: UpdateProductDto,
-    files?: { buffer: Buffer; filename: string; mimetype: string }[]
+    files?: { buffer: Buffer; filename: string; mimetype: string }[],
   ) {
     // Verificar que el producto exista
-    await this.findOneAdmin(id)
+    await this.findOneAdmin(id);
 
-    const { name, price: priceInput, category_id: catIdInput, description, parent_id: parentIdInput, color_id: colorIdInput, slug } = dto as any
-    const dataToUpdate: any = {}
+    const {
+      name,
+      price: priceInput,
+      category_id: catIdInput,
+      description,
+      parent_id: parentIdInput,
+      color_id: colorIdInput,
+      slug,
+    } = dto as any;
+    const dataToUpdate: any = {};
 
     if (name !== undefined) {
       if (name.trim() === '') {
-        throw new BadRequestException('El nombre del producto no puede estar vacío')
+        throw new BadRequestException(
+          'El nombre del producto no puede estar vacío',
+        );
       }
-      dataToUpdate.name = name
+      dataToUpdate.name = name;
     }
 
     if (priceInput !== undefined) {
-      const price = Number(priceInput)
+      const price = Number(priceInput);
       if (isNaN(price) || price <= 0) {
-        throw new BadRequestException('El precio debe ser un número positivo')
+        throw new BadRequestException('El precio debe ser un número positivo');
       }
-      dataToUpdate.price = price
+      dataToUpdate.price = price;
     }
 
     if (catIdInput !== undefined) {
-      const category_id = Number(catIdInput)
+      const category_id = Number(catIdInput);
       if (isNaN(category_id)) {
-        throw new BadRequestException('El ID de la categoría debe ser un número')
+        throw new BadRequestException(
+          'El ID de la categoría debe ser un número',
+        );
       }
-      const categoryExists = await this.repository.categoryExists(category_id)
+      const categoryExists = await this.repository.categoryExists(category_id);
       if (!categoryExists) {
-        throw new NotFoundException(`Categoría #${category_id} no encontrada o inactiva`)
+        throw new NotFoundException(
+          `Categoría #${category_id} no encontrada o inactiva`,
+        );
       }
-      dataToUpdate.category_id = category_id
+      dataToUpdate.category_id = category_id;
     }
 
     if (description !== undefined) {
-      dataToUpdate.description = description || null
+      dataToUpdate.description = description || null;
     }
 
     // Validaciones de relación y jerarquía
     if (parentIdInput !== undefined) {
-      const parent_id = parentIdInput ? Number(parentIdInput) : null
+      const parent_id = parentIdInput ? Number(parentIdInput) : null;
       if (parent_id) {
         if (parent_id === id) {
-          throw new BadRequestException('Un producto no puede ser su propio padre')
+          throw new BadRequestException(
+            'Un producto no puede ser su propio padre',
+          );
         }
-        const parentRecord = await this.repository.findOneAdmin(parent_id)
+        const parentRecord = await this.repository.findOneAdmin(parent_id);
         if (!parentRecord) {
-          throw new NotFoundException(`Producto padre #${parent_id} no encontrado`)
+          throw new NotFoundException(
+            `Producto padre #${parent_id} no encontrado`,
+          );
         }
         if (parentRecord.parent_id) {
-          throw new BadRequestException('Un producto hijo no puede ser seleccionado como padre. Solo se permite 1 nivel de jerarquía.')
+          throw new BadRequestException(
+            'Un producto hijo no puede ser seleccionado como padre. Solo se permite 1 nivel de jerarquía.',
+          );
         }
       }
-      dataToUpdate.parent_id = parent_id
+      dataToUpdate.parent_id = parent_id;
     }
 
     if (colorIdInput !== undefined) {
-      const color_id = colorIdInput ? Number(colorIdInput) : null
-      dataToUpdate.color_id = color_id
+      const color_id = colorIdInput ? Number(colorIdInput) : null;
+      dataToUpdate.color_id = color_id;
     }
 
     if (slug !== undefined) {
       if (slug.trim() !== '') {
-        const existing = await this.repository.findBySlug(slug)
+        const existing = await this.repository.findBySlug(slug);
         if (existing && existing.id !== id) {
-          throw new BadRequestException('El slug ya está en uso por otro producto')
+          throw new BadRequestException(
+            'El slug ya está en uso por otro producto',
+          );
         }
-        dataToUpdate.slug = slug
+        dataToUpdate.slug = slug;
       }
     }
 
     if (files && files.length > 0) {
       for (const file of files) {
         if (!file.mimetype.startsWith('image/')) {
-          throw new BadRequestException('El archivo subido debe ser una imagen')
+          throw new BadRequestException(
+            'El archivo subido debe ser una imagen',
+          );
         }
       }
-      const uploadPromises = files.map(file =>
+      const uploadPromises = files.map((file) =>
         this.storageService.uploadFile(
           file.buffer,
           file.filename,
           file.mimetype,
-          'products'
-        )
-      )
-      const imageUrls = await Promise.all(uploadPromises)
+          'products',
+        ),
+      );
+      const imageUrls = await Promise.all(uploadPromises);
       dataToUpdate.product_images = {
         deleteMany: {},
         create: imageUrls.map((url, index) => ({
           url,
           is_primary: index === 0,
         })),
-      }
+      };
     }
 
-    const updated = await this.repository.update(id, dataToUpdate)
-    return this.mapProduct(updated)
+    const updated = await this.repository.update(id, dataToUpdate);
+    return this.mapProduct(updated);
   }
 
   // Borrado lógico
   public async remove(id: number) {
-    await this.findOneAdmin(id)
-    const record = await this.repository.updateActiveStatus(id, false)
-    return this.mapProduct(record)
+    await this.findOneAdmin(id);
+    const record = await this.repository.updateActiveStatus(id, false);
+    return this.mapProduct(record);
   }
 
   // Reactivar
   public async restore(id: number) {
-    await this.findOneAdmin(id)
-    const restored = await this.repository.updateActiveStatus(id, true)
-    return this.mapProduct(restored)
+    await this.findOneAdmin(id);
+    const restored = await this.repository.updateActiveStatus(id, true);
+    return this.mapProduct(restored);
   }
 }

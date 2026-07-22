@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { AttributeTypesService } from './attribute-types.service';
 import { CreateAttributeTypeDto } from './dto/create-attribute-type.dto';
@@ -70,7 +80,10 @@ export class AttributeTypesController {
   @Roles('admin')
   @ApiBearerAuth()
   @ApiResponse({ status: 200 })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateAttributeTypeDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateAttributeTypeDto,
+  ) {
     return this.service.update(id, dto);
   }
 

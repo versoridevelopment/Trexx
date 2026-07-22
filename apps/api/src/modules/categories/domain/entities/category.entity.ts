@@ -17,7 +17,11 @@ export class Category implements ICategory {
   @ApiProperty({ example: true })
   public readonly is_active: boolean;
 
-  @ApiProperty({ example: '2026-04-10T00:00:00.000Z', nullable: true, type: () => String })
+  @ApiProperty({
+    example: '2026-04-10T00:00:00.000Z',
+    nullable: true,
+    type: () => String,
+  })
   public readonly created_at: Date | null;
 
   constructor(
@@ -26,7 +30,7 @@ export class Category implements ICategory {
     slug: string,
     description: string | null,
     is_active: boolean,
-    created_at: Date | null
+    created_at: Date | null,
   ) {
     this.id = id;
     this.name = name;
@@ -36,7 +40,14 @@ export class Category implements ICategory {
     this.created_at = created_at;
   }
 
-  static create(id: number, name: string, slug: string, description: string | null, is_active: boolean, created_at: Date | null): Category {
+  static create(
+    id: number,
+    name: string,
+    slug: string,
+    description: string | null,
+    is_active: boolean,
+    created_at: Date | null,
+  ): Category {
     return new Category(id, name, slug, description, is_active, created_at);
   }
 }

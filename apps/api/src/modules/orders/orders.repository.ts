@@ -61,7 +61,10 @@ export class OrdersRepository implements IOrdersRepository {
 
   // Flujo de checkout: creación atómica de orden + items + envío + pago
   async checkout(orderId: bigint, data: any) {
-    const total = data.items.reduce((acc: number, item: any) => acc + (item.price * item.quantity), 0);
+    const total = data.items.reduce(
+      (acc: number, item: any) => acc + item.price * item.quantity,
+      0,
+    );
 
     return this.prisma.$transaction(async (tx) => {
       const order = await tx.orders.create({
@@ -123,4 +126,3 @@ export class OrdersRepository implements IOrdersRepository {
     return adminRoleCount > 0;
   }
 }
-

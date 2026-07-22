@@ -1,10 +1,16 @@
-import { Injectable, NotFoundException, ConflictException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { IReviewsRepository } from './reviews.repository.interface';
 import { CreateReviewDto } from './dto/create-review.dto';
 
 @Injectable()
 export class ReviewsService {
-  constructor(private readonly repository: IReviewsRepository) { }
+  constructor(private readonly repository: IReviewsRepository) {}
 
   // Público: solo activas
   findByProduct(productId: number) {
@@ -57,7 +63,8 @@ export class ReviewsService {
 
   async restore(id: number) {
     const review = await this.findOneAdmin(id);
-    if (review.is_active) throw new BadRequestException(`Review #${id} is already active`);
+    if (review.is_active)
+      throw new BadRequestException(`Review #${id} is already active`);
     return this.repository.updateActiveStatus(id, true);
   }
 }

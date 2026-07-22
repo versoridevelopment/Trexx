@@ -1,9 +1,14 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import {
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpStatus,
+} from '@nestjs/common';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { 
-  CategoryNotFoundError, 
+import {
+  CategoryNotFoundError,
   CategoryAlreadyExistsError,
-  CategoryAlreadyActiveError 
+  CategoryAlreadyActiveError,
 } from '../../modules/categories/domain/exceptions/category.exceptions';
 
 @Catch()
@@ -14,13 +19,13 @@ export class DomainExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<FastifyRequest>();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message = exception.message;
+    const message = exception.message;
 
     // Mapeo selectivo de Errores de Dominio a Status Codes
     if (exception instanceof CategoryNotFoundError) {
       status = HttpStatus.NOT_FOUND;
     } else if (
-      exception instanceof CategoryAlreadyExistsError || 
+      exception instanceof CategoryAlreadyExistsError ||
       exception instanceof CategoryAlreadyActiveError
     ) {
       status = HttpStatus.BAD_REQUEST;

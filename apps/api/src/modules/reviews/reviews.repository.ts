@@ -4,7 +4,7 @@ import { IReviewsRepository } from './reviews.repository.interface';
 
 @Injectable()
 export class ReviewsRepository implements IReviewsRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   // Público: solo activas
   findByProduct(productId: number) {
@@ -87,4 +87,3 @@ export class ReviewsRepository implements IReviewsRepository {
     return adminRoleCount > 0;
   }
 }
-

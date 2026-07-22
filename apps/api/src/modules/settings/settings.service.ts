@@ -9,11 +9,11 @@ export class SettingsService {
     const setting = await this.prisma.store_settings.findUnique({
       where: { key },
     });
-    
+
     if (!setting) {
       return null;
     }
-    
+
     return setting.value;
   }
 
@@ -23,7 +23,7 @@ export class SettingsService {
       update: { value },
       create: { key, value },
     });
-    
+
     return setting;
   }
 }

@@ -98,7 +98,6 @@ PORT=3001
 NODE_ENV=development
 SUPABASE_URL=https://tu-supabase.supabase.co
 SUPABASE_ANON_KEY=tu-anon-key-supabase
-SUPABASE_JWT_SECRET=tu-jwt-secret-supabase
 DATABASE_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
 DIRECT_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
 ```

@@ -58,11 +58,14 @@ export class ProductVariantsRepository implements IProductVariantsRepository {
     return this.prisma.product_variants.create({
       data: {
         ...rest,
-        variant_attributes: attribute_value_ids && attribute_value_ids.length > 0 ? {
-          create: attribute_value_ids.map((id: number) => ({
-            attribute_value_id: id,
-          })),
-        } : undefined,
+        variant_attributes:
+          attribute_value_ids && attribute_value_ids.length > 0
+            ? {
+                create: attribute_value_ids.map((id: number) => ({
+                  attribute_value_id: id,
+                })),
+              }
+            : undefined,
       },
       include: variantIncludes,
     });
@@ -74,12 +77,15 @@ export class ProductVariantsRepository implements IProductVariantsRepository {
       where: { id },
       data: {
         ...rest,
-        variant_attributes: attribute_value_ids !== undefined ? {
-          deleteMany: {},
-          create: attribute_value_ids.map((valId: number) => ({
-            attribute_value_id: valId,
-          })),
-        } : undefined,
+        variant_attributes:
+          attribute_value_ids !== undefined
+            ? {
+                deleteMany: {},
+                create: attribute_value_ids.map((valId: number) => ({
+                  attribute_value_id: valId,
+                })),
+              }
+            : undefined,
       },
       include: variantIncludes,
     });

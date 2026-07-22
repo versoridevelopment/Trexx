@@ -18,14 +18,14 @@ const productIncludes = {
             include: {
               variant_attributes: {
                 include: {
-                  attribute_values: { include: { attribute_types: true } }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                  attribute_values: { include: { attribute_types: true } },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   variations: {
     include: {
@@ -35,12 +35,12 @@ const productIncludes = {
         include: {
           variant_attributes: {
             include: {
-              attribute_values: { include: { attribute_types: true } }
-            }
-          }
-        }
-      }
-    }
+              attribute_values: { include: { attribute_types: true } },
+            },
+          },
+        },
+      },
+    },
   },
   product_variants: {
     where: { is_active: true },
@@ -51,7 +51,7 @@ const productIncludes = {
         },
       },
     },
-  }
+  },
 };
 
 const productIncludesAdmin = {
@@ -64,7 +64,7 @@ const productIncludesAdmin = {
         },
       },
     },
-  }
+  },
 };
 
 @Injectable()
@@ -118,7 +118,10 @@ export class ProductsRepository implements IProductsRepository {
     });
   }
 
-  public async createWithVariants(productData: any, variants: any[]): Promise<number> {
+  public async createWithVariants(
+    productData: any,
+    variants: any[],
+  ): Promise<number> {
     return this.prisma.$transaction(async (tx) => {
       const product = await tx.products.create({
         data: productData,

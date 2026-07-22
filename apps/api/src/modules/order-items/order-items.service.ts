@@ -13,7 +13,8 @@ export class OrderItemsService {
 
   async findOne(id: number) {
     const record = await this.repository.findOne(id);
-    if (!record || !record.is_active) throw new NotFoundException(`OrderItem #${id} not found`);
+    if (!record || !record.is_active)
+      throw new NotFoundException(`OrderItem #${id} not found`);
     return record;
   }
 

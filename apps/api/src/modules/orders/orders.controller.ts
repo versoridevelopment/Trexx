@@ -3,7 +3,17 @@ import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderOwnerOrAdminGuard } from './guards/order-owner-or-admin.guard';
@@ -67,7 +77,6 @@ export class OrdersController {
   findAll() {
     return this.service.findAll();
   }
-
 
   /**
    * Obtiene una orden por su ID.

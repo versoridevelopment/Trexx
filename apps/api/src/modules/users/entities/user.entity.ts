@@ -21,13 +21,28 @@ export class User implements UserInterface {
   @ApiProperty({ example: 'user@example.com' })
   email: string;
 
-  @ApiProperty({ example: 'John Doe', required: false, nullable: true, type: () => String })
+  @ApiProperty({
+    example: 'John Doe',
+    required: false,
+    nullable: true,
+    type: () => String,
+  })
   name: string | null;
 
-  @ApiProperty({ example: '+123456789', required: false, nullable: true, type: () => String })
+  @ApiProperty({
+    example: '+123456789',
+    required: false,
+    nullable: true,
+    type: () => String,
+  })
   phone: string | null;
 
-  @ApiProperty({ example: '2026-04-10T05:27:56.077Z', required: false, nullable: true, type: () => String })
+  @ApiProperty({
+    example: '2026-04-10T05:27:56.077Z',
+    required: false,
+    nullable: true,
+    type: () => String,
+  })
   createdAt: Date | null;
 
   @ApiProperty({ example: true })

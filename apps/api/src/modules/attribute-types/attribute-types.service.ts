@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { IAttributeTypesRepository } from './attribute-types.repository.interface';
 import { CreateAttributeTypeDto } from './dto/create-attribute-type.dto';
 import { UpdateAttributeTypeDto } from './dto/update-attribute-type.dto';
@@ -46,7 +50,8 @@ export class AttributeTypesService {
   async restore(id: number) {
     const record = await this.repository.findOneAdmin(id);
     if (!record) throw new NotFoundException(`AttributeType #${id} not found`);
-    if (record.is_active) throw new BadRequestException(`AttributeType #${id} is already active`);
+    if (record.is_active)
+      throw new BadRequestException(`AttributeType #${id} is already active`);
     return this.repository.updateActiveStatus(id, true);
   }
 }

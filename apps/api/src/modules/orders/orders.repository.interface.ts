@@ -9,4 +9,3 @@ export abstract class IOrdersRepository {
   abstract checkout(orderId: bigint, data: any): Promise<any>;
   abstract isOwnerOrAdmin(orderId: bigint, userId: string): Promise<boolean>;
 }
-

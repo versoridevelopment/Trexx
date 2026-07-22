@@ -18,13 +18,12 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
   private lastJwksRefresh = 0;
 
   constructor(config: ConfigService) {
-    const jwtSecret = config.get<string>('SUPABASE_JWT_SECRET');
     const supabaseUrl = config.get<string>('SUPABASE_URL');
 
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      algorithms: ['HS256', 'ES256', 'RS256'],
+      algorithms: ['ES256'],
       secretOrKeyProvider: async (_, rawJwtToken, done) => {
         try {
           const [encodedHeader] = rawJwtToken.split('.');
@@ -36,19 +35,15 @@ export class SupabaseStrategy extends PassportStrategy(Strategy, 'supabase') {
             Buffer.from(encodedHeader, 'base64url').toString('utf8'),
           ) as { alg?: string; kid?: string };
 
-          if (header.alg === 'HS256') {
-            if (!jwtSecret) {
-              return done(new Error('SUPABASE_JWT_SECRET is not configured'));
-            }
-            return done(null, jwtSecret);
-          }
-
           if (!supabaseUrl) {
             return done(new Error('SUPABASE_URL is not configured'));
           }
 
           const now = Date.now();
-          if (this.jwksCache.size === 0 || now - this.lastJwksRefresh > 10 * 60 * 1000) {
+          if (
+            this.jwksCache.size === 0 ||
+            now - this.lastJwksRefresh > 10 * 60 * 1000
+          ) {
             const response = await fetch(
               `${supabaseUrl}/auth/v1/.well-known/jwks.json`,
             );

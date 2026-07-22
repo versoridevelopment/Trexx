@@ -1,7 +1,16 @@
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { AddressesService } from './addresses.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
@@ -14,7 +23,6 @@ import { UpdateAddressDto } from './dto/update-address.dto';
 @ApiTags('addresses')
 @Controller('addresses')
 export class AddressesController {
-
   /**
    * Devuelve las direcciones del usuario autenticado.
    * @route GET /addresses/me
@@ -26,7 +34,9 @@ export class AddressesController {
   @ApiBearerAuth()
   @Get('me')
   findMe(@CurrentUser() user: { id: string }) {
-    return (this.service as any).findMe ? (this.service as any).findMe(user.id) : [];
+    return (this.service as any).findMe
+      ? (this.service as any).findMe(user.id)
+      : [];
   }
   constructor(private readonly service: AddressesService) {}
 

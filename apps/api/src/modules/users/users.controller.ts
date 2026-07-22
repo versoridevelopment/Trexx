@@ -1,4 +1,13 @@
-import { Controller, Get, Patch, Body, UseGuards, Query, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Patch,
+  Body,
+  UseGuards,
+  Query,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -46,10 +55,7 @@ export class UsersController {
    */
   @Patch('me')
   @ApiResponse({ status: 200, type: User })
-  updateMe(
-    @CurrentUser() user: any,
-    @Body() dto: UpdateUserDto,
-  ) {
+  updateMe(@CurrentUser() user: any, @Body() dto: UpdateUserDto) {
     return this.usersService.update(user.id || user.sub, dto);
   }
 

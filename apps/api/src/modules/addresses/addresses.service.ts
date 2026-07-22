@@ -13,8 +13,10 @@ export class AddressesService {
 
   async findOne(id: number, userId?: string) {
     const record = await this.repository.findOne(id);
-    if (!record || !record.is_active) throw new NotFoundException(`Address #${id} not found`);
-    if (userId && record.user_id !== userId) throw new NotFoundException(`Address #${id} not found`);
+    if (!record || !record.is_active)
+      throw new NotFoundException(`Address #${id} not found`);
+    if (userId && record.user_id !== userId)
+      throw new NotFoundException(`Address #${id} not found`);
     return record;
   }
 

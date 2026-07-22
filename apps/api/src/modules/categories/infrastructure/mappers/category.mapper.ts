@@ -12,7 +12,7 @@ export class CategoryMapper implements ICategoryMapper {
       prismaCategory.slug,
       prismaCategory.description,
       prismaCategory.is_active,
-      prismaCategory.created_at
+      prismaCategory.created_at,
     );
   }
 }

@@ -1,19 +1,30 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, Query, ParseIntPipe } from '@nestjs/common'
-import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger'
-import { Category as CategoryEntity } from '../../domain/entities/category.entity'
-import { CreateCategoryDto } from '../dtos/create-category.dto'
-import { UpdateCategoryDto } from '../dtos/update-category.dto'
-import { SupabaseAuthGuard } from '../../../auth/supabase-auth.guard'
-import { RolesGuard } from '../../../auth/guards/roles.guard'
-import { Roles } from '../../../auth/decorators/roles.decorator'
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Query,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { Category as CategoryEntity } from '../../domain/entities/category.entity';
+import { CreateCategoryDto } from '../dtos/create-category.dto';
+import { UpdateCategoryDto } from '../dtos/update-category.dto';
+import { SupabaseAuthGuard } from '../../../auth/supabase-auth.guard';
+import { RolesGuard } from '../../../auth/guards/roles.guard';
+import { Roles } from '../../../auth/decorators/roles.decorator';
 
 // Use Cases
-import { GetAllCategoriesUseCase } from '../../application/use-cases/get-all-categories.use-case'
-import { GetOneCategoryUseCase } from '../../application/use-cases/get-one-category.use-case'
-import { CreateCategoryUseCase } from '../../application/use-cases/create-category.use-case'
-import { UpdateCategoryUseCase } from '../../application/use-cases/update-category.use-case'
-import { RemoveCategoryUseCase } from '../../application/use-cases/remove-category.use-case'
-import { RestoreCategoryUseCase } from '../../application/use-cases/restore-category.use-case'
+import { GetAllCategoriesUseCase } from '../../application/use-cases/get-all-categories.use-case';
+import { GetOneCategoryUseCase } from '../../application/use-cases/get-one-category.use-case';
+import { CreateCategoryUseCase } from '../../application/use-cases/create-category.use-case';
+import { UpdateCategoryUseCase } from '../../application/use-cases/update-category.use-case';
+import { RemoveCategoryUseCase } from '../../application/use-cases/remove-category.use-case';
+import { RestoreCategoryUseCase } from '../../application/use-cases/restore-category.use-case';
 
 /**
  * Controlador REST del módulo "categories".
@@ -31,7 +42,7 @@ export class CategoriesController {
     private readonly createUseCase: CreateCategoryUseCase,
     private readonly updateUseCase: UpdateCategoryUseCase,
     private readonly removeUseCase: RemoveCategoryUseCase,
-    private readonly restoreUseCase: RestoreCategoryUseCase
+    private readonly restoreUseCase: RestoreCategoryUseCase,
   ) {}
 
   /**
@@ -43,7 +54,7 @@ export class CategoriesController {
   @Get()
   @ApiResponse({ status: 200, type: CategoryEntity, isArray: true })
   findAll() {
-    return this.getAllUseCase.execute()
+    return this.getAllUseCase.execute();
   }
 
   /**
@@ -56,7 +67,7 @@ export class CategoriesController {
   @Get(':slug')
   @ApiResponse({ status: 200, type: CategoryEntity })
   findBySlug(@Param('slug') slug: string) {
-    return this.getOneUseCase.execute(slug)
+    return this.getOneUseCase.execute(slug);
   }
 
   /**
@@ -72,7 +83,7 @@ export class CategoriesController {
   @ApiBearerAuth()
   @ApiResponse({ status: 201, type: CategoryEntity })
   create(@Body() dto: CreateCategoryDto) {
-    return this.createUseCase.execute(dto)
+    return this.createUseCase.execute(dto);
   }
 
   /**
@@ -88,8 +99,11 @@ export class CategoriesController {
   @Roles('admin')
   @ApiBearerAuth()
   @ApiResponse({ status: 200, type: CategoryEntity })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCategoryDto) {
-    return this.updateUseCase.execute(id, dto)
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateCategoryDto,
+  ) {
+    return this.updateUseCase.execute(id, dto);
   }
 
   /**
@@ -105,7 +119,7 @@ export class CategoriesController {
   @ApiBearerAuth()
   @ApiResponse({ status: 200 })
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.removeUseCase.execute(id)
+    return this.removeUseCase.execute(id);
   }
 
   /**
@@ -121,7 +135,7 @@ export class CategoriesController {
   @Roles('admin')
   @ApiBearerAuth()
   findAllAdmin(@Query('includeInactive') includeInactive?: string) {
-    return this.getAllUseCase.execute(includeInactive === 'true')
+    return this.getAllUseCase.execute(includeInactive === 'true');
   }
 
   /**
@@ -136,6 +150,6 @@ export class CategoriesController {
   @Roles('admin')
   @ApiBearerAuth()
   restore(@Param('id', ParseIntPipe) id: number) {
-    return this.restoreUseCase.execute(id)
+    return this.restoreUseCase.execute(id);
   }
 }

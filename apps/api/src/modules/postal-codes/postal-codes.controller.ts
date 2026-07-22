@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PostalCodesService } from './postal-codes.service';
 import { CreatePostalCodeDto } from './dto/create-postal-code.dto';
 import { UpdatePostalCodeDto } from './dto/update-postal-code.dto';

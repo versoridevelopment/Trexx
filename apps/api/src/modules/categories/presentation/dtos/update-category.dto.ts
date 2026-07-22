@@ -2,5 +2,5 @@ import { createZodDto } from 'nestjs-zod';
 import { CategorySchema } from '@repo/types';
 
 export class UpdateCategoryDto extends createZodDto(
-  CategorySchema.omit({ id: true, created_at: true }).partial()
+  CategorySchema.omit({ id: true, created_at: true }).partial(),
 ) {}

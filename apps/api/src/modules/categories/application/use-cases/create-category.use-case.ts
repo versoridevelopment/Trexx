@@ -5,16 +5,14 @@ import { CategoryAlreadyExistsError } from '../../domain/exceptions/category.exc
 
 @Injectable()
 export class CreateCategoryUseCase {
-  constructor(
-    private readonly repository: ICategoriesRepository
-  ) {}
+  constructor(private readonly repository: ICategoriesRepository) {}
 
   async execute(command: CreateCategoryCommand) {
     const existing = await this.repository.findBySlug(command.slug);
     if (existing) {
       throw new CategoryAlreadyExistsError(command.slug);
     }
-    
+
     // Command is already pure TS, we can pass it to repository (which uses Partial<Category>)
     return this.repository.save(command);
   }

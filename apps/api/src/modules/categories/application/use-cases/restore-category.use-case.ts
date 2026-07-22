@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ICategoriesRepository } from '../../domain/interfaces/categories.repository.interface';
-import { CategoryNotFoundError, CategoryAlreadyActiveError } from '../../domain/exceptions/category.exceptions';
+import {
+  CategoryNotFoundError,
+  CategoryAlreadyActiveError,
+} from '../../domain/exceptions/category.exceptions';
 
 @Injectable()
 export class RestoreCategoryUseCase {
-  constructor(
-    private readonly repository: ICategoriesRepository
-  ) {}
+  constructor(private readonly repository: ICategoriesRepository) {}
 
   async execute(id: number) {
     const record = await this.repository.findById(id);

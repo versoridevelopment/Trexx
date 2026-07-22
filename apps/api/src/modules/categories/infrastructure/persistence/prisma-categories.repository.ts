@@ -8,7 +8,7 @@ import { ICategoryMapper } from '../mappers/category.mapper.interface';
 export class PrismaCategoriesRepository implements ICategoriesRepository {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly mapper: ICategoryMapper
+    private readonly mapper: ICategoryMapper,
   ) {}
 
   async findAll(includeInactive = false): Promise<Category[]> {
@@ -16,7 +16,7 @@ export class PrismaCategoriesRepository implements ICategoriesRepository {
       where: includeInactive ? {} : { is_active: true },
       orderBy: { name: 'asc' },
     });
-    return list.map(item => this.mapper.toDomain(item));
+    return list.map((item) => this.mapper.toDomain(item));
   }
 
   async findById(id: number): Promise<Category | null> {

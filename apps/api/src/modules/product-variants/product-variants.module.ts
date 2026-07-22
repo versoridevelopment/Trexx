@@ -10,7 +10,10 @@ import { ProductVariantsRepository } from './product-variants.repository';
   controllers: [ProductVariantsController],
   providers: [
     ProductVariantsService,
-    { provide: IProductVariantsRepository, useClass: ProductVariantsRepository },
+    {
+      provide: IProductVariantsRepository,
+      useClass: ProductVariantsRepository,
+    },
   ],
   exports: [ProductVariantsService],
 })

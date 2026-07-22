@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { IProductVariantsRepository } from './product-variants.repository.interface';
 import { CreateProductVariantDto } from './dto/create-product-variant.dto';
 import { UpdateProductVariantDto } from './dto/update-product-variant.dto';
@@ -50,7 +54,8 @@ export class ProductVariantsService {
   async restore(id: number) {
     const variant = await this.repository.findOneAdmin(id);
     if (!variant) throw new NotFoundException(`Variant #${id} not found`);
-    if (variant.is_active) throw new BadRequestException(`Variant #${id} is already active`);
+    if (variant.is_active)
+      throw new BadRequestException(`Variant #${id} is already active`);
     return this.repository.updateActiveStatus(id, true);
   }
 }

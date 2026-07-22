@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { ProductVariantsService } from './product-variants.service';
 import { CreateProductVariantDto } from './dto/create-product-variant.dto';
@@ -70,7 +80,10 @@ export class ProductVariantsController {
   @Roles('admin')
   @ApiBearerAuth()
   @ApiResponse({ status: 200 })
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateProductVariantDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateProductVariantDto,
+  ) {
     return this.service.update(id, dto);
   }
 

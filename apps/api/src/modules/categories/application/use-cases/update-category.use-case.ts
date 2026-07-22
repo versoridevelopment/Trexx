@@ -5,16 +5,14 @@ import { CategoryNotFoundError } from '../../domain/exceptions/category.exceptio
 
 @Injectable()
 export class UpdateCategoryUseCase {
-  constructor(
-    private readonly repository: ICategoriesRepository
-  ) {}
+  constructor(private readonly repository: ICategoriesRepository) {}
 
   async execute(id: number, command: UpdateCategoryCommand) {
     const existing = await this.repository.findById(id);
     if (!existing) {
       throw new CategoryNotFoundError(id);
     }
-    
+
     return this.repository.update(id, command);
   }
 }

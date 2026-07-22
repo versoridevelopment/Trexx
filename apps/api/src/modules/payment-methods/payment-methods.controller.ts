@@ -1,6 +1,15 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PaymentMethodsService } from './payment-methods.service';
 import { CreatePaymentMethodDto } from './dto/create-payment-method.dto';
 import { UpdatePaymentMethodDto } from './dto/update-payment-method.dto';

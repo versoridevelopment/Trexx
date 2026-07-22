@@ -10,7 +10,10 @@ import { PaymentStatusesRepository } from './payment-statuses.repository';
   controllers: [PaymentStatussController],
   providers: [
     PaymentStatussService,
-    { provide: IPaymentStatusesRepository, useClass: PaymentStatusesRepository },
+    {
+      provide: IPaymentStatusesRepository,
+      useClass: PaymentStatusesRepository,
+    },
   ],
   exports: [PaymentStatussService],
 })

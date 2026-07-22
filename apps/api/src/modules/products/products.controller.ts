@@ -1,15 +1,33 @@
-import { Controller, Get, Post, Patch, Delete, Param, Query, UseGuards, ParseIntPipe, Req } from '@nestjs/common'
-import { ApiTags, ApiBearerAuth, ApiQuery, ApiConsumes, ApiBody, ApiResponse } from '@nestjs/swagger'
-import type { FastifyRequest } from 'fastify'
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Query,
+  UseGuards,
+  ParseIntPipe,
+  Req,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiQuery,
+  ApiConsumes,
+  ApiBody,
+  ApiResponse,
+} from '@nestjs/swagger';
+import type { FastifyRequest } from 'fastify';
 
-import { SupabaseAuthGuard } from '../auth/supabase-auth.guard'
-import { RolesGuard } from '../auth/guards/roles.guard'
-import { Roles } from '../auth/decorators/roles.decorator'
-import { ProductsService } from './products.service'
-import { Product } from './entities/product.entity'
-import { CreateProductDto } from './dto/create-product.dto'
-import { UpdateProductDto } from './dto/update-product.dto'
-import { parseMultipartRequest } from '../../common/utils/multipart'
+import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { ProductsService } from './products.service';
+import { Product } from './entities/product.entity';
+import { CreateProductDto } from './dto/create-product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
+import { parseMultipartRequest } from '../../common/utils/multipart';
 
 /**
  * Controlador REST del módulo "products".
@@ -20,9 +38,7 @@ import { parseMultipartRequest } from '../../common/utils/multipart'
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
-  constructor(
-    private readonly service: ProductsService
-  ) { }
+  constructor(private readonly service: ProductsService) {}
 
   /**
    * Lista los productos activos, opcionalmente filtrados por categoría.
@@ -32,10 +48,14 @@ export class ProductsController {
    * @returns Arreglo de Product (200).
    */
   @Get()
-  @ApiQuery({ name: 'category', required: false, description: 'Filtrar por slug de categoría' })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    description: 'Filtrar por slug de categoría',
+  })
   @ApiResponse({ status: 200, type: Product, isArray: true })
   public findAll(@Query('category') category?: string) {
-    return this.service.findAll(category)
+    return this.service.findAll(category);
   }
 
   // GET /products/admin/colors
@@ -44,7 +64,7 @@ export class ProductsController {
   @Roles('admin')
   @ApiBearerAuth()
   public findAllColors() {
-    return this.service.findAllColors()
+    return this.service.findAllColors();
   }
 
   // GET /products/admin/all
@@ -53,7 +73,7 @@ export class ProductsController {
   @Roles('admin')
   @ApiBearerAuth()
   public findAllAdmin(@Query('includeInactive') includeInactive?: string) {
-    return this.service.findAllAdmin(includeInactive === 'true')
+    return this.service.findAllAdmin(includeInactive === 'true');
   }
 
   // GET /products/admin/:id
@@ -62,7 +82,7 @@ export class ProductsController {
   @Roles('admin')
   @ApiBearerAuth()
   public findOneAdmin(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOneAdmin(id)
+    return this.service.findOneAdmin(id);
   }
 
   /**
@@ -72,7 +92,7 @@ export class ProductsController {
   @Get('slug/:slug')
   @ApiResponse({ status: 200, type: Product })
   public findOneBySlug(@Param('slug') slug: string) {
-    return this.service.findOneBySlug(slug)
+    return this.service.findOneBySlug(slug);
   }
 
   /**
@@ -82,7 +102,7 @@ export class ProductsController {
   @Get(':id')
   @ApiResponse({ status: 200, type: Product })
   public findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.service.findOne(id)
+    return this.service.findOne(id);
   }
 
   /**
@@ -118,11 +138,17 @@ export class ProductsController {
         name: { type: 'string', description: 'Nombre del producto' },
         price: { type: 'number', description: 'Precio del producto' },
         category_id: { type: 'integer', description: 'ID de la categoría' },
-        description: { type: 'string', description: 'Descripción opcional del producto' },
+        description: {
+          type: 'string',
+          description: 'Descripción opcional del producto',
+        },
         parent_id: { type: 'integer', description: 'ID del producto padre' },
         color_id: { type: 'integer', description: 'ID del color principal' },
         slug: { type: 'string', description: 'Slug para SEO' },
-        variants: { type: 'string', description: 'Variantes serializadas en JSON' },
+        variants: {
+          type: 'string',
+          description: 'Variantes serializadas en JSON',
+        },
         images: {
           type: 'array',
           items: { type: 'string', format: 'binary' },
@@ -133,7 +159,7 @@ export class ProductsController {
     },
   })
   public async create(@Req() req: FastifyRequest) {
-    const { fields, files } = await parseMultipartRequest(req)
+    const { fields, files } = await parseMultipartRequest(req);
 
     const dto: CreateProductDto = {
       name: fields.name,
@@ -144,9 +170,9 @@ export class ProductsController {
       color_id: fields.color_id ? Number(fields.color_id) : undefined,
       slug: fields.slug,
       variants: fields.variants,
-    } as any
+    } as any;
 
-    return this.service.create(dto, files)
+    return this.service.create(dto, files);
   }
 
   /**
@@ -175,7 +201,7 @@ export class ProductsController {
   @Roles('admin')
   @ApiBearerAuth()
   public restore(@Param('id', ParseIntPipe) id: number) {
-    return this.service.restore(id)
+    return this.service.restore(id);
   }
 
   @Patch(':id')
@@ -189,12 +215,27 @@ export class ProductsController {
       properties: {
         name: { type: 'string', description: 'Nuevo nombre del producto' },
         price: { type: 'number', description: 'Nuevo precio del producto' },
-        category_id: { type: 'integer', description: 'Nuevo ID de la categoría' },
-        description: { type: 'string', description: 'Nueva descripción opcional del producto' },
-        parent_id: { type: 'integer', description: 'Nuevo ID del producto padre' },
-        color_id: { type: 'integer', description: 'Nuevo ID del color principal' },
+        category_id: {
+          type: 'integer',
+          description: 'Nuevo ID de la categoría',
+        },
+        description: {
+          type: 'string',
+          description: 'Nueva descripción opcional del producto',
+        },
+        parent_id: {
+          type: 'integer',
+          description: 'Nuevo ID del producto padre',
+        },
+        color_id: {
+          type: 'integer',
+          description: 'Nuevo ID del color principal',
+        },
         slug: { type: 'string', description: 'Nuevo slug' },
-        variants: { type: 'string', description: 'Nuevas variantes serializadas en JSON' },
+        variants: {
+          type: 'string',
+          description: 'Nuevas variantes serializadas en JSON',
+        },
         images: {
           type: 'array',
           items: { type: 'string', format: 'binary' },
@@ -205,21 +246,34 @@ export class ProductsController {
   })
   public async update(
     @Param('id', ParseIntPipe) id: number,
-    @Req() req: FastifyRequest
+    @Req() req: FastifyRequest,
   ) {
-    const { fields, files } = await parseMultipartRequest(req)
+    const { fields, files } = await parseMultipartRequest(req);
 
     const dto: UpdateProductDto = {
       name: fields.name,
       price: fields.price !== undefined ? Number(fields.price) : undefined,
-      category_id: fields.category_id !== undefined ? Number(fields.category_id) : undefined,
+      category_id:
+        fields.category_id !== undefined
+          ? Number(fields.category_id)
+          : undefined,
       description: fields.description,
-      parent_id: fields.parent_id !== undefined ? (fields.parent_id ? Number(fields.parent_id) : null) : undefined,
-      color_id: fields.color_id !== undefined ? (fields.color_id ? Number(fields.color_id) : null) : undefined,
+      parent_id:
+        fields.parent_id !== undefined
+          ? fields.parent_id
+            ? Number(fields.parent_id)
+            : null
+          : undefined,
+      color_id:
+        fields.color_id !== undefined
+          ? fields.color_id
+            ? Number(fields.color_id)
+            : null
+          : undefined,
       slug: fields.slug,
-    } as any
+    } as any;
 
-    return this.service.update(id, dto, files)
+    return this.service.update(id, dto, files);
   }
 
   /**
@@ -234,6 +288,6 @@ export class ProductsController {
   @Roles('admin')
   @ApiBearerAuth()
   public remove(@Param('id', ParseIntPipe) id: number) {
-    return this.service.remove(id)
+    return this.service.remove(id);
   }
 }

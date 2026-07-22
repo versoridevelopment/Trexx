@@ -1,6 +1,15 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ProvincesService } from './provinces.service';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { UpdateProvinceDto } from './dto/update-province.dto';

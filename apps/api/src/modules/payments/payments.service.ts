@@ -13,7 +13,8 @@ export class PaymentsService {
 
   async findOne(id: number) {
     const record = await this.repository.findOne(id);
-    if (!record || !record.is_active) throw new NotFoundException(`Payment #${id} not found`);
+    if (!record || !record.is_active)
+      throw new NotFoundException(`Payment #${id} not found`);
     return record;
   }
 

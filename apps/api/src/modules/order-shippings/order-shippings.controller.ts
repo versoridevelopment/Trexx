@@ -1,6 +1,15 @@
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { SupabaseAuthGuard } from '../auth/supabase-auth.guard';
-import { Controller, UseGuards, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  UseGuards,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { OrderShippingsService } from './order-shippings.service';
 import { CreateOrderShippingDto } from './dto/create-order-shipping.dto';
 import { UpdateOrderShippingDto } from './dto/update-order-shipping.dto';

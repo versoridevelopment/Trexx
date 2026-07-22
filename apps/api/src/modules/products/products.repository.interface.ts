@@ -5,7 +5,10 @@ export abstract class IProductsRepository {
   abstract findAllAdmin(includeInactive?: boolean): Promise<any[]>;
   abstract findOneAdmin(id: number): Promise<any | null>;
   abstract create(data: any): Promise<any>;
-  abstract createWithVariants(productData: any, variants: any[]): Promise<number>;
+  abstract createWithVariants(
+    productData: any,
+    variants: any[],
+  ): Promise<number>;
   abstract skuExists(sku: string): Promise<boolean>;
   abstract categoryExists(id: number): Promise<boolean>;
   abstract slugExists(slug: string): Promise<boolean>;
