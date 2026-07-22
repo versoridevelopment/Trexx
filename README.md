@@ -1,151 +1,120 @@
-# 🚀 Modern Monorepo — Fullstack Store
+# 🎾 Trexx Padel
 
-Este es un proyecto personal dedicado a la práctica y dominio de arquitecturas modernas y escalables en el ecosistema JavaScript/TypeScript. Se trata de un **Monorepo** que implementa una tienda virtual completa, integrando un frontend robusto con un backend modular.
+### Plataforma Profesional de E-commerce para el mercado de Pádel argentino.
+
+[![Backend](https://img.shields.io/badge/Backend-NestJS%2011%20%2F%20Fastify-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)](https://nestjs.com/)
+[![Frontend](https://img.shields.io/badge/Frontend-Next.js%2016-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Database](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Monorepo](https://img.shields.io/badge/Monorepo-Turborepo%20%2F%20pnpm-EF4444?style=for-the-badge&logo=turborepo&logoColor=white)](https://turbo.build/)
+[![Hosting](https://img.shields.io/badge/Hosting-Vercel%20%26%20Fly.io-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+
+**Trexx Padel** es una plataforma moderna y escalable de comercio electrónico optimizada para la venta y distribución de equipamiento deportivo de pádel. Implementada a través de un monorepo robusto, integra tecnologías líderes en rendimiento, tipado estricto extremo y despliegue automático en la nube.
 
 ---
 
-## 🏗️ Arquitectura y Metodologías
+## 🏗️ Arquitectura y Flujo del Monorepo
 
-El proyecto destaca por el uso de patrones de diseño avanzados:
+El proyecto está organizado en un **Monorepo** orquestado por **Turborepo** y gestionado eficientemente mediante workspaces de **pnpm**:
 
-- **Feature-Sliced Design (FSD)**: En `apps/web` se implementa esta arquitectura para garantizar la modularidad, mantenibilidad y escalabilidad del frontend.
-- **Clean Architecture (Golden Standard)**: El backend (`apps/api`) sigue una arquitectura de 4 capas con inyección de dependencias total y mappers desacoplados.
-- **Fastify Backend Engine**: Migración de Express a **Fastify** para lograr una arquitectura de alto rendimiento, baja latencia y validación de esquemas optimizada.
-- **Type-Safe Everywhere (Zod)**: Uso de **Zod** como fuente única de verdad para esquemas y tipado compartido en todo el monorepo.
+- **`apps/web` (Frontend):** Aplicación Next.js 16 con App Router, Server Components para optimización de SEO/rendimiento y diseño responsivo premium. Se despliega automáticamente en **Vercel** (nodo en São Paulo para latencia mínima).
+- **`apps/api` (Backend):** Servidor NestJS 11 con motor de alto rendimiento **Fastify** que valida esquemas a alta velocidad. Se aloja en **Fly.io** (São Paulo).
+- **`packages/types`:** Tipos TypeScript y validaciones de esquema **Zod** compartidas entre el Backend y el Frontend (fuente única de verdad).
+- **`packages/api-client`:** Cliente de consumo HTTP tipado autogenerado a partir de OpenAPI/Swagger.
+
+```mermaid
+graph TD
+    User([Cliente]) -->|Navega / Compra| Vercel[Vercel Frontend - gru1]
+    Vercel -->|Llamadas API| Fly[Fly.io Backend - gru]
+    Fly -->|Prisma Client| Supabase[Supabase DB / Storage - sa-east-1]
+    GitHub[GitHub Repo] -->|Push main| Actions[GitHub Actions CI/CD]
+    Actions -->|Deploy API| Fly
+    GitHub -->|Trigger webhook| Vercel
+```
 
 ---
 
 ## 📦 Stack Tecnológico
 
-| Herramienta | Rol |
+| Herramienta | Rol en la Plataforma |
 |---|---|
-| [Next.js 15+](https://nextjs.org/) | **Frontend** — React con App Router y Server Components |
-| [NestJS 11 + Fastify](https://nestjs.com/) | **Backend** — API REST de alto rendimiento con motor Fastify |
-| [Supabase Auth](https://supabase.com/auth) | **Autenticación** — Gestión de sesiones, login y registro |
-| [Passport & JWT](http://www.passportjs.org/) | **Seguridad** — Validación de JWT de Supabase en el backend |
-| [Swagger / OpenAPI](https://swagger.io/) | **Documentación** — Especificación y UI interactiva de la API |
-| [Prisma ORM](https://www.prisma.io/) | **Base de Datos** — Gestión de esquemas (`auth` y `public`) y consultas |
-| [Turborepo](https://turbo.build/) | **Orquestador** — Gestión inteligente de tareas y cache |
-| [pnpm](https://pnpm.io/) | **Package Manager** — Gestión eficiente de dependencias con workspaces |
-| [Zod](https://zod.dev/) | **Validation** — Fuente única de verdad para esquemas y tipado compartido |
-| [nestjs-zod](https://github.com/risu74/nestjs-zod) | **Integration** — Validación automática y Swagger a partir de Zod |
-| [openapi-typescript](https://openapi-ts.pages.dev/) | **Type Safety** — Generación de tipos TS a partir de OpenAPI |
-
+| **Next.js 16** | Frontend interactivo y Server-Side Rendering (SSR). |
+| **NestJS 11 + Fastify** | Backend modular, estructurado e inyección de dependencias sólida. |
+| **Prisma ORM** | Modelado de datos y consultas tipadas sobre PostgreSQL. |
+| **Supabase (Auth & PG)** | Base de datos PostgreSQL alojada en Brasil con Autenticación gestionada. |
+| **Turborepo & pnpm** | Orquestación, caché y velocidad de compilación en el monorepo. |
+| **Zod** | Esquemas de validación unificados en la capa de datos. |
 
 ---
 
-## 🗂️ Estructura del Monorepo
-
-```
-my-monorepo/
-├── apps/
-│   ├── web/          # Frontend Next.js (Architecture-driven / FSD)
-│   └── api/          # Backend NestJS (Modular Architecture)
-├── packages/
-│   ├── types/        # Tipos de TypeScript compartidos (@repo/types)
-│   └── api-client/   # Cliente HTTP autogenerado con tipos (@repo/api-client)
-├── turbo.json        # Configuración de pipelines
-└── pnpm-workspace.yaml
-```
-
----
-
-## ⚙️ Primeros Pasos (Levantar desde Cero)
+## ⚙️ Configuración y Puesta en Marcha (Local)
 
 ### 📋 Prerrequisitos
-- [Node.js](https://nodejs.org/) v20+ (Recomendado v24+ o v25+)
-- [pnpm](https://pnpm.io/) v9+ o superior
-- Un proyecto creado en [Supabase](https://supabase.com/) listo.
+- **Node.js** v22+
+- **pnpm** v10+
 
----
+### 🛠️ Guía Paso a Paso
 
-### 🛠️ Guía de Configuración Paso a Paso
-
-Sigue estos pasos en orden para levantar todo el entorno de desarrollo de forma local:
-
-#### 1. Clonar el repositorio e instalar dependencias
+#### 1. Clonar e Instalar
 ```bash
-git clone https://github.com/IvanRomeroMaurin/Trabajo-Campo-Ing-II.git
-cd Trabajo-Campo-Ing-II
+git clone https://github.com/versoridevelopment/Trexx.git
+cd Trexx
 pnpm install
 ```
 
-#### 2. Configurar las variables de entorno (`.env`)
-Debes crear los archivos de variables de entorno para que el frontend y el backend puedan comunicarse con Supabase.
+#### 2. Variables de Entorno (`.env`)
 
-##### A. Configurar el Frontend
-Crea el archivo [apps/web/.env](file:///home/ivan-romero-maurin/projects/versori/test-eccomers-turborepo/apps/web/.env):
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key-de-supabase
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-API_URL=http://localhost:3001
-```
+Crea los archivos de entorno locales:
 
-##### B. Configurar el Backend
-Crea el archivo [apps/api/.env](file:///home/ivan-romero-maurin/projects/versori/test-eccomers-turborepo/apps/api/.env):
-```env
-PORT=3001
-NODE_ENV=development
+- **Frontend (`apps/web/.env`):**
+  ```env
+  NEXT_PUBLIC_SUPABASE_URL=https://tu-supabase.supabase.co
+  NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
+  NEXT_PUBLIC_APP_URL=http://localhost:3000
+  NEXT_PUBLIC_API_URL=http://localhost:3001
+  ```
 
-SUPABASE_URL=https://tu-proyecto.supabase.co
-SUPABASE_ANON_KEY=tu-anon-key-de-supabase
-SUPABASE_JWT_SECRET=tu-jwt-secret-de-supabase
+- **Backend (`apps/api/.env`):**
+  ```env
+  PORT=3001
+  NODE_ENV=development
+  SUPABASE_URL=https://tu-supabase.supabase.co
+  SUPABASE_ANON_KEY=tu-anon-key
+  SUPABASE_JWT_SECRET=tu-jwt-secret
+  DATABASE_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+  DIRECT_URL="postgresql://postgres.tu-db:password@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
+  ```
 
-# NOTA: Consigue estas cadenas de conexión URI en la sección Settings > Database de tu panel de Supabase
-# DATABASE_URL: Usa el puerto del concentrador de conexiones (generalmente 6543)
-DATABASE_URL="postgresql://postgres.tu-proyecto:tu-contrasena@aws-1-sa-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
-# DIRECT_URL: Se conecta de forma directa (puerto 5432) para las migraciones y schema push de Prisma
-DIRECT_URL="postgresql://postgres.tu-proyecto:tu-contrasena@aws-1-sa-east-1.pooler.supabase.com:5432/postgres"
-```
-
-#### 3. Compilar los paquetes internos compartidos
-Compila los paquetes compartidos del monorepo (como `@repo/types`) para evitar errores de módulos faltantes durante el inicio:
+#### 3. Compilación Inicial y Base de Datos
 ```bash
+# Compilar tipos compartidos
 pnpm --filter @repo/types build
-```
 
-#### 4. Sincronizar el esquema con tu Base de Datos de Supabase
-Empuja el esquema de base de datos relacional definido en Prisma a tu nueva instancia de Supabase:
-```bash
+# Generar cliente de Prisma
+pnpm --filter @repo/api exec prisma generate
+
+# Sincronizar esquema de base de datos con Supabase
 pnpm --filter @repo/api exec prisma db push
 ```
 
-#### 5. Generar el cliente de Prisma
-Genera los tipos y el cliente de Prisma adaptados a tu backend:
-```bash
-pnpm --filter @repo/api exec prisma generate
-```
-
-#### 6. Levantar los servidores en desarrollo
-Ahora puedes iniciar tanto la web como el servidor NestJS en paralelo:
+#### 4. Levantar en Desarrollo
 ```bash
 pnpm dev
 ```
-
-| Aplicación | Dirección Local |
-|---|---|
-| **Frontend (Next.js)** | [http://localhost:3000](http://localhost:3000) |
-| **Backend (NestJS)** | [http://localhost:3001/api](http://localhost:3001/api) |
-| **Documentación (Swagger)** | [http://localhost:3001/docs](http://localhost:3001/docs) |
+- **Web:** [http://localhost:3000](http://localhost:3000)
+- **API UI (Swagger Docs):** [http://localhost:3001/docs](http://localhost:3001/docs)
 
 ---
 
-## 🛠️ Scripts Clave
+## 🚀 Pipeline de Despliegue (CI/CD)
 
-- `pnpm dev`: Inicia el modo desarrollo (Web + API).
-- `pnpm build`: Compila todo el monorepo.
-- `pnpm generate:api`: Sincroniza los tipos del `api-client` con el backend.
-- `pnpm db:generate`: Regenera el cliente de Prisma.
+El monorepo está diseñado para automatizar los despliegues en cada actualización en la rama principal (`main`):
 
----
+### 1. Frontend en Vercel
+Vercel compila el monorepo y levanta la aplicación web en [https://trexxpadel.vercel.app](https://trexxpadel.vercel.app). Las variables de entorno se declaran en el dashboard del proyecto.
 
-## 📄 Notas de Implementación
+### 2. Backend en Fly.io (GitHub Actions)
+Configurado mediante [.github/workflows/fly-deploy.yml](.github/workflows/fly-deploy.yml):
+- Al realizar un `git push origin main`, se analiza si hubo cambios en `apps/api` o `packages/**`.
+- Si existen cambios, se ejecuta el workflow de GitHub, compilando la imagen utilizando el [Dockerfile](Dockerfile) multi-stage optimizado (`pnpm deploy`) y levantando la API de producción en São Paulo (`https://trexx-api.fly.dev`).
 
-Este proyecto se utiliza como laboratorio para implementar:
-- **Auth Flow**: Registro con confirmación de email y redirección segura.
-- **Database Synchronization**: Sincronización automática de perfiles mediante triggers de PostgreSQL.
-- **Type-Safe Everywhere**: Migración progresiva de interfaces manuales a esquemas de **Zod** para validación en tiempo de ejecución coordinada entre API y Frontend.
-- **High-Performance Engine**: Sustitución de Express por **Fastify** en el backend para maximizar el throughput y reducir la latencia del sistema.
-- **Modern UI**: Frontend basado en Server Components para máximo rendimiento y SEO.
-- **ESM Standard**: Implementación adaptada a los estándares modernos de Node.js (v24+) y resolución de módulos estricta.
+*(Requiere configurar el secret `FLY_API_TOKEN` en GitHub).*
