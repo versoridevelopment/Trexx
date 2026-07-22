@@ -16,7 +16,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link href={`/shop/${product.id}`} className="group block">
       <div className="space-y-4">
         {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-[#111]">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-white">
           {/* Subtle Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] bg-trexx-volt/10 rounded-full blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
           
@@ -34,15 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           )}
           
-          {/* Hover Overlay */}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
-          
-          {/* Quick Action */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-30">
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-trexx-volt text-black px-6 py-2 rounded-sm shadow-[0_0_15px_rgba(204,255,0,0.4)] whitespace-nowrap">
-              Ver detalle
-            </span>
-          </div>
+
         </div>
 
         {/* Info */}
