@@ -63,7 +63,7 @@ export function ProductGallery({ images = [], fallbackImage, name }: ProductGall
                 key={img.id || img.url}
                 onClick={() => setActiveUrl(img.url)}
                 onMouseEnter={() => setActiveUrl(img.url)}
-                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg bg-[#0c0c0c] flex-shrink-0 transition-all duration-200 overflow-hidden border ${
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg bg-white flex-shrink-0 transition-all duration-200 overflow-hidden border ${
                   isActive
                     ? 'border-trexx-volt ring-1 ring-trexx-volt/50 opacity-100 shadow-[0_0_12px_rgba(204,255,0,0.25)]'
                     : 'border-white/10 opacity-60 hover:opacity-100 hover:border-white/30'
@@ -80,8 +80,8 @@ export function ProductGallery({ images = [], fallbackImage, name }: ProductGall
         </div>
       )}
 
-      {/* 2. Main Active Image Display (Clean, No Card Background, Fixed Defined Size) */}
-      <div className="relative flex-1 w-full max-h-[460px] aspect-[4/5] overflow-hidden group flex items-center justify-center">
+      {/* 2. Main Active Image Display (White Background Container) */}
+      <div className="relative flex-1 w-full max-h-[460px] aspect-[4/5] overflow-hidden group flex items-center justify-center bg-white rounded-xl">
         {/* Main Product Photo */}
         <img
           src={currentUrl}
